@@ -1,0 +1,17 @@
+name: bengal3_ac3
+channels:
+- anaconda
+- defaults
+dependencies:
+- openssl=1.0.2l=0
+- readline=6.2=2
+- sqlite=3.13.0=0
+- tk=8.5.18=0
+- pip:
+  - future==0.16.0
+  - ga4ghmongo==0.0.1.2
+  - mykatlas==0.6.1
+  - mykrobe==0.5.6
+  - numpy==1.13.1
+  - pyvcf==0.6.8
+prefix: /home/jhuang/anaconda3/envs/bengal3_ac3

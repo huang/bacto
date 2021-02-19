@@ -54,7 +54,7 @@
     "cpu": 10,
     "mincov": 10,
     "minfrac": 0.9,
-    "reference": "gamola2/HD04___.fa.gb",
+    "reference": "db/HD04-1.gb",
     "bwaopt": "",
     "mapqual": 60,
     "other": ""

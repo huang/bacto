@@ -1,0 +1,162 @@
+LOCUS       CP052987                2241 bp    DNA     circular BCT 09-FEB-2021
+DEFINITION  Staphylococcus epidermidis strain HD04-1 plasmid pHD04-1_2,
+            complete sequence.
+ACCESSION   CP052987
+VERSION     CP052987.1  GI:1979391426
+DBLINK      BioProject: PRJNA546129
+            BioSample: SAMN14732890
+KEYWORDS    .
+SOURCE      Staphylococcus epidermidis
+  ORGANISM  Staphylococcus epidermidis
+            Bacteria; Firmicutes; Bacilli; Bacillales; Staphylococcaceae;
+            Staphylococcus.
+REFERENCE   1  (bases 1 to 2241)
+  AUTHORS   Both,A., Huang,J., Qi,M., Lausmann,C., Weisselberg,S., Buttner,H.,
+            Lezius,S., Failla,A.V., Christner,M., Stegger,M., Gehrke,T.,
+            Baig,S., Citak,M., Alawi,M., Aepfelbacher,M. and Rohde,H.
+  TITLE     Distinct clonal lineages and within-host diversification shape
+            invasive Staphylococcus epidermidis populations
+  JOURNAL   PLoS Pathog 17 (2), e1009304 (2021)
+   PUBMED   33544760
+  REMARK    Publication Status: Available-Online prior to print
+REFERENCE   2  (bases 1 to 2241)
+  AUTHORS   Both,A., Huang,J., Qi,M., Lausmann,C., Weisselberg,S., Buettner,H.,
+            Lezius,S., Failla,A.V., Christner,M., Stegger,M., Gehrke,T.,
+            Baig,S., Citak,M., Alawi,M., Aepfelbacher,M. and Rohde,H.
+  TITLE     Direct Submission
+  JOURNAL   Submitted (26-APR-2020) Institute of Medical Microbiology, Virology
+            and Hygiene, University Medical Center Hamburg-Eppendorf,
+            Martinistr. 52, Hamburg, Hamburg 20246, Germany
+COMMENT     The annotation was added by the NCBI Prokaryotic Genome Annotation
+            Pipeline (PGAP). Information about PGAP can be found here:
+            https://www.ncbi.nlm.nih.gov/genome/annotation_prok/
+            
+            ##Genome-Assembly-Data-START##
+            Assembly Method        :: Unicycler v. v0.4.7
+            Genome Representation  :: Full
+            Expected Final Version :: Yes
+            Genome Coverage        :: 244x
+            Sequencing Technology  :: Illumina; Oxford Nanopore
+            ##Genome-Assembly-Data-END##
+            
+            ##Genome-Annotation-Data-START##
+            Annotation Provider               :: NCBI
+            Annotation Date                   :: 04/29/2020 13:47:01
+            Annotation Pipeline               :: NCBI Prokaryotic Genome
+                                                 Annotation Pipeline (PGAP)
+            Annotation Method                 :: Best-placed reference protein
+                                                 set; GeneMarkS-2+
+            Annotation Software revision      :: 4.11
+            Features Annotated                :: Gene; CDS; rRNA; tRNA; ncRNA;
+                                                 repeat_region
+            Genes (total)                     :: 2,485
+            CDSs (total)                      :: 2,401
+            Genes (coding)                    :: 2,322
+            CDSs (with protein)               :: 2,322
+            Genes (RNA)                       :: 84
+            rRNAs                             :: 7, 6, 6 (5S, 16S, 23S)
+            complete rRNAs                    :: 7, 6, 6 (5S, 16S, 23S)
+            tRNAs                             :: 61
+            ncRNAs                            :: 4
+            Pseudo Genes (total)              :: 79
+            CDSs (without protein)            :: 79
+            Pseudo Genes (ambiguous residues) :: 0 of 79
+            Pseudo Genes (frameshifted)       :: 40 of 79
+            Pseudo Genes (incomplete)         :: 39 of 79
+            Pseudo Genes (internal stop)      :: 25 of 79
+            Pseudo Genes (multiple problems)  :: 20 of 79
+            CRISPR Arrays                     :: 2
+            ##Genome-Annotation-Data-END##
+FEATURES             Location/Qualifiers
+     source          1..2241
+                     /organism="Staphylococcus epidermidis"
+                     /mol_type="genomic DNA"
+                     /strain="HD04-1"
+                     /isolation_source="nose; prosthetic joint infection"
+                     /host="Homo sapiens"
+                     /db_xref="taxon:1282"
+                     /plasmid="pHD04-1_2"
+                     /country="Germany: Hamburg"
+                     /lat_lon="53.33 N 10.1 E"
+                     /collection_date="2018"
+                     /collected_by="Institute of Medical Microbiology, Virology
+                     and Hygiene, University Medical Center Hamburg-Eppendorf"
+     gene            join(1434..2241,1..191)
+                     /locus_tag="HJH94_12425"
+     CDS             join(1434..2241,1..191)
+                     /locus_tag="HJH94_12425"
+                     /inference="COORDINATES: similar to AA
+                     sequence:RefSeq:WP_020368559.1"
+                     /note="Derived by automated computational analysis using
+                     gene prediction method: Protein Homology."
+                     /codon_start=1
+                     /transl_table=11
+                     /product="protein rep"
+                     /protein_id="QRI81669.1"
+                     /db_xref="GI:1979391428"
+                     /translation="MQYNTTKYIDENQDNETLKDMTKSGTQRPWREKKIDNVSYADIL
+                     EILKIKKAFNVKQCGNVLEFKPTDEGYLKLYKTWFCKSKLCPVCNWRRSMKNSYQAQK
+                     VIEAVVKEKPKARWLFLTLSTKNAIDGEHLEQSLKYMSKAFNKLKMYAKVKKNLIGFM
+                     RSTEVTVNKNDGSYNQHMHVLLCVENAYFRKKENYITQEEWINLWQKALQVDYKPVAN
+                     IKAIKPNKKGDKDIQAAIKETSKYSVKSSDYLTGNHEKDAEIVQDLEQGLYRKRMLSY
+                     GGLLKQKHKLLNLDDAEEGNLIQTSDEEKTTEEEQKAHSITAIWNFEKQNYFLKNL"
+     gene            complement(783..1106)
+                     /gene="qacC"
+                     /locus_tag="HJH94_12420"
+     CDS             complement(783..1106)
+                     /gene="qacC"
+                     /locus_tag="HJH94_12420"
+                     /inference="COORDINATES: similar to AA
+                     sequence:RefSeq:WP_001146389.1"
+                     /note="Derived by automated computational analysis using
+                     gene prediction method: Protein Homology."
+                     /codon_start=1
+                     /transl_table=11
+                     /product="quaternary ammonium compound efflux SMR
+                     transporter QacC"
+                     /protein_id="QRI81668.1"
+                     /db_xref="GI:1979391427"
+                     /translation="MPYIYLIIAISTEVIGSAFLKSSEGFSKFIPSLGTIISFGICFY
+                     FLSKTMQHLPLNITYATWAGLGLVLTTVVSIIIFKEQINLITIVSIVLIIVGVVSLNI
+                     FGTSH"
+ORIGIN      
+        1 gaaaacgtat gttaagttac ggtggtttac ttaaacaaaa acataaactt ttaaatttag
+       61 acgatgccga agaaggtaat ttaattcaaa cgagcgatga agaaaaaacg actgaagaag
+      121 aacaaaaagc ccattcaatt acggccattt ggaattttga aaaacaaaat tatttcttaa
+      181 aaaatttgta acgttagctt atcaaagcta gcgttttttt atgctttttt gcccctgcag
+      241 gaactatagc gttcaaccgg catggttgcc cattttttat gctaattttt aaatttgcat
+      301 gtaaatgggc agtgtctaaa aaattcgaca ctggttttgc tcaaattttt gtttgtgaaa
+      361 agcaattatt tttatttggc tctcatttgc gttttaagag ccgatttagg tttttaggta
+      421 taaaactata taaataaccc ttaattcttt aaaatgaccc cttaaaatta aaaataaagg
+      481 tattctgatt ttgaataaat gtttgaacaa aaaataaaga gctaccctta aaaattttgg
+      541 tagctcttat atgcactgtt ttaatattta ggtgttatca gtgaaaaata gatcaagaaa
+      601 ggaattttaa ttataacaca gcatttatgc cgagaaaatt tattgatgtt gagaagaacc
+      661 cttaactaaa cttggagacg aatgtcggca tagcgtgagc tattaagccg accattcgac
+      721 aagttttggg attgttaagg gttccgaggc tcaacgtcaa taaagcaatt ggaataaagc
+      781 aattaatgcg atgttccgaa aatgtttaac gaaactacgc cgactatgat taaaactata
+      841 gatactatag ttattagatt tatttgttct ttgaaaataa ttattgagac tacggttgtt
+      901 aagactaaac ctagtcccgc ccaagttgca taagttatat ttagtggtag gtgttgcatt
+      961 gttttactta aaaaatagaa acaaattcca aatgaaatta ttgttcctaa ggatggtata
+     1021 aattttgaaa agccttctga agatttaaga aatgcacttc caataacttc agtacttatg
+     1081 gctattatta aataaatata aggcattttt agctcctttt aattttcgta ttttattcta
+     1141 agtatttttt aattgtaaag tattttttaa ttgtagtctt gtattttgag tgtcattcgc
+     1201 gtggtatttt tgtggattga tggtttttga aaggtttttg aaacgagttg aaaacgagtt
+     1261 tcttcttgtc ttgatactat atagaaataa ctcaaagaat taaaatgttt taaaaacgtt
+     1321 ggtatgacaa catttgtgtt gtttttttag cgtgaaagaa aaaattgaca taaaaaaacc
+     1381 ccagttatat gattaaggtg tcgaatctaa atcaaaactg gaggtctttt tatatgcaat
+     1441 ataatactac aaaatatata gacgaaaatc aagataatga aacattgaaa gatatgacta
+     1501 aaagtgggac acaacgccca tggagagaaa agaaaatcga caatgtaagt tatgcagata
+     1561 tactagaaat tttaaaaatt aaaaaggctt ttaacgtgaa gcaatgtggt aacgtcttag
+     1621 aatttaagcc gactgatgaa gggtatttaa aactttataa aacatggttt tgtaagtcta
+     1681 aattatgtcc ggtttgtaat tggaggcgtt caatgaaaaa tagttatcaa gctcaaaaag
+     1741 tcattgaagc agtggttaaa gaaaagccaa aagcacgttg gttattctta acactttcaa
+     1801 caaaaaatgc gatagatggt gagcatttag aacagagttt aaaatatatg tcgaaagctt
+     1861 ttaacaagtt aaaaatgtat gcaaaagtta aaaagaattt aatcggtttt atgcgttcaa
+     1921 ctgaagttac agttaacaaa aatgacggaa gttataatca acatatgcac gttttattgt
+     1981 gtgttgaaaa tgcttatttc agaaaaaaag agaattatat aacgcaagaa gagtggatca
+     2041 atttatggca aaaagctctt caagttgatt acaaaccagt cgcaaatatc aaagcaatta
+     2101 agccgaataa aaaaggcgat aaagatatac aagctgcaat taaagagaca tcaaaatact
+     2161 cggttaagtc gtccgattat ttaacaggaa accatgaaaa agacgcagaa attgttcaag
+     2221 atttagaaca aggtttatac a
+//
+

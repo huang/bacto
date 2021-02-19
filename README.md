@@ -13,3 +13,8 @@ cd raw_data
 for file in *.fastq.gz; do mv $file $(echo $file | cut -d'_' -f1 | cut -d'-' -f1-2)_$(echo $file | cut -d'_' -f4).fastq.gz; done
 cd ..
 ```
+
+## Run snakemake
+```sh
+snakemake --printshellcmds
+```

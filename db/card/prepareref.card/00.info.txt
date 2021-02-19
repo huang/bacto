@@ -1,0 +1,3 @@
+input fasta file:	db/card/card.fa
+input tsv file:	db/card/card.tsv
+genetic_code	11

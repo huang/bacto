@@ -16,5 +16,6 @@ cd ..
 
 ## Run snakemake
 ```sh
+conda activate bengal3_ac3
 snakemake --printshellcmds
 ```

@@ -16,6 +16,7 @@ cd ..
 
 ## Run snakemake
 ```sh
+git clone https://github.com/huang/bacto
 conda activate bengal3_ac3
 snakemake --printshellcmds
 ```

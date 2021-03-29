@@ -348,14 +348,14 @@ if config["variants_calling"]:
             cpu = config["snippy"]["cpu"]
         output:
             "snippy/{sample}/{sample}.txt",
-            "snippy/{sample}/{sample}.depth"
+            #"snippy/{sample}/{sample}.depth"
         shell:
             "LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH && "
             "snippy --force --outdir {params.outdir} --ref {params.reference} "
             "--R1 {input.forward} --R2 {input.reverse} --cpus {params.cpu} "
             "--mincov {params.mincov} --minfrac {params.minfrac} "
             "--mapqual {params.mapqual} --prefix {wildcards.sample} {params.other} "
-            "&& gzip -d snippy/{wildcards.sample}/{wildcards.sample}.depth.gz"
+            #"&& gzip -d snippy/{wildcards.sample}/{wildcards.sample}.depth.gz"
             
     rule snippy_core:
         input:

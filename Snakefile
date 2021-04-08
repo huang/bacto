@@ -97,16 +97,16 @@ rule all:
         expand("ariba/{db}/{sample}.report.txt", db=DB, sample=SAMPLES) if config["typing_ariba"] else [],
         expand("mlst/{sample}.mlst.txt", sample=SAMPLES) if config["assembly"] and config["typing_mlst"] else [],
         
+	"roary/gene_presence_absence.csv" if config["pangenome"] else [],
+	#"core_alignment/core_alignment_roary.fasta" if config["pangenome"] else [],
+	
         "variants/snippy.core.full.aln" if config["variants_calling"] else [],
         "variants/snippy.core.aln" if config["variants_calling"] else [],
         
         "fasttree/snippy.core.tree" if config["phylogeny_fasttree"] else [],
         "raxml-ng/snippy.core.aln.raxml.bestTree" if config["phylogeny_raxml"] else [],
-
         "gubbins/recomb.final_tree.tre"  if config["recombination"] else [],
-        "roary/gene_presence_absence.csv" if config["pangenome"] else [],
-        #"core_alignment/core_alignment_roary.fasta" if config["pangenome"] else [],
-        
+
         #conda install -c anaconda seaborn
         #conda install libgcc
         #conda install matplotlib biopython numpy pandas
@@ -322,6 +322,32 @@ if config["typing_ariba"]:
                 "mv {params.report} {output}"
         
 
+#####################################################
+############### Pangenome using roary ###############
+#####################################################
+
+#http://sepsis-omics.github.io/tutorials/modules/roary/
+if config["pangenome"]:
+    rule roary:
+        input:
+            expand("prokka/{sample}/{sample}.gff", sample=SAMPLES)
+        params:
+            core=config["roary"]["core"],
+            identity=config["roary"]["identity"],
+            other=config["roary"]["other"]
+        output:
+            "roary/gene_presence_absence.csv"
+            #"core_alignment/core_alignment_roary.fasta"
+        threads:
+            config["roary"]["cpu"]
+        shell:
+            #{threads} doesn't work, using hard-coding 15
+            "roary -p 15 -f ./roary -i {params.identity} -cd {params.core} -s -e -n -v {params.other} {input} && "
+            "mv roary_*/* ./roary && rm -rf ./roary_*"
+            #"cp roary/core_gene_alignment.aln core_alignment/core_alignment_roary.fasta"
+            #roary -e --mafft -p 8 *.gff
+            #roary -p 4 -f {params.outdir} -s -e -n -v {input} && touch {output}	
+	
 ########################################
 ############### Variants ###############
 ########################################
@@ -367,9 +393,9 @@ if config["variants_calling"]:
             "snippy-core --prefix snippy.core snippy/* && "
             "mv snippy.core.* variants/"
 
-########################################
-########### Set Analysis ###############
-########################################
+##########################################################################
+########### Set Analysis based on variants/snippy.core.aln ###############
+##########################################################################
 if config["phylogeny_fasttree"]:
     rule fasttree_snp:
         input:
@@ -394,29 +420,9 @@ if config["phylogeny_raxml"]:
         threads:
             config["raxml_ng"]["cpu"]
         shell:
-            "raxml-ng --all --model {params.model}{params.correction} --prefix raxml-ng/snippy.core.aln --threads {threads} "
+	    #{threads} doesn't work, using hard-coding 8
+            "raxml-ng --all --model {params.model}{params.correction} --prefix raxml-ng/snippy.core.aln --threads 8 "
             "--msa {input} --bs-trees {params.bootstrap} {params.other}"
-
-#http://sepsis-omics.github.io/tutorials/modules/roary/
-if config["pangenome"]:
-    rule roary:
-        input:
-            expand("prokka/{sample}/{sample}.gff", sample=SAMPLES)
-        params:
-            core=config["roary"]["core"],
-            identity=config["roary"]["identity"],
-            other=config["roary"]["other"]
-        output:
-            "roary/gene_presence_absence.csv"
-            #"core_alignment/core_alignment_roary.fasta"
-        threads:
-            config["roary"]["cpu"]
-        shell:
-            "roary -p {threads} -f ./roary -i {params.identity} -cd {params.core} -s -e -n -v {params.other} {input} && "
-            "mv roary_*/* ./roary && rm -rf ./roary_*"
-            #"cp roary/core_gene_alignment.aln core_alignment/core_alignment_roary.fasta"
-            #roary -e --mafft -p 8 *.gff
-            #roary -p 4 -f {params.outdir} -s -e -n -v {input} && touch {output}
 
 if config["recombination"]:
     rule gubbins:

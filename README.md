@@ -20,4 +20,5 @@ git clone https://github.com/huang/bacto
 conda activate bengal3_ac3
 snakemake --printshellcmds
 #Note that we need delete/add files in fastq if we want to change the results in roary, variants, fasttree, raxml-ng, and gubbins.
+#https://comparative-genomics.readthedocs.io/en/latest/day2_afternoon.html
 ```

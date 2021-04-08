@@ -4,11 +4,11 @@
   "assembly": true,
   "typing_ariba": false,
   "typing_mlst": true,
-  "variants_calling": true,
-  "recombination": true,
   "pangenome": true,
+  "variants_calling": true,
   "phylogeny_fasttree": true,
   "phylogeny_raxml": true,
+  "recombination": true,
 
   "trimmomatic": {
       "cpu": 6,
@@ -49,6 +49,13 @@
   "mykrobe": {
     "species": "staph"
   },
+  
+  "roary": {
+    "identity": 95,
+    "core": 99,
+    "cpu": 12,
+    "other": ""
+  },
 
   "snippy": {
     "cpu": 10,
@@ -58,6 +65,14 @@
     "bwaopt": "",
     "mapqual": 60,
     "other": ""
+  },
+
+  "raxml_ng": {
+    "model": "GTR+G",
+    "correction": "+ASC_LEWIS",
+    "other": "--redo",
+    "bootstrap": 1000,
+    "cpu": 1
   },
 
   "gubbins": {
@@ -74,21 +89,4 @@
     "other": "",
     "cpu": 12
   },
-
-  "roary": {
-    "identity": 95,
-    "core": 99,
-    "cpu": 12,
-    "other": ""
-  },
-
-  "raxml_ng": {
-    "model": "GTR+G",
-    "correction": "+ASC_LEWIS",
-    "other": "--redo",
-    "bootstrap": 1000,
-    "cpu": 1
-  },
-
-
 }

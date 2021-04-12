@@ -1,0 +1,3012 @@
+#!/bin/bash
+
+# HOW to process the HAPDICS projects?
+#-1- rename filenames
+#for file in HD104_*_001.fastq.gz; do mv $file $(echo $file | cut -d'_' -f1)-$(echo $file | cut -d'_' -f2)_$(echo $file | cut -d'_' -f4).fastq.gz; done
+#for file in HD104N*_001.fastq.gz; do mv $file $(echo $file | cut -d'_' -f1)_$(echo $file | cut -d'_' -f3).fastq.gz; done
+
+#-2- first round run
+#!! shovill --> prokka using env bengal
+#conda activate bengal
+#sed -i -e 's/for hd_dir in HD27; do/for hd_dir in HD26; do/g' run.sh
+#./run.sh
+
+#-3- second round run
+#./rerun.sh
+
+#-4- third round run
+#./report.sh
+
+
+# IMPORTANT NOTE: should be under /mnt/Seagate_Corona, ERROR if under /media/jhuang/Seagate\ Expansion\ Drive
+# ------ Quick assembly and pangenome --------
+#snakmeke under [bengal3_ac3] (2) assembly+pangenome (possibly needs 8.1 for manually running roary): true --> shovill+prokka+roary
+HD04-1
+HD05-2
+HD12-1
+HD15-10
+HD17-1   -
+HD21-1   -
+HD25-1
+HD26-2 --TODO--> 26-1
+HD27-1
+HD29-1
+HD31-1
+HD33-1
+HD39-2
+HD40-4
+HD43-1  -
+HD46-1
+HD47-1
+HD59-1  -
+HD66-1
+HD69-1
+HD75-1
+HD99-1  -
+HD104-6
+I looked t the table in a bit more detail yesterday evening and some results were a bit astounding for me. For example embp and sbp as well as the PSMs should be in almost every S. epidermidis. Maybe, the cut-off is too strict? 
+#[85]
+for sample in HD04-01 HD4N3 HD4N4 HD4N10 HD5-1 HD12-01 HD12N2 HD12N3 HD12N4 HD15-01 HD15N1 HD15N5 HD15N6 HD15N7 HD15N8 HD17-01 HD21-1 HD21N1 HD21N9 HD25-1 HD25N1 HD25N15 HD25N3 HD25N9 HD26-1 HD26N2 HD26N5 HD27-2 HD27N4 HD29-1 HD31-1 HD31N1 HD31N3 HD33-1 HD33N1 HD33N12 HD33N2 HD33N28 HD33N3 HD33N4 HD39-1 HD39N1 HD39N2 HD39N4 HD40-1 HD40N1 HD40N3 HD43-01 HD43N1 HD43N12 HD43N14 HD43N2 HD43N3 HD43N5 HD46-1 HD46N1 HD47-1 HD47N1 HD47N2 HD47N3 HD59-01 HD59N1 HD59N12 HD59N3 HD66-1 HD66N1 HD66N2 HD66N5 HD66N8 HD69-1 HD69N1 HD69N2 HD69N4 HD69N5 HD75-1 HD75N1 HD75N4 HD75N5 HD75N6 HD99-1 HD99N1 HD99N2 HD104-2 HD104N1 HD104N10; do
+cp: cannot stat 'raw_data/HD5-2_R1.fastq.gz': No such file or directory
+cp: cannot stat 'raw_data/HD5-2_R2.fastq.gz': No such file or directory
+cp: cannot stat 'raw_data/HD15-10_R1.fastq.gz': No such file or directory
+cp: cannot stat 'raw_data/HD15-10_R2.fastq.gz': No such file or directory
+cp: cannot stat 'raw_data/HD26-2_R1.fastq.gz': No such file or directory
+cp: cannot stat 'raw_data/HD26-2_R2.fastq.gz': No such file or directory
+cp: cannot stat 'raw_data/HD27-1_R1.fastq.gz': No such file or directory
+cp: cannot stat 'raw_data/HD27-1_R2.fastq.gz': No such file or directory
+cp: cannot stat 'raw_data/HD39-2_R1.fastq.gz': No such file or directory
+cp: cannot stat 'raw_data/HD39-2_R2.fastq.gz': No such file or directory
+cp: cannot stat 'raw_data/HD40-4_R1.fastq.gz': No such file or directory
+cp: cannot stat 'raw_data/HD40-4_R2.fastq.gz': No such file or directory
+cp: cannot stat 'raw_data/HD104-6_R1.fastq.gz': No such file or directory
+cp: cannot stat 'raw_data/HD104-6_R2.fastq.gz': No such file or directory
+for sample in HD04-01 HD4N3 HD4N4 HD4N10  HD5-2  HD12-01 HD12N2 HD12N3 HD12N4  HD15-10 HD15N1 HD15N5 HD15N6 HD15N7 HD15N8  HD17-01  HD21-1 HD21N1 HD21N9  HD25-1 HD25N1 HD25N15 HD25N3 HD25N9  HD26-2 HD26N2 HD26N5  HD27-1 HD27N4  HD29-1  HD31-1 HD31N1 HD31N3  HD33-1 HD33N1 HD33N12 HD33N2 HD33N28 HD33N3 HD33N4  HD39-2 HD39N1 HD39N2 HD39N4  HD40-4 HD40N1 HD40N3  HD43-01 HD43N1 HD43N12 HD43N14 HD43N2 HD43N3 HD43N5  HD46-1 HD46N1  HD47-1 HD47N1 HD47N2 HD47N3  HD59-01 HD59N1 HD59N12 HD59N3  HD66-1 HD66N1 HD66N2 HD66N5 HD66N8  HD69-1 HD69N1 HD69N2 HD69N4 HD69N5  HD75-1 HD75N1 HD75N4 HD75N5 HD75N6  HD99-1 HD99N1 HD99N2  HD104-6 HD104N1 HD104N10; do
+for sample in HD5-2 HD15-10 HD26-2 HD27-1 HD39-2 HD40-4 HD104-6; do
+  cp raw_data_remaining/${sample}_R1.fastq.gz raw_data2
+  cp raw_data_remaining/${sample}_R2.fastq.gz raw_data2
+done
+
+
+# ------ Quick SNP calling + phylogenetic tree using existing Genbank file --------
+#Input: Snakefile -> /home/jhuang/Tools/ST772/Snakefile
+#       db -> /home/jhuang/Tools/ST772/db
+#       cluster.json -> /home/jhuang/Tools/ST772/cluster.json
+#       local -> /home/jhuang/Tools/ST772/local
+#       bengal-bay-0.1.json
+#       BPH0662.gb
+#       raw_data
+# - snakmeke under [bengal3_ac3] (2) variants_calling+recombination+phylogeny: true --> snippy+variants+raxml+fasttree
+# - running snippy [under bengal2] (3): 
+rm -rf snippy; mkdir snippy; 
+for sample in HD04-01 HD104-6 HD104N10 HD104N1 HD12-01 HD12N2 HD12N3 HD12N4 HD15-01 HD15N1 HD15N5 HD25N9 HD26-1 HD26N2 HD26N5 HD29-1 HD31-1 HD31N1 HD31N3 HD33-1 HD33N1 HD33N28 HD33N2 HD33N3 HD33N4 HD39-1 HD39N1 HD47-1 HD47N1 HD47N2 HD47N3 HD4N10 HD4N3 HD4N4 HD5-1 HD59-01 HD59N12 HD59N1 HD59N3 HD66-1 HD39N4 HD40-1 HD40N3 HD43-01 HD43N12 HD43N14 HD43N1 HD43N2 HD43N3 HD43N5 HD46-1 HD25N3 HD39N2 HD46N1 HD66N1 HD66N8 HD69N1 HD69N2 HD69N4 HD69N5 HD75-1 HD75N1 HD75N4 HD75N5 HD75N6 HD99-1 HD99N1 HD99N2 HD15N6 HD15N7 HD15N8 HD17-01 HD21-1 HD21N1 HD21N9 HD25-1 HD25N15 HD25N1; do
+LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH && snippy --force --outdir snippy/${sample} --ref BPH0662.gb --R1 trimmed/${sample}_trimmed_P_1.fastq --R2 trimmed/${sample}_trimmed_P_2.fastq --cpus 10 --mincov 10 --minfrac 0.9 --mapqual 60 --prefix ${sample} && gzip -d snippy/${sample}/${sample}.depth.gz; done
+# - running snippy [under bengal2] (3):
+for sample in HH1; do
+LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH && snippy --force --outdir snippy/${sample} --ref BPH0662.gb --R1 trimmed/${sample}_trimmed_P_1.fastq --R2 trimmed/${sample}_trimmed_P_2.fastq --cpus 10 --mincov 10 --minfrac 0.9 --mapqual 60 --prefix ${sample} && gzip -d snippy/${sample}/${sample}.depth.gz; done
+
+# - running snippy.core [under bengal2] (4): 
+    rm -rf variants; mkdir variants; snippy-core --prefix snippy.core snippy/* && mv snippy.core.* variants/
+    # change the "Reference" to "BPH0662" in snippy.core.aln
+
+# - [OPTIONAL] running spandx (5) [host-env]
+#[78]
+for sample in HD04-01 HD104-6 HD104N10 HD104N1 HD12-01 HD12N2 HD12N3 HD12N4 HD15-01 HD15N1 HD15N5 HD25N9 HD26-1 HD26N2 HD26N5 HD29-1 HD31-1 HD31N1 HD31N3 HD33-1 HD33N1 HD33N28 HD33N2 HD33N3 HD33N4 HD39-1 HD39N1 HD47-1 HD47N1 HD47N2 HD47N3 HD4N10 HD4N3 HD4N4 HD5-1 HD59-01 HD59N12 HD59N1 HD59N3 HD66-1 HD39N4 HD40-1 HD40N3 HD43-01 HD43N12 HD43N14 HD43N1 HD43N2 HD43N3 HD43N5 HD46-1 HD25N3 HD39N2 HD46N1 HD66N1 HD66N8 HD69N1 HD69N2 HD69N4 HD69N5 HD75-1 HD75N1 HD75N4 HD75N5 HD75N6 HD99-1 HD99N1 HD99N2 HD15N6 HD15N7 HD15N8 HD17-01 HD21-1 HD21N1 HD21N9 HD25-1 HD25N15 HD25N1; do
+#[85]
+for sample in HD04-01 HD4N3 HD4N4 HD4N10  HD5-2  HD12-01 HD12N2 HD12N3 HD12N4  HD15-10 HD15N1 HD15N5 HD15N6 HD15N7 HD15N8  HD17-01  HD21-1 HD21N1 HD21N9  HD25-1 HD25N1 HD25N15 HD25N3 HD25N9  HD26-2 HD26N2 HD26N5  HD27-1 HD27N4  HD29-1  HD31-1 HD31N1 HD31N3  HD33-1 HD33N1 HD33N12 HD33N2 HD33N28 HD33N3 HD33N4  HD39-2 HD39N1 HD39N2 HD39N4  HD40-4 HD40N1 HD40N3  HD43-01 HD43N1 HD43N12 HD43N14 HD43N2 HD43N3 HD43N5  HD46-1 HD46N1  HD47-1 HD47N1 HD47N2 HD47N3  HD59-01 HD59N1 HD59N12 HD59N3  HD66-1 HD66N1 HD66N2 HD66N5 HD66N8  HD69-1 HD69N1 HD69N2 HD69N4 HD69N5  HD75-1 HD75N1 HD75N4 HD75N5 HD75N6  HD99-1 HD99N1 HD99N2  HD104-6 HD104N1 HD104N10; do
+  cp ../trimmed/${sample}_trimmed_P_1.fastq ${sample}_1_sequence.fastq
+  cp ../trimmed/${sample}_trimmed_P_2.fastq ${sample}_2_sequence.fastq
+done
+cd spandx; gzip *.fastq;
+/home/jhuang/Tools/SPANDx_v3.2/SPANDx.sh -v BPH0662 -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/ALL78/spandx/ -r BPH0662 -m yes -i yes -a yes -z yes # -w 1000 since 1000 is default value
+
+# - [OPTIONAL] merge the results to snippy.core.aln (6) under [host-env]
+cut -f1-1 -d$'\t' snippy.core.tab > part1__
+cut -f2- -d$'\t' snippy.core.tab > part2__
+paste -d'_' part1__ part2__ > parts__
+cp ../spandx/Outputs/Comparative/All_SNPs_annotated.txt  All_SNPs_annotated.txt
+awk '{gsub("Location", "CHR_POS");print}' All_SNPs_annotated.txt > All_SNPs_annotated_.txt
+awk '{gsub("\"", "");print}' All_SNPs_annotated_.txt > All_SNPs_annotated__.txt
+sed -i -e 's/1_/NZ_LT571449_/g' All_SNPs_annotated__.txt
+merge_snippy_GATK.py parts__ All_SNPs_annotated__.txt  merged_SNPs.tab
+grep "CHR_POS" merged_SNPs.tab > merged_SNPs.header
+sed -i '/^CHR_POS/d' merged_SNPs.tab
+cut -d'_' -f1-2 merged_SNPs.tab > merged_SNPs_f1.tab
+cut -d'_' -f3- merged_SNPs.tab > merged_SNPs_f2_.tab
+sort -n merged_SNPs_f2_.tab > merged_SNPs_f2_sorted.tab
+paste -d$'\t' merged_SNPs_f1.tab merged_SNPs_f2_sorted.tab > merged_SNPs_noheader.tab
+awk '{gsub("CHR_POS", "CHR\tPOS");print}' merged_SNPs.header > merged_SNPs_.header
+cat merged_SNPs_.header merged_SNPs_noheader.tab > merged_SNPs_.tab
+tab2aln.rb merged_SNPs_.tab $(grep ">" snippy.core.aln | wc -l) NZ_ > merged_SNPs.aln
+snp-sites merged_SNPs.aln -o merged_SNPs_.aln
+#mv snippy.core.aln snippy.core.aln_old
+mv merged_SNPs_.aln snippy.core.aln 
+
+# - snakmeke under [bengal3_ac3] (8) --> Dendroscope
+# ------ Quick SNP calling + phylogenetic tree END -------------------------------
+
+
+
+
+# #TODO: using the GAMOLA2 instead of seq-seq-pan
+# # ssp --> merged contigs --> prokka; roary needs each prokka; roary of each prokka.
+# # need seq-seq_pan_prokka gbk file to generate snpEff database, now we can use the genbank file generated by the GAMOLA2, only focuing on the protein sequences, at the same ID as roary output.
+# # giving the correct ssp_cons.gbk in bengal-bay-0.1.json.
+# rm -rf seq-seq-pan
+# mkdir seq-seq-pan
+# cp prokka/*/*.fna seq-seq-pan    
+# cd seq-seq-pan
+# for file in *.fna; do echo "bioawk -c fastx '{ if(length(\$seq) > 500) { print \">\"\$name; print \$seq }}' $file > $(echo $file | cut -d'.' -f1)_500.fna" >> run_ssp_wga.sh; done
+# bash run_ssp_wga.sh
+# find . -name "*_500.fna" > genome_list.txt
+# # DEBUG: maf step causes problem! --> However, we can ignore the ERROR, repeat the commands after the step --> exclude HD33N23_500.fna in the list!!!!!!! (Found 4391 CDS) --> using the new variants_clonal table
+# /home/jhuang/Tools/seq-seq-pan/seq-seq-pan-wga --config genomefile=genome_list.txt outfilename=seq-seq-pan
+# sed -i 's/;0/ /g' seq-seq-pan_consensus.fasta.blockseparated.fasta
+# #DEBUG: Skipping ncRNA search, enable with --rfam if desired.
+# #Error: saw too many regions of 'N''s in the sequence.
+# prokka --usegenus --kingdom Bacteria --genus Staphylococcus --species epidermidis --strain ssp_cons --rfam --addgenes --addmrna --outdir seq-seq-pan_prokka --prefix ssp_cons --locustag ssp_cons --force seq-seq-pan_consensus.fasta.blockseparated.fasta
+# #prokka 1.12
+# #/home/jhuang/anaconda3/envs/bengal3_ac3/bin/prokka --usegenus --kingdom Bacteria --genus Staphylococcus --species epidermidis --strain ssp_cons --addgenes --addmrna --outdir seq-seq-pan_prokka --prefix ssp_cons --locustag ssp_cons --force seq-seq-pan_consensus.fasta.blockseparated.fasta
+# # -hmm /media/jhuang/Titisee/GAMOLA2/TIGRfam_db/TIGRFAMs_15.0_HMM.LIB
+# rm -rf ../seq-seq-pan_prokka
+# mv seq-seq-pan_prokka ..
+# cd ..
+
+
+
+
+
+#TODO: based on the roary of all isolates, draw the global phylogenetic trees!
+
+
+#mv ../HD04/raw_data ./
+#mv ../HD04/trimmed ./
+#mv ../HD04/shovill ./
+#mv ../HD04/prokka ./
+#mv ../HD04/roary ./
+#mv ../HD04/gamola2 ./
+#mkdir snippy
+
+
+# -1- using muscle or mafft to align the multi-sequences.
+# -2- BaitFisher or baitstools to generate the baits
+# -3- using usearch or BaitFilter to filter the Baits.
+# -4- using BaitFilter to check the hybridization with multiple genomic targets; using BLAST to check interbait hybrization; using PrimerBLAST to check self-complementarity
+# -5- bait quality control using baitstools to check the metling temperature and GC content
+
+
+#------------------------------------------------------------------
+# ----------------- START_HERE: 0, prepare env --------------------
+
+mkdir on_pangenome
+mv *.png on_pangenome
+mv *.txt on_pangenome
+mv seq-seq-pan* on_pangenome/
+mv snippy* on_pangenome
+mv variants* on_pangenome
+mv raxml-ng* on_pangenome
+mv fasttree* on_pangenome
+mkdir snippy
+#mv fastq fastq_DEL
+#find . -name "*_1.fastq"
+
+# #update "reference": "gamola2/ALL__.fa.gb" in bengal-bay-0.1.json
+# prepare the snakefile-env and update all bengal-bay-0.1.json ./
+ln -s /home/jhuang/Tools/ST772/Snakefile Snakefile
+ln -s /home/jhuang/Tools/ST772/db/ db
+ln -s /home/jhuang/Tools/ST772/cluster.json cluster.json
+ln -s /home/jhuang/Tools/ST772/local local
+# cp /home/jhuang/Tools/ST772/bengal-bay-0.1.json ./
+for sample in HD04 HD33 HD05 HD104    HD12 HD15 HD17 HD21    HD25 HD26 HD27 HD29    HD31 HD39 HD40 HD43    HD47 HD59    HD66 HD69 HD75 HD99 HD46; do
+for sample in HD104_deeper HD29_deeper; do
+for sample in ALL; do
+  cp /home/jhuang/Tools/ST772/bengal-bay-0.1.json ${sample}/
+  sed -i -e "s/HD04___.fa.gb/${sample}___.fa.gb/g" ${sample}/bengal-bay-0.1.json
+done
+#  "snippy": {
+#    "cpu": 10,
+#    "mincov": 10,
+#    "minfrac": 0.9,
+#    "reference": "gamola2/HD05___.fa.gb",
+#    "bwaopt": "",
+#    "mapqual": 60,
+#    "other": ""
+#  },
+
+
+
+
+#-----------------------------------------------------------
+# ----------------- 1, prepare raw_data --------------------
+# representative (23) + non_clonal (62)
+# for sample in HD21-1 HD04-01 HD5-1 HD66-1 HD104-2 HD12-01 HD15-01 HD17-01 HD25-1 HD26-1 HD27-2 HD29-1 HD31-1 HD33-1 HD39-1 HD40-1 HD43-01 HD46-1 HD47-1 HD59-01 HD69-1 HD75-1 HD99-1 HD66N1 HD66N2 HD66N5 HD66N8 HD69N1 HD69N2 HD69N4 HD69N5 HD104N1 HD104N10 HD12N2 HD12N3 HD12N4 HD15N1 HD15N5 HD15N6 HD15N7 HD15N8 HD21N1 HD21N9 HD25N1 HD25N15 HD25N3 HD25N9 HD26N2 HD26N5 HD27N4 HD31N1 HD31N3 HD33N1 HD33N12 HD33N2 HD33N28 HD33N3 HD33N4 HD39N1 HD39N2 HD39N4 HD40N1 HD40N3 HD43N1 HD43N12 HD43N14 HD43N2 HD43N3 HD43N5 HD46N1 HD47N1 HD47N2 HD47N3 HD4N10 HD4N3 HD4N4 HD59N1 HD59N12 HD59N3 HD75N1 HD75N4 HD75N5 HD75N6 HD99N1 HD99N2; do
+# mv raw_data_remaining/${sample}_R1.fastq.gz raw_data
+# mv raw_data_remaining/${sample}_R2.fastq.gz raw_data
+# done
+
+
+for sample in HD04-01 HD04-02 HD04-03 HD04-04 HD04-05  HD04-06 HD04-07 HD04-08 HD04-09 HD04-10  HD4N2 HD4N6 HD4N7 HD4N8 HD4N12 HD4N15 4N11 4N14  HD4N01; do  #19
+for sample in HD33-8 HD33-4 HD33-6 HD33-3 HD33-10 HD33-7 HD33-5 HD33-1 HD33-2 HD33-9  HD33N22 HD33N23; do  #CHANGED  -HD33N28  #12
+for sample in HD5-10 HD5-6 HD5-8 HD5-7 HD5-3 HD5-9 HD5-1 HD5-5 HD5-2 HD5-4; do  #10
+for sample in HD104-2  HD104-5  HD104-6  HD104-9  HD104-13  HD104-14  HD104-15  HD104-16  HD104-17  HD104-18  HD104-19; do  #11
+for sample in HD12-10 HD12-07 HD12-04 HD12-03 HD12-09 HD12-08 HD12-01 HD12-02 HD12-06 HD12-05; do   #10
+for sample in HD15-05 HD15-03 HD15-01 HD15-09 HD15-04 HD15-06 HD15-08 HD15-07 HD15-02; do  #9
+for sample in HD17-06 HD17-05 HD17-01 HD17-07 HD17-02 HD17-03 HD17-04 HD17-08 HD17-09; do  #9
+for sample in HD21-1 HD21-3 HD21-7 HD21-9 HD21-6 HD21-2 HD21-5 HD21-8 HD21-4 HD21-10   21N12 21N7 HD21N4  21N5  21N13 HD21N14 21N8 ; do  #17
+for sample in HD25-10 HD25-7 HD25-8 HD25-12 HD25-4 HD25-6 HD25-3 HD25-5 HD25-9 HD25-1 HD25-11 HD25-2; do  #12
+for sample in HD26N4 HD26-9 HD26-2 HD26-1 HD26N1 HD26-3 HD26-8 HD26-4 HD26-5 HD26N3 HD26-6 HD26-10 HD26-7; do  #13
+for sample in HD27-2 HD27-3 HD27N1; do          #3 
+for sample in HD31-1 HD31-2 HD31-3 HD31-4 HD31-5; do  #5   
+for sample in HD39-1 HD39-2 HD39-8 HD39-9 HD39-3 HD39-10 HD39-7 HD39-4 HD39-6 HD39-5; do    #10
+for sample in HD40-2 HD40-5 HD40-3 HD40-1; do       #4
+for sample in HD43-09 HD43-07 HD43-01 HD43-05 HD43-06 HD43-03 HD43-08 HD43-02 HD43-10; do    #empty_HD43-04  #9
+for sample in HD46-9 HD46-2 HD46-6 HD46-8 HD46-5 HD46-7 HD46-1 HD46-4 HD46-3 HD46-10; do  #10
+for sample in HD47-3 HD47-5 HD47-1 HD47-4; do    #4
+for sample in HD59-08 HD59-01 HD59-10 HD59-02 HD59-03 HD59-04 HD59-06 HD59-07 HD59-05 HD59-09 HD59N26; do  #11
+for sample in HD66-2 HD66-3 HD66-7 HD66-6 HD66-9 HD66-5 HD66-1 HD66-10 HD66-8 HD66-4; do   #10
+for sample in HD69-2 HD69-4 HD69-1 HD69-3; do                        #4
+for sample in HD75-9 HD75-5 HD75-10 HD75-6 HD75-1 HD75-8 HD75-2 HD75-4 HD75-7 HD75-3; do  #10
+for sample in HD99-2 HD99-3 HD99-4 HD99-1; do      #4
+for sample in HD29-1  HD29-2  HD29-3  HD29-4  HD29-5  HD29-6  HD29-7  HD29-8  HD29-9  HD29-10  HD29N4  HD29N5  HD29N6  HD29N7  HD29N8  HD29N9  HD29N10; do  #17
+  ln -s ../../HD29_deeper/raw_data/${sample}_R1.fastq.gz ${sample}_R1.fastq.gz
+  ln -s ../../HD29_deeper/raw_data/${sample}_R2.fastq.gz ${sample}_R2.fastq.gz
+done
+
+# 23 infection + 30 clonal
+for sample in HD21-1 HD04-01 HD5-1 HD66-1 HD104-2 HD12-01 HD15-01 HD17-01 HD25-1 HD26-1 HD27-2 HD29-1 HD31-1 HD33-1 HD39-1 HD40-1 HD43-01 HD46-1 HD47-1 HD59-01 HD69-1 HD75-1 HD99-1 HD29N6 HD33N22 4N14 HD4N01 21N8 4N11 HD4N2 HD26N1 HD26N4 HD4N6 HD4N15 HD33N23 HD59N26 HD27N1 21N5 21N13 HD21N4 HD29N7 HD21N14 21N12 HD29N10 HD4N7 21N7 HD4N12 HD29N9 HD29N5 HD29N8 HD29N4 HD26N3 HD4N8; do
+
+# all (300?)
+for sample in HD04-01 HD04-02 HD04-03 HD04-04 HD04-05  HD04-06 HD04-07 HD04-08 HD04-09 HD04-10  HD4N2 HD4N6 HD4N7 HD4N8 HD4N12 HD4N15 4N11 4N14  HD4N01    HD33-8 HD33-4 HD33-6 HD33-3 HD33-10 HD33-7 HD33-5 HD33-1 HD33-2 HD33-9  HD33N22 HD33N23    HD5-10 HD5-6 HD5-8 HD5-7 HD5-3 HD5-9 HD5-1 HD5-5 HD5-2 HD5-4    HD104-2  HD104-5  HD104-6  HD104-9  HD104-13  HD104-14  HD104-15  HD104-16  HD104-17  HD104-18  HD104-19    HD12-10 HD12-07 HD12-04 HD12-03 HD12-09 HD12-08 HD12-01 HD12-02 HD12-06 HD12-05    HD15-05 HD15-03 HD15-01 HD15-09 HD15-04 HD15-06 HD15-08 HD15-07 HD15-02    HD17-06 HD17-05 HD17-01 HD17-07 HD17-02 HD17-03 HD17-04 HD17-08 HD17-09    HD21-1 HD21-3 HD21-7 HD21-9 HD21-6 HD21-2 HD21-5 HD21-8 HD21-4 HD21-10   21N12 21N7 HD21N4  21N5  21N13 HD21N14 21N8    HD25-10 HD25-7 HD25-8 HD25-12 HD25-4 HD25-6 HD25-3 HD25-5 HD25-9 HD25-1 HD25-11 HD25-2    HD26N4 HD26-9 HD26-2 HD26-1 HD26N1 HD26-3 HD26-8 HD26-4 HD26-5 HD26N3 HD26-6 HD26-10 HD26-7    HD27-2 HD27-3 HD27N1              HD31-1 HD31-2 HD31-3 HD31-4 HD31-5    HD39-1 HD39-2 HD39-8 HD39-9 HD39-3 HD39-10 HD39-7 HD39-4 HD39-6 HD39-5    HD40-2 HD40-5 HD40-3 HD40-1    HD43-09 HD43-07 HD43-01 HD43-05 HD43-06 HD43-03 HD43-08 HD43-02 HD43-10    HD46-9 HD46-2 HD46-6 HD46-8 HD46-5 HD46-7 HD46-1 HD46-4 HD46-3 HD46-10    HD47-3 HD47-5 HD47-1 HD47-4    HD59-08 HD59-01 HD59-10 HD59-02 HD59-03 HD59-04 HD59-06 HD59-07 HD59-05 HD59-09 HD59N26    HD66-2 HD66-3 HD66-7 HD66-6 HD66-9 HD66-5 HD66-1 HD66-10 HD66-8 HD66-4    HD69-2 HD69-4 HD69-1 HD69-3    HD75-9 HD75-5 HD75-10 HD75-6 HD75-1 HD75-8 HD75-2 HD75-4 HD75-7 HD75-3    HD99-2 HD99-3 HD99-4 HD99-1    HD29-1  HD29-2  HD29-3  HD29-4  HD29-5  HD29-6  HD29-7  HD29-8  HD29-9  HD29-10  HD29N4  HD29N5  HD29N6  HD29N7  HD29N8  HD29N9  HD29N10; do
+
+
+
+
+
+
+#-----------------------------------------------------------------------------------------------------------------------------
+# ----------------- 1.2, generating __.fa.gb and ___.fa.gb (Optional: using gb from database, e.g. RP62A.gb ------------------
+## -- preparing gene_models from roary_clonal
+#"HD29-1","HD29-10","HD29-2","HD29-3","HD29-4","HD29-5","HD29-6","HD29-7","HD29-8","HD29-9","HD29N10","HD29N4","HD29N5","HD29N6","HD29N7","HD29N8","HD29N9"
+#"HD104-13","HD104-14","HD104-15","HD104-16","HD104-17","HD104-18","HD104-19","HD104-2","HD104-5","HD104-6","HD104-9"
+for sample in HD29_deeper HD104_deeper; do
+    cd ${sample}/roary_clonal
+    echo ">${sample}" > ${sample}.fa;
+    merge_seq.py pan_genome_reference.fa >> ${sample}.fa;
+    format_fasta_header.py pan_genome_reference.fa > pan_genome_reference_.fa
+    samtools faidx pan_genome_reference_.fa
+    bioawk -c fastx '{ print $name, length($seq) }' < pan_genome_reference_.fa > length.txt 
+    generate_gene_model.py length.txt > ../../GAMOLA2/Results/gene_models/${sample}.fa.combined;
+    cp ${sample}.fa ../../GAMOLA2/Input_sequences
+    cd ../..
+done
+
+
+
+./Gamola.pl
+# ERROR if no complete COG_records at the end, because we have the wrong start..end positons in COG_match, restart GAMOLA2.pl
+#Error parsing COG2014 results for file HD04.fa
+#Could not parse the COG2014 code from entry YP_002559933    COG2014: COG5604; Class: ,                                                               ; Genome: Macrococcus_caseolyticus_JCSC5402                  ; Annotation:  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Length=2045  Score=1196  Expect=0.0.
+#SOLUTION:
+#under ~/DATA/Data_Anna12_HAPDICS_final/GAMOLA2/
+for sample in HD04 HD33 HD05 HD104    HD12 HD15 HD17 HD21    HD25 HD26 HD27 HD29    HD31 HD39 HD40 HD43    HD47 HD59    HD66 HD69 HD75 HD99 HD46   ALL85; do
+for sample in HD29_deeper HD104_deeper; do
+sed -i -e 's/Class: ,/Class: None, None/g' Results/COG_results/${sample}.fa_COG_*
+done
+./Gamola.pl
+
+
+
+
+
+
+
+# # generate xx__.fa.gb using GAMOLA2, see GAMOLA2_manual 
+for sample in HD33 HD04 HD05 HD104    HD12 HD15 HD17 HD21    HD25 HD26 HD27 HD29    HD31 HD39 HD40 HD43    HD47 HD59    HD66 HD69 HD75 HD99 HD46   ALL; do
+for sample in ALL HD04 HD05 HD104    HD12 HD15 HD17 HD21    HD25 HD26 HD27 HD29    HD31 HD33; do
+for sample in HD39 HD40 HD43    HD46 HD47 HD59    HD66 HD69 HD75 HD99; do
+for sample in HD29_deeper HD104_deeper; do
+mkdir ${sample}/gamola2;
+cp GAMOLA2/Consolidated_results/${sample}.fa/${sample}.fa.gb ./${sample}/gamola2;
+cd ${sample}/gamola2;
+awk '{print $0 "ORIGIN"> "file" NR}' RS='ORIGIN' ${sample}.fa.gb
+sed -i 's/</ /g' file2
+sed -i 's/^ //g' file2
+cat file1 file2 > ${sample}_.fa.gb
+#update_locustag.py ${sample}_.fa.gb ../seq-seq-pan_prokka/ssp_cons_.fa.fai > ${sample}__.fa.gb
+# WARNING: the step destroyed the manually prepared __.fa.gb (without empty line and last 'ORIGIN'!
+#format_fasta_header.py pan_genome_reference.fa > pan_genome_reference_.fa
+#PERFORMED already before: samtools faidx ../roary_clonal/pan_genome_reference_.fa
+update_locustag.py ${sample}_.fa.gb ../roary_clonal/pan_genome_reference_.fa.fai > ${sample}__.fa.gb
+#remove the empty_line and last 'ORIGIN'
+sed -i '/^$/d' ${sample}__.fa.gb
+sed -i '$d' ${sample}__.fa.gb
+cd ../..
+done
+
+
+#${sample}___.fa.gb are the input genbank file for SPANDx and snippy variant calling
+python ~/Scripts/parseGenbank_extractGenes.py -g ${sample}__.fa.gb -o ${sample}___.fa.gb
+
+
+
+
+#-----------------------------------------------------------------------
+# ----------------- 2, first snakmeke try (bengal3_ac3) ----------------
+snakemake --printshellcmds
+
+
+
+
+
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------------
+# ----------------- 3, snippy (bengal2); input: --R1 trimmed/${sample}_1_sequence.fastq.gz --R2 trimmed/${sample}_2_sequence.fastq.gz ----------------
+#roary_clonal
+conda install -c bioconda samtools=1.5
+#HD05 HD12 HD15 HD17 HD21 HD25 HD26 HD27 HD31 HD33 HD39 HD40 HD43 HD46 HD47 HD59 HD66 HD69 HD75 HD99 HD29 HD104
+#!! snippy --> manually running snippy using bengal2
+
+# infection = (286-30(clonal)-62(nonclonal)=194)
+# infection+clonal = 286-62=224
+#19+10+11+10+9+9+17+12 + 13+3+5+12+10+4+9+10 + 4+11+10+4+10+4+17 =223
+#23 + 30 = 53
+
+# using HD04 as the snpEff
+cd HD04
+rm -rf snippy
+mkdir snippy
+for sample in HD04-01 HD04-02 HD04-03 HD04-04 HD04-05  HD04-06 HD04-07 HD04-08 HD04-09 HD04-10  HD4N2 HD4N6 HD4N7 HD4N8 HD4N12 HD4N15 4N11 4N14  HD4N01; do  #19
+LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH && snippy --force --outdir snippy/${sample} --ref gamola2/HD04___.fa.gb --R1 trimmed/${sample}_trimmed_P_1.fastq.gz --R2 trimmed/${sample}_trimmed_P_2.fastq.gz --cpus 10 --mincov 10 --minfrac 0.9 --mapqual 60 --prefix ${sample}  && gzip -d snippy/${sample}/${sample}.depth.gz
+done
+cd ..
+
+for sample in HD5-10 HD5-6 HD5-8 HD5-7 HD5-3 HD5-9 HD5-1 HD5-5 HD5-2 HD5-4; do  #10 --ref gamola2/HD05___.fa.gb
+for sample in HD104-2  HD104-5  HD104-6  HD104-9  HD104-13  HD104-14  HD104-15  HD104-16  HD104-17  HD104-18  HD104-19; do  #11 --ref gamola2/HD104___.fa.gb
+for sample in HD12-10 HD12-07 HD12-04 HD12-03 HD12-09 HD12-08 HD12-01 HD12-02 HD12-06 HD12-05; do   #10 --ref gamola2/HD12___.fa.gb
+for sample in HD15-05 HD15-03 HD15-01 HD15-09 HD15-04 HD15-06 HD15-08 HD15-07 HD15-02; do  #9 --ref gamola2/HD15___.fa.gb
+for sample in HD17-06 HD17-05 HD17-01 HD17-07 HD17-02 HD17-03 HD17-04 HD17-08 HD17-09; do  #9 --ref gamola2/HD17___.fa.gb
+for sample in HD21-1 HD21-3 HD21-7 HD21-9 HD21-6 HD21-2 HD21-5 HD21-8 HD21-4 HD21-10   21N12 21N7 HD21N4  21N5  21N13 HD21N14 21N8 ; do  #17 --ref gamola2/HD21___.fa.gb
+for sample in HD25-10 HD25-7 HD25-8 HD25-12 HD25-4 HD25-6 HD25-3 HD25-5 HD25-9 HD25-1 HD25-11 HD25-2; do  #12 --ref gamola2/HD25___.fa.gb
+for sample in HD26N4 HD26-9 HD26-2 HD26-1 HD26N1 HD26-3 HD26-8 HD26-4 HD26-5 HD26N3 HD26-6 HD26-10 HD26-7; do  #13 --ref gamola2/HD26___.fa.gb
+for sample in HD27-2 HD27-3 HD27N1; do                                                                          #3 --ref gamola2/HD27___.fa.gb
+for sample in HD31-1 HD31-2 HD31-3 HD31-4 HD31-5; do                                                           #5 --ref gamola2/HD31___.fa.gb
+for sample in HD33-8 HD33-4 HD33-6 HD33-3 HD33-10 HD33-7 HD33-5 HD33-1 HD33-2 HD33-9  HD33N22 HD33N23; do  #CHANGED  -HD33N28  #12 --ref gamola2/HD33___.fa.gb
+for sample in HD39-1 HD39-2 HD39-8 HD39-9 HD39-3 HD39-10 HD39-7 HD39-4 HD39-6 HD39-5; do    #10 --ref gamola2/HD39___.fa.gb
+for sample in HD40-2 HD40-5 HD40-3 HD40-1; do       #4 --ref gamola2/HD40___.fa.gb
+for sample in HD43-09 HD43-07 HD43-01 HD43-05 HD43-06 HD43-03 HD43-08 HD43-02 HD43-10; do    #empty_HD43-04  #9 --ref gamola2/HD43___.fa.gb
+for sample in HD46-9 HD46-2 HD46-6 HD46-8 HD46-5 HD46-7 HD46-1 HD46-4 HD46-3 HD46-10; do  #10 --ref gamola2/HD46___.fa.gb
+for sample in HD47-3 HD47-5 HD47-1 HD47-4; do    #4 --ref gamola2/HD47___.fa.gb
+for sample in HD59-08 HD59-01 HD59-10 HD59-02 HD59-03 HD59-04 HD59-06 HD59-07 HD59-05 HD59-09 HD59N26; do  #11 --ref gamola2/HD59___.fa.gb
+for sample in HD66-2 HD66-3 HD66-7 HD66-6 HD66-9 HD66-5 HD66-1 HD66-10 HD66-8 HD66-4; do   #10 --ref gamola2/HD66___.fa.gb
+for sample in HD69-2 HD69-4 HD69-1 HD69-3; do                        #4 --ref gamola2/HD69___.fa.gb
+for sample in HD75-9 HD75-5 HD75-10 HD75-6 HD75-1 HD75-8 HD75-2 HD75-4 HD75-7 HD75-3; do  #10 --ref gamola2/HD75___.fa.gb
+for sample in HD99-2 HD99-3 HD99-4 HD99-1; do      #4 --ref gamola2/HD99___.fa.gb
+for sample in HD29-1  HD29-2  HD29-3  HD29-4  HD29-5  HD29-6  HD29-7  HD29-8  HD29-9  HD29-10  HD29N4  HD29N5  HD29N6  HD29N7  HD29N8  HD29N9  HD29N10; do  #17 --ref gamola2/HD29___.fa.gb
+for sample in HD29-1  HD29-2  HD29-3  HD29-4  HD29-5  HD29-6  HD29-7  HD29-8  HD29-9  HD29-10  HD29N4  HD29N5  HD29N6  HD29N7  HD29N8  HD29N9  HD29N10; do  #17 --ref gamola2/HD29_deeper___.fa.gb
+for sample in HD104-2  HD104-5  HD104-6  HD104-9  HD104-13  HD104-14  HD104-15  HD104-16  HD104-17  HD104-18  HD104-19; do  #11 --ref gamola2/HD104_deeper___.fa.gb
+
+
+#---- for ALL (infection + non-clonal) ---- 
+#HD4N1': No such file or directory
+#mv: cannot stat 'snippy_all/HD12-02': No such file or directory
+cd ALL
+rm -rf snippy; mkdir snippy
+# TODO: call remaining isolates!
+for sample in HD21-1 HD04-01 HD5-1 HD66-1 HD104-2 HD12-01 HD15-01 HD17-01 HD25-1 HD26-1 HD27-2 HD29-1 HD31-1 HD33-1 HD39-1 HD40-1 HD43-01 HD46-1 HD47-1 HD59-01 HD69-1 HD75-1 HD99-1 HD66N1     HD66N2 HD66N5 HD66N8 HD69N1 HD69N2 HD69N4 HD69N5 HD104N1 HD104N10 HD12N2 HD12N3 HD12N4 HD15N1 HD15N5 HD15N6 HD15N7 HD15N8 HD21N1 HD21N9 HD25N1 HD25N15 HD25N3 HD25N9 HD26N2 HD26N5 HD27N4 HD31N1 HD31N3 HD33N1 HD33N12 HD33N2 HD33N28 HD33N3 HD33N4 HD39N1 HD39N2 HD39N4 HD40N1 HD40N3 HD43N1 HD43N12 HD43N14 HD43N2 HD43N3 HD43N5 HD46N1 HD47N1 HD47N2 HD47N3 HD4N10 HD4N3 HD4N4 HD59N1 HD59N12 HD59N3 HD75N1 HD75N4 HD75N5 HD75N6 HD99N1 HD99N2; do
+for sample in HD04-01 HD104-6 HD104N10 HD104N1 HD12-01 HD12N2 HD12N3 HD12N4 HD15-01 HD15N1 HD15N5 HD25N9 HD26-1 HD26N2 HD26N5 HD29-1 HD31-1 HD31N1 HD31N3 HD33-1 HD33N1 HD33N28 HD33N2 HD33N3 HD33N4 HD39-1 HD39N1 HD47-1 HD47N1 HD47N2 HD47N3 HD4N10 HD4N3 HD4N4 HD5-1 HD59-01 HD59N12 HD59N1 HD59N3 HD66-1 HD39N4 HD40-1 HD40N3 HD43-01 HD43N12 HD43N14 HD43N1 HD43N2 HD43N3 HD43N5 HD46-1 HD25N3 HD39N2 HD46N1 HD66N1 HD66N8 HD69N1 HD69N2 HD69N4 HD69N5 HD75-1 HD75N1 HD75N4 HD75N5 HD75N6 HD99-1 HD99N1 HD99N2 HD15N6 HD15N7 HD15N8 HD17-01 HD21-1 HD21N1 HD21N9 HD25-1 HD25N15 HD25N1; do
+LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH && snippy --force --outdir snippy/${sample} --ref BPH0662.gb --R1 trimmed/${sample}_trimmed_P_1.fastq --R2 trimmed/${sample}_trimmed_P_2.fastq --cpus 10 --mincov 10 --minfrac 0.9 --mapqual 60 --prefix ${sample}  && gzip -d snippy/${sample}/${sample}.depth.gz
+done
+cd ..
+
+
+
+
+#https://github.com/tseemann/snippy/issues/85
+# Snippy only uses uniquely mapping reads with mapping quality 60 (this means unique in BWA MEM).
+# It also only uses bases with Q20 or higher (1 in 100 error).
+# So your alignment may show more bases than actually took part in the SNP call.
+# You can change them using these options:
+#   --mapqual [n.n]   Minimum mapping quality to allow (default '60')
+#   --mincov [N]      Minimum coverage of variant site (default '10')
+#   --minfrac [n.n]   Minumum proportion for variant evidence (default '0.9')
+
+
+
+
+
+#---------------------------------------------------
+# ------------ 4, snippy_core (bengal2) ------------
+for sample in HD04 HD33 HD05 HD104    HD12 HD15 HD17 HD21    HD25 HD26 HD27 HD29    HD31 HD39 HD40 HD43    HD47 HD59    HD66 HD69 HD75 HD99 HD46   ALL85; do
+# TODO: mv roary roary_85; mv roary_ roary; mv roary_clonal_ roary_clonal;
+
+for sample in      HD33 HD05 HD104         HD15                   HD26 HD27 HD29    HD31 HD39 HD40 HD43           HD66 HD69 HD75 HD99           ; do
+for sample in HD04 HD12 HD17 HD21 HD25 HD46 HD47 HD59 ALL; do
+for sample in HD12; do
+for sample in HD04 HD33 HD05 HD104    HD12 HD15 HD17 HD21    HD25 HD26 HD27 HD29    HD31 HD39 HD40 HD43    HD47 HD59    HD66 HD69 HD75 HD99 HD46   ALL85; do
+for sample in ALL; do
+cd ${sample}
+#mv variants on_pangenome/variants_on__gb
+rm -rf variants; mkdir variants;
+snippy-core --prefix snippy.core snippy/* && mv snippy.core.* variants/  #END HERE IF no spandix results and include the reference, we can use the snippy.core.aln and adapts the reference name! --> goto -8-! 
+
+#DEL the Reference in snippy.core.aln
+# NOTE alignment for HD59 and HD31, bootstrap=100, without+G
+cp variants/snippy.core.full.aln variants/snippy.core.full.with_ref.aln
+cp variants/snippy.core.aln variants/snippy.core.with_ref.aln
+awk '{ if ((NR>1)&&($0~/^>/)) { printf("\n%s", $0); } else if (NR==1) { printf("%s", $0); } else { printf("\t%s", $0); } }' variants/snippy.core.full.with_ref.aln | grep -vFf ../patterns.txt - | tr "\t" "\n" > variants/snippy.core.full.aln
+awk '{ if ((NR>1)&&($0~/^>/)) { printf("\n%s", $0); } else if (NR==1) { printf("%s", $0); } else { printf("\t%s", $0); } }' variants/snippy.core.with_ref.aln | grep -vFf ../patterns.txt - | tr "\t" "\n" > variants/snippy.core.aln  # -->END HERE IF no spandix results, we can use the snippy.core.aln and snippy.core.tab!!
+
+
+# # direct using roary/core_gene_alignment.aln drawing phylogeny tree.
+# snp-sites variants/snippy.core.aln -o variants/snippy.core_.aln
+# mv variants/snippy.core_.aln variants/snippy.core.aln # NOTE that snippy.core.aln not used!
+
+
+
+
+#sed -i -e 's/"variants_calling": true,/"variants_calling": false,/g' bengal-bay-0.1.json
+#sed -i -e 's/"phylogeny_fasttree": false,/"phylogeny_fasttree": true,/g' bengal-bay-0.1.json
+#sed -i -e 's/"phylogeny_raxml": false,/"phylogeny_raxml": true,/g' bengal-bay-0.1.json
+#sed -i -e 's/"pangenome": false,/"pangenome": true,/g' bengal-bay-0.1.json
+#snakemake --printshellcmds
+##113444 but got 113533 in sequence HD59N02
+
+#DEL the Reference in snippy.core.tab
+cd variants
+cut snippy.core.tab -d$'\t' -f1-2 > f1-2
+cut snippy.core.tab -d$'\t' -f4- > f4-
+paste -d$'\t' f1-2 f4- > snippy.core.tab_
+# manually performing the following commands, and preparing INPUT_FILE[variants_clonal/snippy.core.tab__] for variants_clonal.xls
+# !!!!!!!!!!!!!!!!!!!!!!!NOTE that modify the following script with startswith "HD04"
+check_oneletterline.rb snippy.core.tab_ $(grep ">" snippy.core.aln | wc -l) ${sample} > snippy.core.tab__
+
+
+
+
+
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------
+# ------------ 5, SPANDx variant calling (host-env); input: --R1 spandx/${sample}_1_sequence.fastq.gz --R2 spandx/${sample}_2_sequence.fastq.gz ------------
+for sample in HD04-01 HD04-02 HD04-03 HD04-04 HD04-05  HD04-06 HD04-07 HD04-08 HD04-09 HD04-10  HD4N2 HD4N6 HD4N7 HD4N8 HD4N12 HD4N15 4N11 4N14  HD4N01; do  #19
+for sample in HD33-8 HD33-4 HD33-6 HD33-3 HD33-10 HD33-7 HD33-5 HD33-1 HD33-2 HD33-9  HD33N22 HD33N23; do  #CHANGED  -HD33N28  #12
+for sample in HD5-10 HD5-6 HD5-8 HD5-7 HD5-3 HD5-9 HD5-1 HD5-5 HD5-2 HD5-4; do  #10
+for sample in HD104-2  HD104-5  HD104-6  HD104-9  HD104-13  HD104-14  HD104-15  HD104-16  HD104-17  HD104-18  HD104-19; do  #11
+for sample in HD12-10 HD12-07 HD12-04 HD12-03 HD12-09 HD12-08 HD12-01 HD12-02 HD12-06 HD12-05; do   #10
+for sample in HD15-05 HD15-03 HD15-01 HD15-09 HD15-04 HD15-06 HD15-08 HD15-07 HD15-02; do  #9
+for sample in HD17-06 HD17-05 HD17-01 HD17-07 HD17-02 HD17-03 HD17-04 HD17-08 HD17-09; do  #9
+for sample in HD21-1 HD21-3 HD21-7 HD21-9 HD21-6 HD21-2 HD21-5 HD21-8 HD21-4 HD21-10   21N12 21N7 HD21N4  21N5  21N13 HD21N14 21N8 ; do  #17
+for sample in HD25-10 HD25-7 HD25-8 HD25-12 HD25-4 HD25-6 HD25-3 HD25-5 HD25-9 HD25-1 HD25-11 HD25-2; do  #12
+for sample in HD26N4 HD26-9 HD26-2 HD26-1 HD26N1 HD26-3 HD26-8 HD26-4 HD26-5 HD26N3 HD26-6 HD26-10 HD26-7; do  #13
+for sample in HD27-2 HD27-3 HD27N1; do          #3 
+for sample in HD31-1 HD31-2 HD31-3 HD31-4 HD31-5; do  #5   
+for sample in HD39-1 HD39-2 HD39-8 HD39-9 HD39-3 HD39-10 HD39-7 HD39-4 HD39-6 HD39-5; do    #10
+for sample in HD40-2 HD40-5 HD40-3 HD40-1; do       #4
+for sample in HD43-09 HD43-07 HD43-01 HD43-05 HD43-06 HD43-03 HD43-08 HD43-02 HD43-10; do    #empty_HD43-04  #9
+for sample in HD46-9 HD46-2 HD46-6 HD46-8 HD46-5 HD46-7 HD46-1 HD46-4 HD46-3 HD46-10; do  #10
+for sample in HD47-3 HD47-5 HD47-1 HD47-4; do    #4
+for sample in HD59-08 HD59-01 HD59-10 HD59-02 HD59-03 HD59-04 HD59-06 HD59-07 HD59-05 HD59-09 HD59N26; do  #11
+for sample in HD66-2 HD66-3 HD66-7 HD66-6 HD66-9 HD66-5 HD66-1 HD66-10 HD66-8 HD66-4; do   #10
+for sample in HD69-2 HD69-4 HD69-1 HD69-3; do                        #4
+for sample in HD75-9 HD75-5 HD75-10 HD75-6 HD75-1 HD75-8 HD75-2 HD75-4 HD75-7 HD75-3; do  #10
+for sample in HD99-2 HD99-3 HD99-4 HD99-1; do      #4
+for sample in HD29-1  HD29-2  HD29-3  HD29-4  HD29-5  HD29-6  HD29-7  HD29-8  HD29-9  HD29-10  HD29N4  HD29N5  HD29N6  HD29N7  HD29N8  HD29N9  HD29N10; do  #17
+  ln -s ../../HD29/trimmed/${sample}_trimmed_P_1.fastq.gz ${sample}_1_sequence.fastq.gz
+  ln -s ../../HD29/trimmed/${sample}_trimmed_P_2.fastq.gz ${sample}_2_sequence.fastq.gz
+done
+for sample in HD21-1 HD04-01 HD5-1 HD66-1 HD104-2 HD12-01 HD15-01 HD17-01 HD25-1 HD26-1 HD27-2 HD29-1 HD31-1 HD33-1 HD39-1 HD40-1 HD43-01 HD46-1 HD47-1 HD59-01 HD69-1 HD75-1 HD99-1 HD66N1     HD66N2 HD66N5 HD66N8 HD69N1 HD69N2 HD69N4 HD69N5 HD104N1 HD104N10 HD12N2 HD12N3 HD12N4 HD15N1 HD15N5 HD15N6 HD15N7 HD15N8 HD21N1 HD21N9 HD25N1 HD25N15 HD25N3 HD25N9 HD26N2 HD26N5 HD27N4 HD31N1 HD31N3 HD33N1 HD33N12 HD33N2 HD33N28 HD33N3 HD33N4 HD39N1 HD39N2 HD39N4 HD40N1 HD40N3 HD43N1 HD43N12 HD43N14 HD43N2 HD43N3 HD43N5 HD46N1 HD47N1 HD47N2 HD47N3 HD4N10 HD4N3 HD4N4 HD59N1 HD59N12 HD59N3 HD75N1 HD75N4 HD75N5 HD75N6 HD99N1 HD99N2; do
+  #ln -s ../trimmed/${sample}_trimmed_P_1.fastq ${sample}_1_sequence.fastq
+  #ln -s ../trimmed/${sample}_trimmed_P_2.fastq ${sample}_2_sequence.fastq
+  cp ../trimmed/${sample}_trimmed_P_1.fastq ${sample}_1_sequence.fastq
+  cp ../trimmed/${sample}_trimmed_P_2.fastq ${sample}_2_sequence.fastq
+done
+
+
+#git clone https://github.com/dsarov/SPANDx.git
+#chmod +x ./*
+for sample in HD04 HD33 HD05 HD104    HD12 HD15 HD17 HD21    HD25 HD26 HD27 HD29    HD31 HD39 HD40 HD43    HD47 HD59    HD66 HD69 HD75 HD99 HD46   ALL85; do
+for sample in HD29_deeper HD104_deeper; do
+gzip ${sample}/trimmed/*.fastq
+done
+
+
+
+# using SPANDx calling variants, require 4 files
+#    - reads1_S*.fastq.gz (e.g. reads1_S1.fastq.gz S1_1_sequence.fastq.gz)
+#    - reads2_S*.fastq.gz (e.g. reads2_S1.fastq.gz S1_2_sequence.fastq.gz)
+#    - reference.fasta
+#    - reference.genbank
+
+# generate snpEff databases
+# add record at the end of snpEff.config
+#!!!! vim /home/jhuang/Tools/SPANDx_v3.2/snpEff/snpEff.config
+for sample in HD04 HD33 HD05 HD104    HD12 HD15 HD17 HD21 HD25     HD26 HD27 HD29    HD31 HD39 HD40 HD43    HD47 HD59    HD66 HD69 HD75 HD99 HD46; do
+for sample in HD29_deeper HD104_deeper; do
+for sample in ALL; do
+cd ${sample};
+# add the gbk-file to snpEff list
+mkdir /home/jhuang/Tools/SPANDx_v3.2/snpEff/data/${sample}/
+cp gamola2/${sample}___.fa.gb /home/jhuang/Tools/SPANDx_v3.2/snpEff/data/${sample}/genes.gbk
+/usr/bin/java -jar -XX:+UseSerialGC -Xmx4G /home/jhuang/Tools/SPANDx_v3.2/snpEff/snpEff.jar build -genbank -v ${sample}
+# under the python2, prepare the fasta file for SPANDx
+mkdir spandx
+python ~/Scripts/parseGenbank_reformat.py -g gamola2/${sample}___.fa.gb -o spandx/${sample}.fasta -f fasta 
+cd ..
+done
+# NOTE: RENAME the header of the new generated fasta-file!
+#ERROR: HD26, HD29 --> add 'Vector_match'
+
+
+cd ALL
+cp -r trimmed spandx
+cd ..
+
+
+
+# NOTE: modify PBS_MEM to 40960mb!!!!
+#SCHEDULER=PBS and PBS_MEM=40960mb under scheduler.config
+for sample in HD04 HD33 HD05 HD104    HD12 HD15 HD17 HD21    HD25 HD26 HD27 HD29    HD31 HD39 HD40 HD43    HD47 HD59    HD66 HD69 HD75 HD99 HD46   ALL85; do
+for sample in HD29_deeper HD104_deeper; do
+for sample in ALL; do
+/home/jhuang/Tools/SPANDx_v3.2/SPANDx.sh -v ${sample} -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/${sample}/spandx/ -r ${sample} -m yes -i yes -a yes -z yes # -w 1000 since 1000 is default value
+# RENAME the header of fasta in corresponding spandx-directory
+done
+#vim HD33/spandx/Outputs/Single_sample_summary.txt
+
+
+# TODO: ONLY_USE spandx_results for phylogenetic tree -->goto8
+
+
+
+
+
+
+# #------------------------------------------------------------------------------------
+# #------------- 6, merge both SNP results from snippy and GATK (host-env) ------------
+#Snippy finds SNPs between a haploid reference genome and your NGS sequence reads. It will find both substitutions (snps) and insertions/deletions (indels).
+#Snippy-core only includes SNPs that are in ALL the samples ie. the "core" SNPs. It also breaks up compound SNPs into single SNP entries in the VCF. So core SNPs is always <= all SNPs.
+#merge SNPs from snippy and GATK.config --> ensure the good quality!
+
+cut -f1-1 -d$'\t' snippy.core.tab__ > part1__
+cut -f2- -d$'\t' snippy.core.tab__ > part2__
+paste -d'_' part1__ part2__ > parts__
+#awk '{gsub("CHR_POS", "Location");print}' parts > parts_
+
+
+#How to merge indels using snippy?
+#https://github.com/tseemann/snippy/issues/318
+#cat ../spandx/Outputs/Comparative/All_SNPs_annotated.txt ../spandx/Outputs/Comparative/All_indels_annotated.txt > All_SNPs_indels_annotated.txt
+cp ../spandx/Outputs/Comparative/All_SNPs_annotated.txt  All_SNPs_annotated.txt
+#cut -f1-1 All_SNPs_annotated.txt | sort -u > All_SNPs_annotated_.txt
+awk '{gsub("Location", "CHR_POS");print}' All_SNPs_annotated.txt > All_SNPs_annotated_.txt
+awk '{gsub("\"", "");print}' All_SNPs_annotated_.txt > All_SNPs_annotated__.txt
+#sed -i -e 's/1_/NZ_LT571449_/g' All_SNPs_annotated__.txt
+merge_snippy_GATK.py parts__ All_SNPs_annotated__.txt  merged_SNPs.tab
+
+
+# FOLLOWING ERROR!
+# cut -d'_' -f1-1 merged_SNPs.tab > merged_SNPs_f1.tab 
+# cut -d'_' -f2- merged_SNPs.tab > merged_SNPs_f2_.tab 
+# sort -n merged_SNPs_f2_.tab > merged_SNPs_f2_sorted.tab
+# paste -d$'\t' merged_SNPs_f1.tab merged_SNPs_f2_sorted.tab > merged_SNPs_.tab
+
+
+# BUG: the pipeline above has problem, if ALL < CHR
+#for ALL, the sort of two separate parts have problem. (677 SNPs)
+#CHR_POS	HD04-01	HD104-2	HD104N1	HD104N10	HD12-01	HD12N2	HD12N3	HD12N4	HD15-01	HD15N1	HD15N5	HD15N6	HD15N7	HD15N8	HD17-01	HD21-1	HD21N1	HD21N9	HD25-1	HD25N1	HD25N15	HD25N3	HD25N9	HD26-1	HD26N2	HD26N5	HD27-2	HD27N4	HD29-1	HD31-1	HD31N1	HD31N3	HD33-1	HD33N1	HD33N12	HD33N2	HD33N28	HD33N3	HD33N4	HD39-1	HD39N1	HD39N2	HD39N4	HD40-1	HD40N1	HD40N3	HD43-01	HD43N1	HD43N12	HD43N14	HD43N2	HD43N3	HD43N5	HD46-1	HD46N1	HD47-1	HD47N1	HD47N2	HD47N3	HD4N10	HD4N3	HD4N4	HD5-1	HD59-01	HD59N1	HD59N12	HD59N3	HD66-1	HD66N1	HD66N2	HD66N5	HD66N8	HD69-1	HD69N1	HD69N2	HD69N4	HD69N5	HD75-1	HD75N1	HD75N4	HD75N5	HD75N6	HD99-1	HD99N1	HD99N2	LOCUS_TAG	GENE	PRODUCT	Effect	Impact	Functional_Class	Codon_change	Amino_Acid_change	Amino_Acid_Length
+grep "CHR_POS" merged_SNPs.tab > merged_SNPs.header
+# delete the "CHR_POS" line in merged_SNPs.tab
+sed -i '/^CHR_POS/d' merged_SNPs.tab
+#sed '/^$/d' file   # delete empty lines or blank lines
+cut -d'_' -f1-1 merged_SNPs.tab > merged_SNPs_f1.tab
+cut -d'_' -f2- merged_SNPs.tab > merged_SNPs_f2_.tab
+#cut -d'_' -f1-2 merged_SNPs.tab > merged_SNPs_f1.tab
+#cut -d'_' -f3- merged_SNPs.tab > merged_SNPs_f2_.tab
+sort -n merged_SNPs_f2_.tab > merged_SNPs_f2_sorted.tab
+paste -d$'\t' merged_SNPs_f1.tab merged_SNPs_f2_sorted.tab > merged_SNPs_noheader.tab
+
+#DIRECT_ON_EXISTING for sample in ALL85; do
+#DIRECT_ON_EXISTING cd ${sample}/variants
+awk '{gsub("CHR_POS", "CHR\tPOS");print}' merged_SNPs.header > merged_SNPs_.header
+cat merged_SNPs_.header merged_SNPs_noheader.tab > merged_SNPs_.tab
+
+
+
+tab2aln.rb merged_SNPs_.tab $(grep ">" snippy.core.aln | wc -l) ${sample} > merged_SNPs.aln
+#tab2aln.rb merged_SNPs_.tab $(grep ">" snippy.core.aln | wc -l) NZ_ > merged_SNPs.aln
+#tab2aln.rb merged_SNPs_.tab $(grep ">" snippy.core.aln | wc -l) HD29 > merged_SNPs.aln
+#tab2aln.rb merged_SNPs_.tab $(grep ">" snippy.core.aln | wc -l) HD104 > merged_SNPs.aln
+# NOTE: only for ALL85 using following.
+#tab2aln.rb merged_SNPs_.tab $(grep ">" snippy.core.aln | wc -l) ALL > merged_SNPs.aln
+
+
+# recheck if novariant-SNP exists! --> They should be the same!
+snp-sites merged_SNPs.aln -o merged_SNPs_.aln
+mv merged_SNPs_.aln snippy.core.aln 
+
+cd ../..
+done
+
+
+
+
+
+#--------------------------------------------------------------------------------
+#------------- 7, add gamola2-annotation on the SNP-stubs (host-env) ------------
+# NOTE: UPDATE gamola2/${sample}__.fa.gb
+# merged_SNPs__.tab needs to be used to check if __.fa.gb correct --> a loop with the later breakpoint! However, ___.fa.gb are always correct since they don't contain COG_match.
+for sample in ALL HD04 HD05 HD104    HD12 HD15 HD17 HD21    HD25 HD26 HD27 HD29    HD31 HD33; do
+for sample in HD39 HD40 HD43    HD46 HD47 HD59    HD66 HD69 HD75 HD99; do
+for sample in HD29_deeper HD104_deeper; do
+cd ${sample}/variants;
+process_gamola_gb_HAPDICS_plus_variants.py merged_SNPs_.tab ../gamola2/${sample}__.fa.gb > merged_SNPs__.tab
+cd ../..
+done
+
+sed -i 's/737941..737421/737421..737941/g' HD12__.fa.gb
+sed -i 's/1220908..1220895/1220895..1220908/g' HD12__.fa.gb
+
+for sample in ALL ALL85; do
+cd ${sample}/variants;
+process_gamola_gb_HAPDICS_plus_variants.py merged_SNPs_.tab ../gamola2/${sample}__.fa.gb > merged_SNPs__.tab
+cd ../..
+done
+
+
+
+
+
+
+#------------------------------------------------------------------------------------
+#------------- 8, gubbins+fasttree+raxml+gubbins+pangenome (bengal3_ac3) ------------
+# NOTE: In general, we should exclude such mobile transfer regions for tree generation!!! --> TODO: add the step for tree generation after removing the mobile transfer regions!!!
+#add
+#  "fastqc": false,
+#set
+#  "recombination": true,
+#  "pangenome": true,
+#  "phylogeny_fasttree": true,
+#  "phylogeny_raxml": true,
+
+# 21 groups    
+for sample in      HD33 HD05 HD104         HD15                   HD26 HD27 HD29    HD31 HD39 HD40 HD43    HD47         HD66 HD69 HD75 HD99           ; do
+for sample in ALL; do
+#ERROR: HD27N4
+# IMPORTANT: using sed to run the scripts --> succesful. For example,
+# sed -i -e 's/for hd_dir in HD04; do/for hd_dir in HD05; do/g' run.sh
+# ./run.sh
+# sed -i -e 's/for hd_dir in HD05; do/for hd_dir in HD12; do/g' run.sh
+# ./run.sh
+# ... ...
+
+#mkdir ${sample};
+cd ${sample};
+#HD33: 374 -- 1126 --> 293
+#HD05: 50 -- 60 --> 45
+
+
+##DEBUG1: This copy of tbl2asn is more than a year old.  Please download the current version.
+#wget -N ftp://ftp.ncbi.nih.gov/toolbox/ncbi_tools/converters/by_program/tbl2asn/linux64.tbl2asn.gz
+#gunzip linux64.tbl2asn.gz
+#chmod +x linux64.tbl2asn
+#sudo mv linux64.tbl2asn /usr/local/bin/tbl2asn
+#tbl2asn --help
+##DEBUG2: deactivate mlst
+snakemake --printshellcmds
+# NOTE: phylogenetics tree should generate after excluding the significant genes.
+
+
+# commands for generating fasttree-tree.
+#mkdir fasttree
+#fasttree -gtr -nt variants/snippy.core.aln > fasttree/snippy.core.tree
+##nw_order -c n fasttree_clonal/snippy.core.tree > fasttree_clonal/snippy.core.tree_ordered
+## if roary_clonal exists, it will generate automatically a new directory roary_clonal_interger, which is not correct!
+cd ..
+done
+
+
+#--------------------------------------------------------------------
+#-- 8.1, if roary doesn't work, directly run roary under (bengal2) --
+# for example 23 infection + 62 non-clonal
+for sample in HD21-1 HD04-01 HD5-1 HD66-1 HD104-2 HD12-01 HD15-01 HD17-01 HD25-1 HD26-1 HD27-2 HD29-1 HD31-1 HD33-1 HD39-1 HD40-1 HD43-01 HD46-1 HD47-1 HD59-01 HD69-1 HD75-1 HD99-1 HD66N1 HD66N2 HD66N5 HD66N8 HD69N1 HD69N2 HD69N4 HD69N5 HD104N1 HD104N10 HD12N2 HD12N3 HD12N4 HD15N1 HD15N5 HD15N6 HD15N7 HD15N8 HD21N1 HD21N9 HD25N1 HD25N15 HD25N3 HD25N9 HD26N2 HD26N5 HD27N4 HD31N1 HD31N3 HD33N1 HD33N12 HD33N2 HD33N28 HD33N3 HD33N4 HD39N1 HD39N2 HD39N4 HD40N1 HD40N3 HD43N1 HD43N12 HD43N14 HD43N2 HD43N3 HD43N5 HD46N1 HD47N1 HD47N2 HD47N3 HD4N10 HD4N3 HD4N4 HD59N1 HD59N12 HD59N3 HD75N1 HD75N4 HD75N5 HD75N6 HD99N1 HD99N2; do
+  gunzip ${sample}_trimmed_P_1.fastq.gz
+  gunzip ${sample}_trimmed_P_2.fastq.gz
+done
+cd ALL85 
+roary -p 14 -f ./roary_80 -i 80 -cd 99 -s -e -n -v  prokka/HD66-1/HD66-1.gff prokka/HD75N5/HD75N5.gff prokka/HD4N10/HD4N10.gff prokka/HD46-1/HD46-1.gff prokka/HD43N14/HD43N14.gff prokka/HD66N2/HD66N2.gff prokka/HD59-01/HD59-01.gff prokka/HD40N1/HD40N1.gff prokka/HD15N6/HD15N6.gff prokka/HD47N2/HD47N2.gff prokka/HD47N1/HD47N1.gff prokka/HD59N12/HD59N12.gff prokka/HD15N8/HD15N8.gff prokka/HD31N3/HD31N3.gff prokka/HD40-1/HD40-1.gff prokka/HD43N1/HD43N1.gff prokka/HD75-1/HD75-1.gff prokka/HD4N4/HD4N4.gff prokka/HD46N1/HD46N1.gff prokka/HD69N5/HD69N5.gff prokka/HD69-1/HD69-1.gff prokka/HD99-1/HD99-1.gff prokka/HD25N15/HD25N15.gff prokka/HD39-1/HD39-1.gff prokka/HD17-01/HD17-01.gff prokka/HD66N1/HD66N1.gff prokka/HD15N1/HD15N1.gff prokka/HD12N4/HD12N4.gff prokka/HD75N1/HD75N1.gff prokka/HD104N10/HD104N10.gff prokka/HD47N3/HD47N3.gff prokka/HD75N4/HD75N4.gff prokka/HD25N9/HD25N9.gff prokka/HD04-01/HD04-01.gff prokka/HD33N12/HD33N12.gff prokka/HD29-1/HD29-1.gff prokka/HD21N1/HD21N1.gff prokka/HD33N28/HD33N28.gff prokka/HD31-1/HD31-1.gff prokka/HD40N3/HD40N3.gff prokka/HD43-01/HD43-01.gff prokka/HD99N1/HD99N1.gff prokka/HD43N12/HD43N12.gff prokka/HD27-2/HD27-2.gff prokka/HD12N3/HD12N3.gff prokka/HD39N4/HD39N4.gff prokka/HD66N8/HD66N8.gff prokka/HD26-1/HD26-1.gff prokka/HD104N1/HD104N1.gff prokka/HD69N2/HD69N2.gff prokka/HD5-1/HD5-1.gff prokka/HD25-1/HD25-1.gff prokka/HD4N3/HD4N3.gff prokka/HD69N1/HD69N1.gff prokka/HD69N4/HD69N4.gff prokka/HD26N5/HD26N5.gff prokka/HD59N1/HD59N1.gff prokka/HD33N4/HD33N4.gff prokka/HD21N9/HD21N9.gff prokka/HD39N1/HD39N1.gff prokka/HD99N2/HD99N2.gff prokka/HD43N3/HD43N3.gff prokka/HD75N6/HD75N6.gff prokka/HD12N2/HD12N2.gff prokka/HD27N4/HD27N4.gff prokka/HD31N1/HD31N1.gff prokka/HD33N1/HD33N1.gff prokka/HD15-01/HD15-01.gff prokka/HD12-01/HD12-01.gff prokka/HD59N3/HD59N3.gff prokka/HD25N3/HD25N3.gff prokka/HD26N2/HD26N2.gff prokka/HD25N1/HD25N1.gff prokka/HD33-1/HD33-1.gff prokka/HD43N2/HD43N2.gff prokka/HD66N5/HD66N5.gff prokka/HD15N7/HD15N7.gff prokka/HD43N5/HD43N5.gff prokka/HD15N5/HD15N5.gff prokka/HD104-2/HD104-2.gff prokka/HD33N2/HD33N2.gff prokka/HD33N3/HD33N3.gff prokka/HD21-1/HD21-1.gff prokka/HD39N2/HD39N2.gff prokka/HD47-1/HD47-1.gff 
+
+
+
+
+
+
+#----------------------------------------------------------
+#------------- 9, draw graphics (under bengal) ------------
+# TODO: generate a global phylogenetic tree of all clonal isolates!?
+
+# NOTE under env bengal
+#import seaborn as sns
+#ImportError: No module named 'seaborn'
+for sample in      HD33 HD05 HD104         HD15                   HD26 HD27 HD29    HD31 HD39 HD40 HD43    HD47         HD66 HD69 HD75 HD99           ; do
+cd ${sample};
+local/roary_plots/roary_plots.py fasttree/snippy.core.tree roary_clonal/gene_presence_absence.csv
+/usr/bin/convert -quality 100 -resize 1400x pangenome_frequency.png pangenome_frequency_fasttree.png
+/usr/bin/convert -quality 100 -resize 1400x pangenome_matrix.png pangenome_matrix_fasttree.png
+/usr/bin/convert -quality 100 -resize 1400x pangenome_pie.png pangenome_pie_fasttree.png
+
+
+#            "roary -p {threads} -f ./roary -i {params.identity} -cd {params.core} -s -e -n -v {params.other} {input} && "
+#            "mv roary_*/* ./roary && rm -rf ./roary_*"
+local/roary_plots/roary_plots.py gubbins/recomb.final_tree.tre roary_clonal/gene_presence_absence.csv
+/usr/bin/convert -quality 100 -resize 1400x pangenome_frequency.png pangenome_frequency_gubbins.png
+/usr/bin/convert -quality 100 -resize 1400x pangenome_matrix.png pangenome_matrix_gubbins.png
+/usr/bin/convert -quality 100 -resize 1400x pangenome_pie.png pangenome_pie_gubbins.png
+
+
+# using raxml-tree
+mv raxml-ng/snippy.core.aln.raxml.bestTree raxml-ng/snippy.core.aln.raxml.bestTree_unordered
+nw_order -c n raxml-ng/snippy.core.aln.raxml.bestTree_unordered > raxml-ng/snippy.core.aln.raxml.bestTree
+snakemake --printshellcmds visualize_roary_raxml
+/usr/bin/convert -quality 100 -resize 1400x pangenome_frequency.png pangenome_frequency_raxml.png
+/usr/bin/convert -quality 100 -resize 1400x pangenome_matrix_raxml.png pangenome_matrix_raxml.png
+/usr/bin/convert -quality 100 -resize 1400x pangenome_pie.png pangenome_pie_raxml.png
+#/usr/bin/convert -quality 100 -resize 1400x pangenome_frequency.png pangenome_frequency_HD33.png
+#/usr/bin/convert -quality 100 -resize 1400x pangenome_matrix_raxml.png pangenome_matrix_HD33.png
+#/usr/bin/convert -quality 100 -resize 1400x pangenome_pie.png pangenome_pie_HD33.png
+
+cd ..
+done
+
+
+bioawk -c fastx '{ if(length($seq) > 1000) { print ">"$name; print $seq }}' SARS-CoV-2.fasta
+seqkit seq -w 60 -o SARS-CoV-2_len25000_w60.fasta SARS-CoV-2_len25000.fasta
+mafft --adjustdirection SARS-CoV-2_all.fa > SARS-CoV-2_all.aln
+snp-sites SARS-CoV-2_all.aln > SARS-CoV-2_all_.aln
+raxml-ng --all --model GTR+G+ASC_LEWIS --prefix CoV2_all_raxml.aln --threads 1 --msa SARS-CoV-2_all_.aln --bs-trees 1000 --redo
+
+
+
+
+
+
+#---------------------------------------------------------
+#------------- 10, snp report (under host-env) ------------
+# 
+# ~/Tools/csv2xls-0.4/csv_to_xls.py HD04/variants/snippy.core.tab__ HD05/variants/snippy.core.tab__ HD12/variants/snippy.core.tab__ HD15/variants/snippy.core.tab__ HD17/variants/snippy.core.tab__ HD21/variants/snippy.core.tab__ ALL/variants/snippy.core.tab__ -d$'\t' -o SNPs.xls
+# 
+for sample in HD04 HD05 HD12 HD15 HD17   HD21 HD25 HD26 HD27 HD29    HD31 HD33 HD39 HD40 HD43    HD46 HD47 HD59 HD66 HD69     HD75 HD99 HD104    ALL ALL85; do
+	cd ${hd_dir}
+	~/Tools/csv2xls-0.4/csv_to_xls.py _summary_statistics.txt all.txt softcore.txt core.txt shell.txt cloud.txt _gene_presence_absence.txt -d$'\t' -o genelist_${hd_dir}.xls
+	cd ..
+done
+
+
+~/Tools/csv2xls-0.4/csv_to_xls.py HD04/variants/snippy.core.tab__ HD05/variants/snippy.core.tab__ HD12/variants/snippy.core.tab__ HD15/variants/snippy.core.tab__ HD17/variants/snippy.core.tab__   HD21/variants/snippy.core.tab__ HD25/variants/snippy.core.tab__ HD26/variants/snippy.core.tab__ HD27/variants/snippy.core.tab__ HD29/variants/snippy.core.tab__    HD31/variants/snippy.core.tab__ HD33/variants/snippy.core.tab__ HD39/variants/snippy.core.tab__ HD40/variants/snippy.core.tab__ HD43/variants/snippy.core.tab__    HD46/variants/snippy.core.tab__ HD47/variants/snippy.core.tab__ HD59/variants/snippy.core.tab__ HD66/variants/snippy.core.tab__ HD69/variants/snippy.core.tab__     HD75/variants/snippy.core.tab__ HD99/variants/snippy.core.tab__ HD104/variants/snippy.core.tab__ -d$'\t' -o SNPs_snippy.xls
+
+~/Tools/csv2xls-0.4/csv_to_xls.py HD04/variants/All_SNPs_annotated.txt HD05/variants/All_SNPs_annotated.txt HD12/variants/All_SNPs_annotated.txt HD15/variants/All_SNPs_annotated.txt HD17/variants/All_SNPs_annotated.txt   HD21/variants/All_SNPs_annotated.txt HD25/variants/All_SNPs_annotated.txt HD26/variants/All_SNPs_annotated.txt HD27/variants/All_SNPs_annotated.txt HD29/variants/All_SNPs_annotated.txt    HD31/variants/All_SNPs_annotated.txt HD33/variants/All_SNPs_annotated.txt HD39/variants/All_SNPs_annotated.txt HD40/variants/All_SNPs_annotated.txt HD43/variants/All_SNPs_annotated.txt    HD46/variants/All_SNPs_annotated.txt HD47/variants/All_SNPs_annotated.txt HD59/variants/All_SNPs_annotated.txt HD66/variants/All_SNPs_annotated.txt HD69/variants/All_SNPs_annotated.txt     HD75/variants/All_SNPs_annotated.txt HD99/variants/All_SNPs_annotated.txt HD104/variants/All_SNPs_annotated.txt -d$'\t' -o SNPs_spandx.xls
+
+
+
+mkdir SNP_summary
+for sample in HD04 HD05    HD12 HD15 HD17 HD21    HD25 HD26 HD27    HD31 HD33      HD39 HD40 HD43    HD46 HD47 HD59    HD66 HD69 HD75 HD99 HD29_deeper HD104_deeper; do
+cp ${sample}/variants/merged_SNPs__.tab SNP_summary/${sample}
+done
+mv ALL85 ALL_infection_nonclonal
+~/Tools/csv2xls-0.4/csv_to_xls.py HD04 HD05    HD12 HD15 HD17 HD21    HD25 HD26 HD27    HD31 HD33      HD39 HD40 HD43    HD46 HD47 HD59    HD66 HD69 HD75 HD99 HD29_deeper HD104_deeper   -d$'\t' -o  SNPs_strict_deeper.xls
+~/Tools/csv2xls-0.4/csv_to_xls.py ALL  -d$'\t' -o  SNPs_infection_nonclonal.xls
+
+
+#CHR	POS	HD12-01	HD12-02	HD12-03	HD12-04	HD12-05	HD12-06	HD12-07	HD12-08	HD12-09	HD12-10	LOCUS_TAG	GENE	PRODUCT	Effect	Impact	Functional_Class	Codon_change	Amino_Acid_change	Amino_Acid_Length	COG Code	COG Annotation	PFAM Annotation	TIGR Annotation	Translation
+
+
+
+
+
+
+#-----------------------------------------------------------------------------------
+#------------- 11, plink (under mykrobe) + GWASTools (under host R-env) ------------
+#-- under host env --
+#BACKUP and PERFORM ONCE: mv All_SNPs_annotated.txt All_SNPs_annotated.txt.backup
+#/home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD04/spandx_plink/Outputs/Comparative
+merge_with_location.py All_SNPs_annotated.txt ../../../variants/merged_SNPs2.tab All_SNPs_annotated_filtered.txt
+
+cp ../../../variants/merged_SNPs2.tab ./
+
+cut -f1-1 -d$'\t' snippy.core.tab > part1
+cut -f2- -d$'\t' snippy.core.tab > part2
+paste -d'_' part1 part2 > parts
+merge_snippy_GATK2.py parts All_SNPs_annotated__.txt  merged_SNPs2.tab
+cp ../../../variants/merged_SNPs2.tab ./
+# manuall the last line to the first, replace "CHR_POS	ALL"
+cut -d'_' -f2- merged_SNPs2.tab > f2_.tab 
+cut -f2-87 f2_.tab > f2_87
+cut -f88 merged_SNPs2.tab > f88
+cut -f91- merged_SNPs2.tab > f91_
+cut -f96-96 merged_SNPs2.tab > f96
+cut -d'.' -f3-3 > f96_3
+cut -d'.' -f3-3 f96 > f96_3
+cut -d'A' -f1-1 f96_3 > f96_3_
+cut -d'C' -f1-1 f96_3_ > f96_3__
+cut -d'G' -f1-1 f96_3__ > f96_3___
+cut -d'T' -f1-1 f96_3___ > f96_3____
+
+sed -i -e 's/_//g' f88
+paste -d'_' f88 f96_3____ > f88_96_3
+paste -d$'\t' f88_96_3 f2_87 f91_ > merged_SNPs2.tab > All_SNPs_annotated.txt
+
+#LOCUSTAG_	ALL	HD04-01	HD104-2	HD104N1	HD104N10	HD12-01	HD12N2	HD12N3	HD12N4	HD15-01	HD15N1	HD15N5	HD15N6	HD15N7	HD15N8	HD17-01	HD21-1	HD21N1	HD21N9	HD25-1	HD25N1	HD25N15	HD25N3	HD25N9	HD26-1	HD26N2	HD26N5	HD27-2	HD27N4	HD29-1	HD31-1	HD31N1	HD31N3	HD33-1	HD33N1	HD33N12	HD33N2	HD33N28	HD33N3	HD33N4	HD39-1	HD39N1	HD39N2	HD39N4	HD40-1	HD40N1	HD40N3	HD43-01	HD43N1	HD43N12	HD43N14	HD43N2	HD43N3	HD43N5	HD46-1	HD46N1	HD47-1	HD47N1	HD47N2	HD47N3	HD4N10	HD4N3	HD4N4	HD5-1	HD59-01	HD59N1	HD59N12	HD59N3	HD66-1	HD66N1	HD66N2	HD66N5	HD66N8	HD69-1	HD69N1	HD69N2	HD69N4	HD69N5	HD75-1	HD75N1	HD75N4	HD75N5	HD75N6	HD99-1	HD99N1	HD99N2	Binary_code	Effect	Impact	Functional_Class	Codon_change	Amino_Acid_change	Amino_Acid_Length	Gene_name	Biotype
+#Location	ALL	HD04-01	HD104-2	HD104N10	HD104N1	HD12-01	HD12N2	HD12N3	HD12N4	HD15-01	HD15N1	HD15N5	HD15N6	HD15N7	HD15N8	HD17-01	HD21-1	HD21N1	HD21N9	HD25-1	HD25N15	HD25N1	HD25N3	HD25N9	HD26-1	HD26N2	HD26N5	HD27-2	HD27N4	HD29-1	HD31-1	HD31N1	HD31N3	HD33-1	HD33N01	HD33N12	HD33N28	HD33N2	HD33N3	HD33N4	HD39-1	HD39N1	HD39N2	HD39N4	HD40-1	HD40N1	HD40N3	HD43-01	HD43N01	HD43N12	HD43N14	HD43N2	HD43N3	HD43N5	HD46-1	HD46N1	HD47-1	HD47N1	HD47N2	HD47N3	HD4N10	HD4N3	HD4N4	HD5-1	HD59-01	HD59N01	HD59N12	HD59N3	HD66-1	HD66N1	HD66N2	HD66N5	HD66N8	HD69-1	HD69N1	HD69N2	HD69N4	HD69N5	HD75-1	HD75N1	HD75N4	HD75N5	HD75N6	HD99-1	HD99N1	HD99N2	Binary_code	Effect	Impact	Functional_Class	Codon_change	Amino_Acid_change	Amino_Acid_Length	Gene_name	Biotype
+#LOCUSTAG_ --> Location
+
+# BUG: 
+#CHR     POS     4N11    4N14    HD04-01 HD04-02 HD04-03 HD04-04 HD04-05 HD04-06 HD04-07 HD04-08 HD04-09 HD04-10 HD4N01  HD4N12  HD4N15  HD4N2   HD4N6   HD4N7   HD4N8   LOCUS   TAG     GENE    PRODUCT Effect  Impact  Functional      Class   Codon   change  Amino   Acid    change  Amino   Acid    Length  COG Code        COG Annotation  PFAM Annotation TIGR Annotation Translation
+#-->
+#CHR     POS     4N11    4N14    HD04-01 HD04-02 HD04-03 HD04-04 HD04-05 HD04-06 HD04-07 HD04-08 HD04-09 HD04-10 HD4N01  HD4N12  HD4N15  HD4N2   HD4N6   HD4N7   HD4N8   LOCUS_TAG     GENE    PRODUCT Effect  Impact  Functional_Class   Codon_change  Amino_Acid_change  Amino_Acid_Length  COG_Code        COG_Annotation  PFAM_Annotation TIGR_Annotation Translation
+
+#/home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD04/spandx_plink/
+/home/jhuang/Tools/SPANDx_v3.2/GeneratePlink.sh -i ingroup.txt -o outgroup.txt -r ALL
+#-- under mykrobe --
+#/home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD04/spandx_plink/Outputs/Comparative
+rm plink-temporary.*
+plink --file All_SNPs  --assoc --allow-extra-chr --allow-no-sex
+
+#HD04-01 HD104-2 HD104N1 HD104N10        HD12-01 HD12N2  HD12N3  HD12N4  HD15-01 HD15N1  HD15N5  HD15N6  HD15N7  HD15N8  HD17-01 HD21-1  HD21N1  HD21N9  HD25-1  HD25N1  HD25N15 HD25N3  HD25N9  HD26-1  HD26N2  HD26N5  HD27-2  HD27N4  HD29-1  HD31-1  HD31N1  HD31N3  HD33-1  HD33N01  HD33N12 HD33N2  HD33N28 HD33N3  HD33N4  HD39-1  HD39N1  HD39N2  HD39N4  HD40-1  HD40N1  HD40N3  HD43-01 HD43N01  HD43N12 HD43N14 HD43N2  HD43N3  HD43N5  HD46-1  HD46N1  HD47-1  HD47N1  HD47N2  HD47N3  HD4N10  HD4N3   HD4N4   HD5-1   HD59-01 HD59N01  HD59N12 HD59N3  HD66-1  HD66N1  HD66N2  HD66N5  HD66N8  HD69-1  HD69N1  HD69N2  HD69N4  HD69N5  HD75-1  HD75N1  HD75N4  HD75N5  HD75N6  HD99-1  HD99N1  HD99N2
+#HD04-01 HD104-2 HD104N10        HD104N1 HD12-01 HD12N2  HD12N3  HD12N4  HD15-01 HD15N1  HD15N5  HD15N6  HD15N7  HD15N8  HD17-01 HD21-1  HD21N1  HD21N9  HD25-1  HD25N15 HD25N1  HD25N3  HD25N9  HD26-1  HD26N2  HD26N5  HD27-2  HD27N4  HD29-1  HD31-1  HD31N1  HD31N3  HD33-1  HD33N01 HD33N12 HD33N28 HD33N2  HD33N3  HD33N4  HD39-1  HD39N1  HD39N2  HD39N4  HD40-1  HD40N1  HD40N3  HD43-01 HD43N01 HD43N12 HD43N14 HD43N2  HD43N3  HD43N5  HD46-1  HD46N1  HD47-1  HD47N1  HD47N2  HD47N3  HD4N10  HD4N3   HD4N4   HD5-1   HD59-01 HD59N01 HD59N12 HD59N3  HD66-1  HD66N1  HD66N2  HD66N5  HD66N8  HD69-1  HD69N1  HD69N2  HD69N4  HD69N5  HD75-1  HD75N1  HD75N4  HD75N5  HD75N6  HD99-1  HD99N1  HD99N2  Binary_code     Effect  Impact  Functional_Class        Codon_change    Amino_Acid_change       Amino_Acid_Length       Gene_name       Biotype
+#--> correct the name "HD33N1 HD43N1 HD59N1" to "HD33N01 HD43N01 HD59N01"
+
+
+
+
+#-- under root R-env --
+#http://pages.stat.wisc.edu/~miaoyan/association_2_miaoyan.html
+source("http://bioconductor.org/biocLite.R")
+biocLite("GWASTools")
+BiocManager::install(c("GWASTools"))
+library(GWASTools)
+Height.Assoc=read.table("plink.assoc",header=TRUE)    
+head(Height.Assoc)
+svg(filename="SNP_manhattan_plot.svg", width=20, height=14)
+manhattanPlot(p=Height.Assoc$P,chromosome=Height.Assoc$CHR, signif = 1e-6, ylim=c(0,12),main="SNP Manhatton Plot")
+AHeight.Assoc=subset(Height.Assoc,CHR<=22)
+manhattanPlot(p=AHeight.Assoc$P,chromosome=AHeight.Assoc$CHR, main="Association Results for Autosomes for Height")
+qqPlot(pval=Height.Assoc$P)
+manhattanPlot(p=Height.Assoc$P,chromosome=Height.Assoc$CHR, main="Association Results for Height")
+
+
+dev.off()
+
+TOP <- Height.Assoc[order(Height.Assoc$P),] 
+write.csv(TOP, row.names = TRUE)
+write.csv(TOP, "SNPs_association_analysis.csv")
+
+# Applications: we can calculate association analysis on different levels (SNPs, kmers, genes) between infection and clonal, or between infection and non-clonal.
+
+
+
+
+
+
+#-------------------------------------
+#------------- 12, scoary ------------
+
+#The trait is defined in the file traits.xlsx.
+#1: infection samples.
+#0: nose samples.
+
+#pos_presence is indicated by 1, trait absence by 0.
+
+# representative (23) + # non_clonal (62)
+for sample in HD21-1 HD04-01 HD5-1 HD66-1 HD104-2 HD12-01 HD15-01 \
+HD17-01 HD25-1 HD26-1 HD27-2 HD29-1 HD31-1 HD33-1 HD39-1 HD40-1 HD43-01 \
+HD46-1 HD47-1 HD59-01 HD69-1 HD75-1 HD99-1 HD66N1 HD66N2 HD66N5 HD66N8 \
+HD69N1 HD69N2 HD69N4 HD69N5 HD104N1 HD104N10 HD12N2 HD12N3 HD12N4 HD15N1 \
+HD15N5 HD15N6 HD15N7 HD15N8 HD21N1 HD21N9 HD25N1 HD25N15 HD25N3 HD25N9 \
+HD26N2 HD26N5 HD27N4 HD31N1 HD31N3 HD33N1 HD33N12 HD33N2 HD33N28 HD33N3 \
+HD33N4 HD39N1 HD39N2 HD39N4 HD40N1 HD40N3 HD43N1 HD43N12 HD43N14 HD43N2 \
+HD43N3 HD43N5 HD46N1 HD47N1 HD47N2 HD47N3 HD4N10 HD4N3 HD4N4 HD59N1 \
+HD59N12 HD59N3 HD75N1 HD75N4 HD75N5 HD75N6 HD99N1 HD99N2; do \
+HD5-1 --> HD5-2
+HD15-1 --> HD15-10
+HD27-2 --> HD27-1
+HD39-1 --> HD39-2
+HD40-1 --> HD40-4
+HD104-2 --> HD104-6
+for sample in HD21-1 HD04-01 HD5-2 HD66-1 HD104-6 HD12-01 HD15-10 \
+HD17-01 HD25-1 HD26-1 HD27-1 HD29-1 HD31-1 HD33-1 HD39-2 HD40-4 HD43-01 \
+HD46-1 HD47-1 HD59-01 HD69-1 HD75-1 HD99-1 HD66N1 HD66N2 HD66N5 HD66N8 \
+HD69N1 HD69N2 HD69N4 HD69N5 HD104N1 HD104N10 HD12N2 HD12N3 HD12N4 HD15N1 \
+HD15N5 HD15N6 HD15N7 HD15N8 HD21N1 HD21N9 HD25N1 HD25N15 HD25N3 HD25N9 \
+HD26N2 HD26N5 HD27N4 HD31N1 HD31N3 HD33N1 HD33N12 HD33N2 HD33N28 HD33N3 \
+HD33N4 HD39N1 HD39N2 HD39N4 HD40N1 HD40N3 HD43N1 HD43N12 HD43N14 HD43N2 \
+HD43N3 HD43N5 HD46N1 HD47N1 HD47N2 HD47N3 HD4N10 HD4N3 HD4N4 HD59N1 \
+HD59N12 HD59N3 HD75N1 HD75N4 HD75N5 HD75N6 HD99N1 HD99N2; do \
+echo "grep \"${sample},\" f1_roary_4_n286 >> f1_roary_4"
+done
+
+#under ALL
+scoary -g roary/gene_presence_absence.csv -t f1_roary_4 -r restrict_to_85_.csv
+scoary -g roary/gene_presence_absence.csv -t f1_roary_4 --include_input_columns 15-100   #-p 1.0 
+scoary -g roary/gene_presence_absence.csv -t f1_roary_4
+#vim scoary_12_05_2020_1349.log
+./old_roar/roary_2/gene_presence_absence.csv    #5975
+./old_roar/roary_incomplete/gene_presence_absence.csv #4738
+./roar_denovo_assembl/gene_presence_absence.csv #5968
+#repeating_for_paper: scoary -g roary_repeat_for_paper/gene_presence_absence.csv -t f1_roary_4 --include_input_columns 15-100  #5974 --> 575 genes
+# --> diff If_inf_12_05_2020_1349.results.csv If_inf_12_06_2020_1120.results.csv
+#repeating_for_paper: scoary -c BH -g ./roary_repeat_for_paper/gene_presence_absence.csv -t f1_roary_4 --include_input_columns 15-100  #5974 --> 204 genes
+#--> If_inf_12_06_2020_1151.results.csv
+process_gamola_gb_scoary.py If_inf_12_05_2020_1120.results.csv roary/gamola2/roary__.fa.gb > annotated_If_inf_07_05_2020_1253_p1.0.results.csv
+
+associated_genes_aa_nuc.csv
+
+
+diff old_roar/roary/gene_presence_absence.Rtab old_roar/roary/gene_presence_absence.Rtab
+cp old_roar/roary/gene_presence_absence.csv
+./old_roar/roary_2/gene_presence_absence.csv
+
+
+#Individual p-value
+#Naive_p
+#Individual p-value. (I)
+#p_value 	The naïve p-value for the null hypothesis that the presence/absence of this gene is unrelated to the trait status
+
+
+#----------------------------------------------------------------------------------------------------
+#------------- 12.0, connect kmers generated by Minyue with my gene associdated analysis results ----
+grep ">" extracted_asso_genes.fasta | wc -l #-->575
+wc -l associated_genes_aa_nuc_BH.csv #204+1 
+blastn --> kmer_on_asso_genes.blastn
+kmer_on_assoc_genes_1maxMismatches.sam
+
+bowtie -p 14 -S -f -v 3 -m 1 --best --strata extracted_asso_genes 20200212_kmer_group_count_f1.fa > kmer_on_assoc_genes_3maxMismatches.sam
+bowtie -p 14 -S -f -v 3 -m 1 --best --strata extracted_asso_genes 96_training_kmers.fasta > 575genes_96kmers_3maxMismatches.sam
+bowtie -p 14 -S -f -v 3 -m 1 --best --strata extracted_asso_genes_BH 96_training_kmers.fasta > 205genesBH_96kmers_3maxMismatches.sam
+grep "NM:i" 575genes_96kmers_3maxMismatches.sam > 575genes_96kmers_3maxMismatches.xlsx
+grep "NM:i" 205genesBH_96kmers_3maxMismatches.sam > 205genesBH_96kmers_3maxMismatches.xlsx
+
+
+kmer_on_assoc_genes_1maxMismatches.sam:@PG      ID:Bowtie       VN:1.1.2        CL:"bowtie --wrapper basic-0 -p 14 -S -f -v 1 -m 1 --best --strata extracted_asso_genes 20200212_kmer_group_count_f1.fa"
+kmer_on_assoc_genes_2maxMismatches.sam:@PG      ID:Bowtie       VN:1.1.2        CL:"bowtie --wrapper basic-0 -p 14 -S -f -v 2 -m 1 --best --strata extracted_asso_genes 20200212_kmer_group_count_f1.fa"
+kmer_on_assoc_genes_3maxMismatches.sam:@PG      ID:Bowtie       VN:1.1.2        CL:"bowtie --wrapper basic-0 -p 14 -S -f -v 3 -m 1 --best --strata extracted_asso_genes 20200212_kmer_group_count_f1.fa"
+
+Query_NAME	Ref_NAME	POS	Mapping_Quality	CIGAR	SEQ		
+kmer1	group_2197	96	255	30M	CCAGCCTCATACAGATTACCTACACATTTT	MD:Z:30	NM:i:0
+kmer3	group_1318	595	255	30M	CAAAATGCTATTAAACCATTATTAGAGTTT	MD:Z:21C8	NM:i:1
+
+
+
+#575 genes
+
+
+
+
+#------------------------------------------------------------
+#------------- 12.1, BRIG drawing scoary results ------------
+#run STx.xml first time
+
+#under ~/BRIG_workspace/scratch
+cp ~/DATA/Data_Anna12_HAPDICS_final/genbanks_complete/ssp_STx_consensus.fasta ./
+makeblastdb -in ssp_STx_consensus.fasta -dbtype nucl
+#cp ~/DATA/Data_Anna12_HAPDICS_final/ALL85/roary/extracted_asso_genes.fasta ./
+blastn -db ssp_STx_consensus.fasta -query extracted_asso_genes.fasta -out extracted_asso_genes_on_STx_pangenome -evalue 1e-10 -num_threads 15 -outfmt 6 -max_target_seqs 1
+mv extracted_asso_genes_on_STx_pangenome associated_genes.gbk.fnaVsssp_STx_consensus.fasta.tab
+#run STx.xml again
+
+query id	subject id	percentage of identical matches	alignment length	number of mismatches	number of gap openings	start of alignment in query	end of alignment in query	start of alignment in subject	end of alignment in subject	expect value	bit score
+
+
+
+
+
+#--------------------------------------------------------
+#------------- 13, hyasp (under bengal3_ac3) ------------
+
+#preparing plasmid databases using "hyasp create"
+#https://github.com/cchauve/HyAsP/tree/master/databases
+#https://figshare.com/articles/HyAsP_NCBI_RefSeq_database/8001827 --> plasmid_database_new
+cd plasmid_database_new
+#hyasp create mob_database_genes.fasta -a mob_accessions.txt -d -l 500 -m 100
+hyasp create ncbi_database_genes.fasta -p plasmids.csv -b ncbi_blacklist.txt -d -l 500 -m 100 -t GenBank -r 2015-12-19T00:00:00Z
+
+hyasp_pipeline output_dir genes.fasta -s reads.fastq
+hyasp_pipeline output_dir genes.fasta -1 first_reads.fastq -2 second_reads.fastq 
+hyasp_pipeline output_dir ncbi_Staphylococcus_genes.fasta -1 first_reads.fastq -2 second_reads.fastq -l long_reads.fastq
+                          ncbi_staphyl_genes.fasta
+hyasp_pipeline output_dir genes.fasta -s reads.fastq -u conservative
+hyasp_pipeline output_dir genes.fasta -s reads.fastq --identity_threshold 0.9 --length_threshold 0.92
+The default value for both is 0.95.
+
+
+
+for sample in HD05-1_BC01 HD15-1_BC02 HD17-1_BC03 HD25-1_BC05 HD26-2_BC06 HD21-2_BC01 HD27N1_BC02 HD27-3_BC03 HD29-1_BC04 HD31-1_BC05 HD33-1_BC06 HD33-3_BC07 HD39-1_BC08 HD40-5_BC09 HD43-1_BC10 HD46-1_BC11 HD47-1_BC12 HD59-1_BC13 HD66-1_BC14 HD66-6_BC15 HD69-1_BC16 HD75-1_BC17 HD99-1_BC18 HD99-4_BC19 HD104-2_BC20 HD104-6_BC21 HD21N4_BC22 HD04-1_BC04 HD12-1_BC06 HD26-1_BC11; do
+cat nanopore_fastq_pass/${sample}/*.fastq.gz > nanopore_fastq_pass/$(echo $sample | cut -d'_' -f1).fastq.gz
+gunzip nanopore_fastq_pass/$(echo $sample | cut -d'_' -f1).fastq.gz
+#head -n 90000 nanopore_fastq_pass/$(echo $sample | cut -d'_' -f1).fastq > nanopore_fastq_pass/$(echo $sample | cut -d'_' -f1)_90000.fastq  #HD43-1_BC10
+done
+
+cat FAK35961_pass_HD05-1_BC01_0f00c18a_0.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_1.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_2.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_3.fastq.gz  > HD05-1_1.fastq.gz 
+cat FAK35961_pass_HD05-1_BC01_0f00c18a_4.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_5.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_6.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_7.fastq.gz > HD05-1_2.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_8.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_9.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_10.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_11.fastq.gz > HD05-1_3.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_12.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_13.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_14.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_15.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_16.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_17.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_18.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_19.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_20.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_21.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_22.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_23.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_24.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_25.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_26.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_27.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_28.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_29.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_30.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_31.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_32.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_33.fastq.gz FAK35961_pass_HD05-1_BC01_0f00c18a_34.fastq.gz > HD05-1.fastq.gz
+
+
+for sample in HD05-1 HD15-1 HD17-1 HD25-1 HD26-2 HD21-2 HD27N1 HD27-3 HD29-1 HD31-1 HD33-1 HD33-3 HD39-1 HD40-5 HD43-1 HD46-1 HD47-1 HD59-1 HD66-1 HD66-6 HD69-1 HD75-1 HD99-1 HD99-4 HD104-2 HD104-6 HD21N4 HD04-1 HD12-1 HD26-1; do
+#echo "hyasp_pipeline ${sample}_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL/trimmed/${sample}_trimmed_P_1.fastq -2 ALL/trimmed/${sample}_trimmed_P_2.fastq -l nanopore_fastq_pass/${sample}.fastq"
+#mv nanopore_fastq_pass/${sample}.fastq nanopore_fastq_pass_merged
+rsync -a -P ${sample}.fastq jhuang@10.162.6.119:/mnt/h1/jhuang/DATA/
+done
+#TODOs: submitted the complete assembly into ncbi genbank
+wget -O 910_fastq.tar.gz "https://docs.cebitec.uni-bielefeld.de/s/zk7t6542FxFn4JY/download?path=%2F&files=910_fastq.tar.gz"
+wget -O 910_fast5.tar.gz "https://docs.cebitec.uni-bielefeld.de/s/zk7t6542FxFn4JY/download?path=%2F&files=910_fast5.tar.gz"
+
+
+**HyAsP** was developed and tested with the following software dependencies:
+  - [Python](https://www.python.org/downloads/) (`python`, version 3.5.4; *packages*: Bio, math, numpy, os, pandas, random, subprocess, sys)
+  - [BLAST+](https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs&DOC_TYPE=Download) (`makeblastdb` `tblastn` and `blastn`; version 2.6.0)
+  - standard UNIX tools (`mkdir`, `rm`, `cat`)
+
+BLAST+ is only required for the `create` command.
+
+In order to use **HyAsP** as part of the provided pipeline starting from FASTQ reads,
+the following requirements have to be satisfied in addition:
+  - [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) (`fastqc`, version 0.11.5)
+  - [sickle](https://github.com/najoshi/sickle) (`sickle`, version 1.33)
+  - [cutadapt](https://cutadapt.readthedocs.io/en/stable/) (`cutadapt`, version 1.16)
+  - [Trim Galore](http://www.bioinformatics.babraham.ac.uk/projects/trim_galore/) (`trim_galore`, version 0.4.5_dev)
+  - [Unicycler](https://github.com/rrwick/Unicycler) (`unicycler`, version 0.4.5)
+    - [SPAdes](http://cab.spbu.ru/software/spades/) (`spades.py`, version 3.12.0)
+    - [Racon](https://github.com/isovic/racon) (`racon`, version 1.3.0)
+    - [Pilon](https://github.com/broadinstitute/pilon/wiki) (`pilon-1.22.jar`, version 1.22)
+    - [SAMtools](http://www.htslib.org/) (`samtools`, version 1.5)
+    - [Bowtie 2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml) (`bowtie2` and `bowtie2-build`; version 2.3.3.1)
+    - [Java](https://www.java.com/en/download/manual.jsp) (`java`, version 1.8.0_121)
+
+Python and the other tools have to be in the `PATH` or specified through their path options.
+
+
+
+#Command: /home/jhuang/anaconda3/envs/bengal3_ac3/bin/unicycler --short1 HD05-1_hyasp_res/data/HD5-1_trimmed_P_1_preprocessed.fastq --short2 HD05-1_hyasp_res/data/HD5-1_trimmed_P_2_preprocessed.fastq --unpaired HD05-1_hyasp_res/data/single_short_preprocessed.fastq --long HD05-1_hyasp_res/data/HD05-1_2_preprocessed.fq --out HD05-1_hyasp_res/assembly --mode normal --min_fasta_length 0 --verbosity 1 --keep 1
+hyasp_pipeline HD05-1_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD5-1_trimmed_P_1.fastq -2 ALL85/trimmed/HD5-1_trimmed_P_2.fastq -l nanopore_fastq_pass/HD05-1_100000.fastq -u conservative
+hyasp_pipeline HD15-1_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD15-01_trimmed_P_1.fastq -2 ALL85/trimmed/HD15-01_trimmed_P_2.fastq -l nanopore_fastq_pass/HD15-1_100000.fastq
+hyasp_pipeline HD17-1_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD17-01_trimmed_P_1.fastq -2 ALL85/trimmed/HD17-01_trimmed_P_2.fastq -l nanopore_fastq_pass/HD17-1_100000.fastq
+hyasp_pipeline HD25-1_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD25-1_trimmed_P_1.fastq -2 ALL85/trimmed/HD25-1_trimmed_P_2.fastq -l nanopore_fastq_pass/HD25-1_100000.fastq
+hyasp_pipeline HD26-2_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD26-2_trimmed_P_1.fastq -2 ALL85/trimmed/HD26-2_trimmed_P_2.fastq -l nanopore_fastq_pass/HD26-2_100000.fastq
+hyasp_pipeline HD21-2_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD21-2_trimmed_P_1.fastq -2 ALL85/trimmed/HD21-2_trimmed_P_2.fastq -l nanopore_fastq_pass/HD21-2_100000.fastq
+hyasp_pipeline HD27N1_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD27N1_trimmed_P_1.fastq -2 ALL85/trimmed/HD27N1_trimmed_P_2.fastq -l nanopore_fastq_pass/HD27N1_100000.fastq
+hyasp_pipeline HD27-3_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD27-3_trimmed_P_1.fastq -2 ALL85/trimmed/HD27-3_trimmed_P_2.fastq -l nanopore_fastq_pass/HD27-3_100000.fastq
+hyasp_pipeline HD29-1_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD29-1_trimmed_P_1.fastq -2 ALL85/trimmed/HD29-1_trimmed_P_2.fastq -l nanopore_fastq_pass/HD29-1_100000.fastq
+hyasp_pipeline HD31-1_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD31-1_trimmed_P_1.fastq -2 ALL85/trimmed/HD31-1_trimmed_P_2.fastq -l nanopore_fastq_pass/HD31-1_100000.fastq
+hyasp_pipeline HD33-1_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD33-1_trimmed_P_1.fastq -2 ALL85/trimmed/HD33-1_trimmed_P_2.fastq -l nanopore_fastq_pass/HD33-1_100000.fastq
+hyasp_pipeline HD33-3_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD33-3_trimmed_P_1.fastq -2 ALL85/trimmed/HD33-3_trimmed_P_2.fastq -l nanopore_fastq_pass/HD33-3_100000.fastq
+hyasp_pipeline HD39-1_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD39-1_trimmed_P_1.fastq -2 ALL85/trimmed/HD39-1_trimmed_P_2.fastq -l nanopore_fastq_pass/HD39-1_100000.fastq
+hyasp_pipeline HD40-5_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD40-5_trimmed_P_1.fastq -2 ALL85/trimmed/HD40-5_trimmed_P_2.fastq -l nanopore_fastq_pass/HD40-5_100000.fastq
+
+hyasp_pipeline HD43-1_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD43-01_trimmed_P_1.fastq -2 ALL85/trimmed/HD43-01_trimmed_P_2.fastq -l nanopore_fastq_pass/HD43-1_100000.fastq
+hyasp_pipeline HD46-1_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD46-1_trimmed_P_1.fastq -2 ALL85/trimmed/HD46-1_trimmed_P_2.fastq -l nanopore_fastq_pass/HD46-1_100000.fastq
+hyasp_pipeline HD47-1_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD47-1_trimmed_P_1.fastq -2 ALL85/trimmed/HD47-1_trimmed_P_2.fastq -l nanopore_fastq_pass/HD47-1_100000.fastq
+hyasp_pipeline HD59-1_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD59-01_trimmed_P_1.fastq -2 ALL85/trimmed/HD59-01_trimmed_P_2.fastq -l nanopore_fastq_pass/HD59-1_100000.fastq
+hyasp_pipeline HD66-1_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD66-1_trimmed_P_1.fastq -2 ALL85/trimmed/HD66-1_trimmed_P_2.fastq -l nanopore_fastq_pass/HD66-1_100000.fastq
+hyasp_pipeline HD66-6_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD66-6_trimmed_P_1.fastq -2 ALL85/trimmed/HD66-6_trimmed_P_2.fastq -l nanopore_fastq_pass/HD66-6_100000.fastq
+hyasp_pipeline HD69-1_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD69-1_trimmed_P_1.fastq -2 ALL85/trimmed/HD69-1_trimmed_P_2.fastq -l nanopore_fastq_pass/HD69-1_100000.fastq
+hyasp_pipeline HD75-1_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD75-1_trimmed_P_1.fastq -2 ALL85/trimmed/HD75-1_trimmed_P_2.fastq -l nanopore_fastq_pass/HD75-1_100000.fastq
+hyasp_pipeline HD99-1_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD99-1_trimmed_P_1.fastq -2 ALL85/trimmed/HD99-1_trimmed_P_2.fastq -l nanopore_fastq_pass/HD99-1_100000.fastq
+hyasp_pipeline HD99-4_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD99-4_trimmed_P_1.fastq -2 ALL85/trimmed/HD99-4_trimmed_P_2.fastq -l nanopore_fastq_pass/HD99-4_100000.fastq
+hyasp_pipeline HD104-2_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD104-2_trimmed_P_1.fastq -2 ALL85/trimmed/HD104-2_trimmed_P_2.fastq -l nanopore_fastq_pass/HD104-2_100000.fastq
+hyasp_pipeline HD104-6_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD104-6_trimmed_P_1.fastq -2 ALL85/trimmed/HD104-6_trimmed_P_2.fastq -l nanopore_fastq_pass/HD104-6_100000.fastq
+hyasp_pipeline HD21N4_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD21N4_trimmed_P_1.fastq -2 ALL85/trimmed/HD21N4_trimmed_P_2.fastq -l nanopore_fastq_pass/HD21N4_100000.fastq
+hyasp_pipeline HD04-1_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD04-01_trimmed_P_1.fastq -2 ALL85/trimmed/HD04-01_trimmed_P_2.fastq -l nanopore_fastq_pass/HD04-1_100000.fastq
+hyasp_pipeline HD12-1_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD12-01_trimmed_P_1.fastq -2 ALL85/trimmed/HD12-01_trimmed_P_2.fastq -l nanopore_fastq_pass/HD12-1_100000.fastq
+hyasp_pipeline HD26-1_hyasp_res hyasp_plasmids/plasmid_database_new/ncbi_database_genes.fasta -1 ALL85/trimmed/HD26-1_trimmed_P_1.fastq -2 ALL85/trimmed/HD26-1_trimmed_P_2.fastq -l nanopore_fastq_pass/HD26-1_100000.fastq
+
+
+
+git clone https://github.com/cchauve/hyasp.git
+cd hyasp
+python setup.py sdist
+pip install dist/HyAsP-1.0.0.tar.gz
+
+conda install -c bioconda trim-galore sickle unicycler
+
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180821_rohde/HD5_1_S37_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180821_rohde/HD5_1_S37_R2_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180119_N/HD15_1_S1_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180119_N/HD15_1_S1_R2_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180821_rohde/HD25_1_S11_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180821_rohde/HD25_1_S11_R2_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/181213_rohde/HD26_1_S10_R1_001.fastq.gz ./ --DEL
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/181213_rohde/HD26_1_S10_R2_001.fastq.gz ./ --DEL
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180821_rohde/HD21_1_S1_R1_001.fastq.gz ./ --DEL
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180821_rohde/HD21_1_S1_R2_001.fastq.gz ./ --DEL
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180821_rohde/HD21_2_S2_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180821_rohde/HD21_2_S2_R2_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/181213_rohde/HD26_2_S11_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/181213_rohde/HD26_2_S11_R2_001.fastq.gz ./
+
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180821_rohde/HD27N1_S89_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180821_rohde/HD27N1_S89_R2_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/181213_rohde/HD27_3_S18_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/181213_rohde/HD27_3_S18_R2_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/190318_rohde/HD29_1_S1_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/190318_rohde/HD29_1_S1_R2_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/171113_N/HD31_1_S54_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/171113_N/HD31_1_S54_R2_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/171113_N/HD33_1_S23_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/171113_N/HD33_1_S23_R2_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/171113_N/HD33_3_S25_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/171113_N/HD33_3_S25_R2_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/171113_N/HD39_1_S33_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/171113_N/HD39_1_S33_R2_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180119_N/HD40_5_S16_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180119_N/HD40_5_S16_R2_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/171113_N/HD43_01_S43_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/171113_N/HD43_01_S43_R2_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/171113_N/HD46_1_S52_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/171113_N/HD46_1_S52_R2_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/181213_rohde/HD47_1_S34_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/181213_rohde/HD47_1_S34_R2_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180119_N/HD59_1_S57_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180119_N/HD59_1_S57_R2_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180821_rohde/HD66_1_S17_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180821_rohde/HD66_1_S17_R2_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180821_rohde/HD66_6_S22_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180821_rohde/HD66_6_S22_R2_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180821_rohde/HD69_1_S49_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180821_rohde/HD69_1_S49_R2_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180821_rohde/HD75_1_S27_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180821_rohde/HD75_1_S27_R2_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/181213_rohde/HD99_1_S44_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/181213_rohde/HD99_1_S44_R2_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/181213_rohde/HD99_4_S47_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/181213_rohde/HD99_4_S47_R2_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/190318_rohde/HD104_2_S11_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/190318_rohde/HD104_2_S11_R2_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/190318_rohde/HD104_6_S13_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/190318_rohde/HD104_6_S13_R2_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180119_M/HD21N4_S8_L001_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180119_M/HD21N4_S8_L001_R2_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180119_N/HD04_1_S70_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180119_N/HD04_1_S70_R2_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180119_N/HD12_1_S80_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180119_N/HD12_1_S80_R2_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/181213_rohde/HD26_1_S10_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/181213_rohde/HD26_1_S10_R2_001.fastq.gz ./
+
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180119_N/HD17_1_S90_R1_001.fastq.gz ./
+cp /mnt/h1/jhuang/malawi/a_both_HAPDICS/180119_N/HD17_1_S90_R2_001.fastq.gz ./
+
+hyasp_pipeline HD05-1_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD5_1_S37_R1_001.fastq -2 short_fastq/HD5_1_S37_R2_001.fastq -l nanopore_fastq_pass/HD05-1.fastq -u conservative
+hyasp_pipeline HD15-1_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD15_1_S1_R1_001.fastq -2 short_fastq/HD15_1_S1_R2_001.fastq -l nanopore_fastq_pass/HD15-1.fastq -u conservative
+hyasp_pipeline HD25-1_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD25_1_S11_R1_001.fastq -2 short_fastq/HD25_1_S11_R2_001.fastq -l nanopore_fastq_pass/HD25-1.fastq -u conservative
+hyasp_pipeline HD21-2_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD21_2_S2_R1_001.fastq -2 short_fastq/HD21_2_S2_R2_001.fastq -l nanopore_fastq_pass/HD21-2.fastq -u conservative
+hyasp_pipeline HD26-2_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD26_2_S11_R1_001.fastq -2 short_fastq/HD26_2_S11_R2_001.fastq -l nanopore_fastq_pass/HD26-2.fastq -u conservative
+hyasp_pipeline HD27N1_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD27N1_S89_R1_001.fastq -2 short_fastq/HD27N1_S89_R2_001.fastq -l nanopore_fastq_pass/HD27N1.fastq -u conservative
+hyasp_pipeline HD27-3_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD27_3_S18_R1_001.fastq -2 short_fastq/HD27_3_S18_R2_001.fastq -l nanopore_fastq_pass/HD27-3.fastq -u conservative
+hyasp_pipeline HD29-1_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD29_1_S1_R1_001.fastq -2 short_fastq/HD29_1_S1_R2_001.fastq -l nanopore_fastq_pass/HD29-1.fastq -u conservative
+hyasp_pipeline HD31-1_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD31_1_S54_R1_001.fastq -2 short_fastq/HD31_1_S54_R2_001.fastq -l nanopore_fastq_pass/HD31-1.fastq -u conservative
+hyasp_pipeline HD33-1_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD33_1_S23_R1_001.fastq -2 short_fastq/HD33_1_S23_R2_001.fastq -l nanopore_fastq_pass/HD33-1.fastq -u conservative
+hyasp_pipeline HD33-3_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD33_3_S25_R1_001.fastq -2 short_fastq/HD33_3_S25_R2_001.fastq -l nanopore_fastq_pass/HD33-3.fastq -u conservative
+hyasp_pipeline HD39-1_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD39_1_S33_R1_001.fastq -2 short_fastq/HD39_1_S33_R2_001.fastq -l nanopore_fastq_pass/HD39-1.fastq -u conservative
+hyasp_pipeline HD40-5_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD40_5_S16_R1_001.fastq -2 short_fastq/HD40_5_S16_R2_001.fastq -l nanopore_fastq_pass/HD40-5.fastq -u conservative
+hyasp_pipeline HD43-1_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD43_01_S43_R1_001.fastq -2 short_fastq/HD43_01_S43_R2_001.fastq -l nanopore_fastq_pass/HD43-1.fastq -u conservative
+hyasp_pipeline HD46-1_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD46_1_S52_R1_001.fastq -2 short_fastq/HD46_1_S52_R2_001.fastq -l nanopore_fastq_pass/HD46-1.fastq -u conservative
+hyasp_pipeline HD47-1_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD47_1_S34_R1_001.fastq -2 short_fastq/HD47_1_S34_R2_001.fastq -l nanopore_fastq_pass/HD47-1.fastq -u conservative
+hyasp_pipeline HD59-1_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD59_1_S57_R1_001.fastq -2 short_fastq/HD59_1_S57_R2_001.fastq -l nanopore_fastq_pass/HD59-1.fastq -u conservative
+hyasp_pipeline HD66-1_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD66_1_S17_R1_001.fastq -2 short_fastq/HD66_1_S17_R2_001.fastq -l nanopore_fastq_pass/HD66-1.fastq -u conservative
+hyasp_pipeline HD66-6_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD66_6_S22_R1_001.fastq -2 short_fastq/HD66_6_S22_R2_001.fastq -l nanopore_fastq_pass/HD66-6.fastq -u conservative
+hyasp_pipeline HD69-1_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD69_1_S49_R1_001.fastq -2 short_fastq/HD69_1_S49_R2_001.fastq -l nanopore_fastq_pass/HD69-1.fastq -u conservative
+hyasp_pipeline HD75-1_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD75_1_S27_R1_001.fastq -2 short_fastq/HD75_1_S27_R2_001.fastq -l nanopore_fastq_pass/HD75-1.fastq -u conservative
+hyasp_pipeline HD99-1_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD99_1_S44_R1_001.fastq -2 short_fastq/HD99_1_S44_R2_001.fastq -l nanopore_fastq_pass/HD99-1.fastq -u conservative
+hyasp_pipeline HD99-4_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD99_4_S47_R1_001.fastq -2 short_fastq/HD99_4_S47_R2_001.fastq -l nanopore_fastq_pass/HD99-4.fastq -u conservative
+hyasp_pipeline HD104-2_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD104_2_S11_R1_001.fastq -2 short_fastq/HD104_2_S11_R2_001.fastq -l nanopore_fastq_pass/HD104-2.fastq -u conservative
+hyasp_pipeline HD104-6_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD104_6_S13_R1_001.fastq -2 short_fastq/HD104_6_S13_R2_001.fastq -l nanopore_fastq_pass/HD104-6.fastq -u conservative
+hyasp_pipeline HD21N4_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD21N4_S8_L001_R1_001.fastq -2 short_fastq/HD21N4_S8_L001_R2_001.fastq -l nanopore_fastq_pass/HD21N4.fastq -u conservative
+hyasp_pipeline HD04-1_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD04_1_S70_R1_001.fastq -2 short_fastq/HD04_1_S70_R2_001.fastq -l nanopore_fastq_pass/HD04-1.fastq -u conservative
+hyasp_pipeline HD12-1_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD12_1_S80_R1_001.fastq -2 short_fastq/HD12_1_S80_R2_001.fastq -l nanopore_fastq_pass/HD12-1.fastq -u conservative
+hyasp_pipeline HD26-1_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD26_1_S10_R1_001.fastq -2 short_fastq/HD26_1_S10_R2_001.fastq -l nanopore_fastq_pass/HD26-1.fastq -u conservative
+hyasp_pipeline HD17-1_hyasp_res plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD17_1_S90_R1_001.fastq -2 short_fastq/HD17_1_S90_R2_001.fastq -l nanopore_fastq_pass/HD17-1.fastq -u conservative
+
+for sample in HD05-1_BC01 HD15-1_BC02 HD17-1_BC03 HD25-1_BC05 HD26-2_BC06 HD21-2_BC01 HD27N1_BC02 HD27-3_BC03 HD29-1_BC04 HD31-1_BC05 HD33-1_BC06 HD33-3_BC07 HD39-1_BC08 HD40-5_BC09 HD43-1_BC10 HD46-1_BC11 HD47-1_BC12 HD59-1_BC13 HD66-1_BC14 HD66-6_BC15 HD69-1_BC16 HD75-1_BC17 HD99-1_BC18 HD99-4_BC19 HD104-2_BC20 HD104-6_BC21 HD21N4_BC22 HD04-1_BC04 HD12-1_BC06 HD26-1_BC11; do
+mv $(echo $sample | cut -d'_' -f1)_hyasp_res $(echo $sample | cut -d'_' -f1)_hyasp_conservative
+done
+
+
+
+hyasp_pipeline HD05-1_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD5_1_S37_R1_001.fastq -2 short_fastq/HD5_1_S37_R2_001.fastq -l nanopore_fastq_pass/HD05-1.fastq -u normal
+hyasp_pipeline HD15-1_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD15_1_S1_R1_001.fastq -2 short_fastq/HD15_1_S1_R2_001.fastq -l nanopore_fastq_pass/HD15-1.fastq -u normal
+hyasp_pipeline HD25-1_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD25_1_S11_R1_001.fastq -2 short_fastq/HD25_1_S11_R2_001.fastq -l nanopore_fastq_pass/HD25-1.fastq -u normal
+hyasp_pipeline HD21-2_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD21_2_S2_R1_001.fastq -2 short_fastq/HD21_2_S2_R2_001.fastq -l nanopore_fastq_pass/HD21-2.fastq -u normal
+hyasp_pipeline HD26-2_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD26_2_S11_R1_001.fastq -2 short_fastq/HD26_2_S11_R2_001.fastq -l nanopore_fastq_pass/HD26-2.fastq -u normal
+hyasp_pipeline HD27N1_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD27N1_S89_R1_001.fastq -2 short_fastq/HD27N1_S89_R2_001.fastq -l nanopore_fastq_pass/HD27N1.fastq -u normal
+hyasp_pipeline HD27-3_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD27_3_S18_R1_001.fastq -2 short_fastq/HD27_3_S18_R2_001.fastq -l nanopore_fastq_pass/HD27-3.fastq -u normal
+hyasp_pipeline HD29-1_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD29_1_S1_R1_001.fastq -2 short_fastq/HD29_1_S1_R2_001.fastq -l nanopore_fastq_pass/HD29-1.fastq -u normal
+hyasp_pipeline HD31-1_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD31_1_S54_R1_001.fastq -2 short_fastq/HD31_1_S54_R2_001.fastq -l nanopore_fastq_pass/HD31-1.fastq -u normal
+hyasp_pipeline HD33-1_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD33_1_S23_R1_001.fastq -2 short_fastq/HD33_1_S23_R2_001.fastq -l nanopore_fastq_pass/HD33-1.fastq -u normal
+hyasp_pipeline HD33-3_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD33_3_S25_R1_001.fastq -2 short_fastq/HD33_3_S25_R2_001.fastq -l nanopore_fastq_pass/HD33-3.fastq -u normal
+hyasp_pipeline HD39-1_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD39_1_S33_R1_001.fastq -2 short_fastq/HD39_1_S33_R2_001.fastq -l nanopore_fastq_pass/HD39-1.fastq -u normal
+hyasp_pipeline HD40-5_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD40_5_S16_R1_001.fastq -2 short_fastq/HD40_5_S16_R2_001.fastq -l nanopore_fastq_pass/HD40-5.fastq -u normal
+hyasp_pipeline HD43-1_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD43_01_S43_R1_001.fastq -2 short_fastq/HD43_01_S43_R2_001.fastq -l nanopore_fastq_pass/HD43-1.fastq -u normal
+hyasp_pipeline HD46-1_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD46_1_S52_R1_001.fastq -2 short_fastq/HD46_1_S52_R2_001.fastq -l nanopore_fastq_pass/HD46-1.fastq -u normal
+hyasp_pipeline HD47-1_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD47_1_S34_R1_001.fastq -2 short_fastq/HD47_1_S34_R2_001.fastq -l nanopore_fastq_pass/HD47-1.fastq -u normal
+hyasp_pipeline HD59-1_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD59_1_S57_R1_001.fastq -2 short_fastq/HD59_1_S57_R2_001.fastq -l nanopore_fastq_pass/HD59-1.fastq -u normal
+hyasp_pipeline HD66-1_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD66_1_S17_R1_001.fastq -2 short_fastq/HD66_1_S17_R2_001.fastq -l nanopore_fastq_pass/HD66-1.fastq -u normal
+hyasp_pipeline HD66-6_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD66_6_S22_R1_001.fastq -2 short_fastq/HD66_6_S22_R2_001.fastq -l nanopore_fastq_pass/HD66-6.fastq -u normal
+hyasp_pipeline HD69-1_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD69_1_S49_R1_001.fastq -2 short_fastq/HD69_1_S49_R2_001.fastq -l nanopore_fastq_pass/HD69-1.fastq -u normal
+hyasp_pipeline HD75-1_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD75_1_S27_R1_001.fastq -2 short_fastq/HD75_1_S27_R2_001.fastq -l nanopore_fastq_pass/HD75-1.fastq -u normal
+hyasp_pipeline HD99-1_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD99_1_S44_R1_001.fastq -2 short_fastq/HD99_1_S44_R2_001.fastq -l nanopore_fastq_pass/HD99-1.fastq -u normal
+hyasp_pipeline HD99-4_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD99_4_S47_R1_001.fastq -2 short_fastq/HD99_4_S47_R2_001.fastq -l nanopore_fastq_pass/HD99-4.fastq -u normal
+hyasp_pipeline HD104-2_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD104_2_S11_R1_001.fastq -2 short_fastq/HD104_2_S11_R2_001.fastq -l nanopore_fastq_pass/HD104-2.fastq -u normal
+hyasp_pipeline HD104-6_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD104_6_S13_R1_001.fastq -2 short_fastq/HD104_6_S13_R2_001.fastq -l nanopore_fastq_pass/HD104-6.fastq -u normal
+hyasp_pipeline HD21N4_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD21N4_S8_L001_R1_001.fastq -2 short_fastq/HD21N4_S8_L001_R2_001.fastq -l nanopore_fastq_pass/HD21N4.fastq -u normal
+hyasp_pipeline HD04-1_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD04_1_S70_R1_001.fastq -2 short_fastq/HD04_1_S70_R2_001.fastq -l nanopore_fastq_pass/HD04-1.fastq -u normal
+hyasp_pipeline HD12-1_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD12_1_S80_R1_001.fastq -2 short_fastq/HD12_1_S80_R2_001.fastq -l nanopore_fastq_pass/HD12-1.fastq -u normal
+hyasp_pipeline HD26-1_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD26_1_S10_R1_001.fastq -2 short_fastq/HD26_1_S10_R2_001.fastq -l nanopore_fastq_pass/HD26-1.fastq -u normal
+hyasp_pipeline HD17-1_hyasp_normal plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD17_1_S90_R1_001.fastq -2 short_fastq/HD17_1_S90_R2_001.fastq -l nanopore_fastq_pass/HD17-1.fastq -u normal
+
+
+
+
+hyasp_pipeline HD05-1_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD5_1_S37_R1_001.fastq -2 short_fastq/HD5_1_S37_R2_001.fastq -l nanopore_fastq_pass/HD05-1.fastq -u bold
+hyasp_pipeline HD15-1_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD15_1_S1_R1_001.fastq -2 short_fastq/HD15_1_S1_R2_001.fastq -l nanopore_fastq_pass/HD15-1.fastq -u bold
+hyasp_pipeline HD25-1_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD25_1_S11_R1_001.fastq -2 short_fastq/HD25_1_S11_R2_001.fastq -l nanopore_fastq_pass/HD25-1.fastq -u bold
+hyasp_pipeline HD21-2_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD21_2_S2_R1_001.fastq -2 short_fastq/HD21_2_S2_R2_001.fastq -l nanopore_fastq_pass/HD21-2.fastq -u bold
+hyasp_pipeline HD26-2_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD26_2_S11_R1_001.fastq -2 short_fastq/HD26_2_S11_R2_001.fastq -l nanopore_fastq_pass/HD26-2.fastq -u bold
+hyasp_pipeline HD27N1_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD27N1_S89_R1_001.fastq -2 short_fastq/HD27N1_S89_R2_001.fastq -l nanopore_fastq_pass/HD27N1.fastq -u bold
+hyasp_pipeline HD27-3_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD27_3_S18_R1_001.fastq -2 short_fastq/HD27_3_S18_R2_001.fastq -l nanopore_fastq_pass/HD27-3.fastq -u bold
+hyasp_pipeline HD29-1_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD29_1_S1_R1_001.fastq -2 short_fastq/HD29_1_S1_R2_001.fastq -l nanopore_fastq_pass/HD29-1.fastq -u bold
+hyasp_pipeline HD31-1_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD31_1_S54_R1_001.fastq -2 short_fastq/HD31_1_S54_R2_001.fastq -l nanopore_fastq_pass/HD31-1.fastq -u bold
+hyasp_pipeline HD33-1_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD33_1_S23_R1_001.fastq -2 short_fastq/HD33_1_S23_R2_001.fastq -l nanopore_fastq_pass/HD33-1.fastq -u bold
+hyasp_pipeline HD33-3_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD33_3_S25_R1_001.fastq -2 short_fastq/HD33_3_S25_R2_001.fastq -l nanopore_fastq_pass/HD33-3.fastq -u bold
+hyasp_pipeline HD39-1_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD39_1_S33_R1_001.fastq -2 short_fastq/HD39_1_S33_R2_001.fastq -l nanopore_fastq_pass/HD39-1.fastq -u bold
+hyasp_pipeline HD40-5_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD40_5_S16_R1_001.fastq -2 short_fastq/HD40_5_S16_R2_001.fastq -l nanopore_fastq_pass/HD40-5.fastq -u bold
+hyasp_pipeline HD43-1_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD43_01_S43_R1_001.fastq -2 short_fastq/HD43_01_S43_R2_001.fastq -l nanopore_fastq_pass/HD43-1.fastq -u bold
+hyasp_pipeline HD46-1_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD46_1_S52_R1_001.fastq -2 short_fastq/HD46_1_S52_R2_001.fastq -l nanopore_fastq_pass/HD46-1.fastq -u bold
+hyasp_pipeline HD47-1_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD47_1_S34_R1_001.fastq -2 short_fastq/HD47_1_S34_R2_001.fastq -l nanopore_fastq_pass/HD47-1.fastq -u bold
+hyasp_pipeline HD59-1_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD59_1_S57_R1_001.fastq -2 short_fastq/HD59_1_S57_R2_001.fastq -l nanopore_fastq_pass/HD59-1.fastq -u bold
+hyasp_pipeline HD66-1_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD66_1_S17_R1_001.fastq -2 short_fastq/HD66_1_S17_R2_001.fastq -l nanopore_fastq_pass/HD66-1.fastq -u bold
+hyasp_pipeline HD66-6_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD66_6_S22_R1_001.fastq -2 short_fastq/HD66_6_S22_R2_001.fastq -l nanopore_fastq_pass/HD66-6.fastq -u bold
+hyasp_pipeline HD69-1_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD69_1_S49_R1_001.fastq -2 short_fastq/HD69_1_S49_R2_001.fastq -l nanopore_fastq_pass/HD69-1.fastq -u bold
+hyasp_pipeline HD75-1_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD75_1_S27_R1_001.fastq -2 short_fastq/HD75_1_S27_R2_001.fastq -l nanopore_fastq_pass/HD75-1.fastq -u bold
+hyasp_pipeline HD99-1_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD99_1_S44_R1_001.fastq -2 short_fastq/HD99_1_S44_R2_001.fastq -l nanopore_fastq_pass/HD99-1.fastq -u bold
+hyasp_pipeline HD99-4_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD99_4_S47_R1_001.fastq -2 short_fastq/HD99_4_S47_R2_001.fastq -l nanopore_fastq_pass/HD99-4.fastq -u bold
+hyasp_pipeline HD104-2_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD104_2_S11_R1_001.fastq -2 short_fastq/HD104_2_S11_R2_001.fastq -l nanopore_fastq_pass/HD104-2.fastq -u bold
+hyasp_pipeline HD104-6_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD104_6_S13_R1_001.fastq -2 short_fastq/HD104_6_S13_R2_001.fastq -l nanopore_fastq_pass/HD104-6.fastq -u bold
+hyasp_pipeline HD21N4_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD21N4_S8_L001_R1_001.fastq -2 short_fastq/HD21N4_S8_L001_R2_001.fastq -l nanopore_fastq_pass/HD21N4.fastq -u bold
+hyasp_pipeline HD04-1_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD04_1_S70_R1_001.fastq -2 short_fastq/HD04_1_S70_R2_001.fastq -l nanopore_fastq_pass/HD04-1.fastq -u bold
+hyasp_pipeline HD12-1_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD12_1_S80_R1_001.fastq -2 short_fastq/HD12_1_S80_R2_001.fastq -l nanopore_fastq_pass/HD12-1.fastq -u bold
+hyasp_pipeline HD26-1_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD26_1_S10_R1_001.fastq -2 short_fastq/HD26_1_S10_R2_001.fastq -l nanopore_fastq_pass/HD26-1.fastq -u bold
+hyasp_pipeline HD17-1_hyasp_bold plasmid_database_new/ncbi_database_genes.fasta -1 short_fastq/HD17_1_S90_R1_001.fastq -2 short_fastq/HD17_1_S90_R2_001.fastq -l nanopore_fastq_pass/HD17-1.fastq -u bold
+
+for sample in HD05-1_BC01 HD15-1_BC02 HD17-1_BC03 HD25-1_BC05 HD26-2_BC06 HD21-2_BC01 HD27N1_BC02 HD27-3_BC03 HD29-1_BC04 HD31-1_BC05 HD33-1_BC06 HD33-3_BC07 HD39-1_BC08 HD40-5_BC09 HD43-1_BC10 HD46-1_BC11 HD47-1_BC12 HD59-1_BC13 HD66-1_BC14 HD66-6_BC15 HD69-1_BC16 HD75-1_BC17 HD99-1_BC18 HD99-4_BC19 HD104-2_BC20 HD104-6_BC21 HD21N4_BC22 HD04-1_BC04          HD12-1_BC06 HD26-1_BC11; do
+mkdir $(echo $sample | cut -d'_' -f1)_hyasp_normal
+rsync -a -P jhuang@hamm:~/DATA/$(echo $sample | cut -d'_' -f1)_hyasp_normal/assembly ./$(echo $sample | cut -d'_' -f1)_hyasp_normal/
+rsync -a -P jhuang@hamm:~/DATA/$(echo $sample | cut -d'_' -f1)_hyasp_normal/plasmids ./$(echo $sample | cut -d'_' -f1)_hyasp_normal/
+done
+
+grep ">" HD05-1_hyasp_normal/assembly/assembly.fasta
+>1 length=2550181 depth=1.00x circular=true
+
+
+
+for sample in HD05-1_BC01 HD15-1_BC02   HD17-1_BC03   HD25-1_BC05 HD26-2_BC06 HD21-2_BC01 HD27N1_BC02 HD27-3_BC03 HD29-1_BC04 HD31-1_BC05 HD33-1_BC06 HD33-3_BC07 HD39-1_BC08 HD40-5_BC09 HD43-1_BC10 HD46-1_BC11 HD47-1_BC12 HD59-1_BC13 HD66-1_BC14 HD66-6_BC15 HD69-1_BC16 HD75-1_BC17 HD99-1_BC18 HD99-4_BC19 HD104-2_BC20 HD104-6_BC21 HD21N4_BC22 HD04-1_BC04    HD12-1_BC06 HD26-1_BC11; do
+for sample in HD21N4 HD21-2 HD27-3 HD59-1 HD12-1; do
+rsync -a -P jhuang@hamm:~/DATA/${sample}_hyasp_bold/assembly ./${sample}_hyasp_bold_assembly
+done
+
+
+
+
+
+
+#
+cd /mnt/Seagate_Corona/HyAsP_normal_sampled_input/HD21N4_hyasp_res
+spades.py -1 data/HD21N4_trimmed_P_1_preprocessed.fastq -2 data/HD21N4_trimmed_P_2_preprocessed.fastq --nanopore ~/DATA/Data_Anna12_HAPDICS_final/nanopore_fastq_pass/HD21N4_BC22/FA_pass.fastq -o assembly_spades -t 6
+cd /mnt/Seagate_Corona/HyAsP_normal_sampled_input/HD21-2_hyasp_res
+spades.py -1 data/HD21-2_trimmed_P_1_preprocessed.fastq -2 data/HD21-2_trimmed_P_2_preprocessed.fastq --nanopore ~/DATA/Data_Anna12_HAPDICS_final/nanopore_fastq_pass/HD21-2_BC01/FA_pass.fastq -o assembly_spades -t 6
+cd /mnt/Seagate_Corona/HyAsP_normal_sampled_input/HD27-3_hyasp_res
+spades.py -1 data/HD27-3_trimmed_P_1_preprocessed.fastq -2 data/HD27-3_trimmed_P_2_preprocessed.fastq --nanopore ~/DATA/Data_Anna12_HAPDICS_final/nanopore_fastq_pass/HD27-3_BC03/FA_pass.fastq -o assembly_spades -t 6
+cd /mnt/Seagate_Corona/HyAsP_normal_sampled_input/HD59-1_hyasp_res
+spades.py -1 data/HD59-1_trimmed_P_1_preprocessed.fastq -2 data/HD59-1_trimmed_P_2_preprocessed.fastq --nanopore ~/DATA/Data_Anna12_HAPDICS_final/nanopore_fastq_pass/HD59-1_BC13/FA_pass.fastq -o assembly_spades -t 6
+cd /mnt/Seagate_Corona/HyAsP_normal_sampled_input/HD12-1_hyasp_res
+spades.py -1 data/HD12-1_trimmed_P_1_preprocessed.fastq -2 data/HD12-1_trimmed_P_2_preprocessed.fastq --nanopore ~/DATA/Data_Anna12_HAPDICS_final/nanopore_fastq_pass/HD12-1_BC06/FA_pass.fastq -o assembly_spades -t 6
+
+
+
+cd /mnt/Seagate_Corona/HyAsP_normal_sampled_input/HD21N4_hyasp_res
+spades.py -1 data/HD21N4_trimmed_P_1_preprocessed.fastq -2 data/HD21N4_trimmed_P_2_preprocessed.fastq --nanopore ~/DATA/Data_Anna12_HAPDICS_final/nanopore_fastq_pass/HD21N4_BC22/FA_pass.fastq -o assembly_spades2 -t 6 --untrusted-contigs ../HD21-2_hyasp_res/assembly_2/assembly.fasta
+cd /mnt/Seagate_Corona/HyAsP_normal_sampled_input/HD21-2_hyasp_res
+spades.py -1 data/HD21-2_trimmed_P_1_preprocessed.fastq -2 data/HD21-2_trimmed_P_2_preprocessed.fastq --nanopore ~/DATA/Data_Anna12_HAPDICS_final/nanopore_fastq_pass/HD21-2_BC01/FA_pass.fastq -o assembly_spades2 -t 6 --untrusted-contigs ../HD21N4_hyasp_res/assembly_2/assembly.fasta
+cd /mnt/Seagate_Corona/HyAsP_normal_sampled_input/HD27-3_hyasp_res
+spades.py -1 data/HD27-3_trimmed_P_1_preprocessed.fastq -2 data/HD27-3_trimmed_P_2_preprocessed.fastq --nanopore ~/DATA/Data_Anna12_HAPDICS_final/nanopore_fastq_pass/HD27-3_BC03/FA_pass.fastq -o assembly_spades2 -t 6 --untrusted-contigs /mnt/Seagate_Corona/HyAsP_complete_genomes/HD27N1.fasta
+cd /mnt/Seagate_Corona/HyAsP_normal_sampled_input/HD59-1_hyasp_res
+spades.py -1 data/HD59-01_trimmed_P_1_preprocessed.fastq -2 data/HD59-01_trimmed_P_2_preprocessed.fastq --nanopore ~/DATA/Data_Anna12_HAPDICS_final/nanopore_fastq_pass/HD59-1_BC13/FA_pass.fastq -o assembly_spades2 -t 6 --trusted-contigs /mnt/Seagate_Corona/HyAsP_final/HD59-1.fasta
+cd /mnt/Seagate_Corona/HyAsP_normal_sampled_input/HD12-1_hyasp_res
+spades.py -1 data/HD12-01_trimmed_P_1_preprocessed.fastq -2 data/HD12-01_trimmed_P_2_preprocessed.fastq --nanopore ~/DATA/Data_Anna12_HAPDICS_final/nanopore_fastq_pass/HD12-1_BC06/FA_pass.fastq -o assembly_spades2 -t 6 --trusted-contigs /mnt/Seagate_Corona/HyAsP_final/HD12-1.fasta
+
+
+# SUCCESSFUL
+cd /mnt/Seagate_Corona/HyAsP_normal_sampled_input/HD59-1_hyasp_res
+unicycler -1 data/HD59-01_trimmed_P_1_preprocessed.fastq -2 data/HD59-01_trimmed_P_2_preprocessed.fastq -l ~/DATA/Data_Anna12_HAPDICS_final/nanopore_fastq_pass/HD59-1_BC13/FAL46897_pass.fastq -o assembly_2 -t 10 --existing_long_read_assembly assembly/assembly.fasta --mode bold
+
+
+Component   Segments   Links   Length      N50         Longest segment   Status
+        1         12      16   2,560,110   2,514,857         2,514,857   incomplete
+        
+cd /mnt/Seagate_Corona/HyAsP_normal_sampled_input/HD21N4_hyasp_res
+unicycler -1 data/HD21N4_trimmed_P_1_preprocessed.fastq -2 data/HD21N4_trimmed_P_2_preprocessed.fastq -l ~/DATA/Data_Anna12_HAPDICS_final/nanopore_fastq_pass/HD21N4_BC22/FAL46897_pass.fastq -o assembly_2 -t 10 --existing_long_read_assembly assembly_2/assembly.fasta --mode bold
+#--existing_long_read_assembly /mnt/Seagate_Corona/HyAsP_final/HD21-2.fasta
+cd /mnt/Seagate_Corona/HyAsP_normal_sampled_input/HD21-2_hyasp_res
+unicycler -1 data/HD21-2_trimmed_P_1_preprocessed.fastq -2 data/HD21-2_trimmed_P_2_preprocessed.fastq -l ~/DATA/Data_Anna12_HAPDICS_final/nanopore_fastq_pass/HD21-2_BC01/FAL46897_pass.fastq -o assembly_2 -t 10 --existing_long_read_assembly assembly/assembly.fasta --mode bold
+cd /mnt/Seagate_Corona/HyAsP_normal_sampled_input/HD27-3_hyasp_res
+unicycler -1 data/HD27-3_trimmed_P_1_preprocessed.fastq -2 data/HD27-3_trimmed_P_2_preprocessed.fastq -l ~/DATA/Data_Anna12_HAPDICS_final/nanopore_fastq_pass/HD27-3_BC03/FAL46897_pass.fastq -o assembly_2 -t 10 --existing_long_read_assembly assembly/assembly.fasta --mode bold
+cd /mnt/Seagate_Corona/HyAsP_normal_sampled_input/HD12-1_hyasp_res
+unicycler -1 data/HD12-01_trimmed_P_1_preprocessed.fastq -2 data/HD12-01_trimmed_P_2_preprocessed.fastq -l ~/DATA/Data_Anna12_HAPDICS_final/nanopore_fastq_pass/HD12-1_BC06/FAM93905_pass_8_15.fastq -o assembly_2 -t 10 --existing_long_read_assembly assembly/assembly.fasta --mode bold
+#FAM93905_pass_0_9.fastq
+
+
+
+cd /mnt/Seagate_Corona/HyAsP_normal_sampled_input/HD12-1_hyasp_res
+unicycler -1 data/HD12-01_trimmed_P_1_preprocessed.fastq -2 data/HD12-01_trimmed_P_2_preprocessed.fastq -l ~/DATA/Data_Anna12_HAPDICS_final/nanopore_fastq_pass/HD12-1_BC06/FAM93905_pass_0_9.fastq -o assembly_3 -t 10 --existing_long_read_assembly assembly_2/assembly.fasta --mode bold
+cd /mnt/Seagate_Corona/HyAsP_normal_sampled_input/HD21N4_hyasp_res
+unicycler -1 data/HD21N4_trimmed_P_1_preprocessed.fastq -2 data/HD21N4_trimmed_P_2_preprocessed.fastq -l ~/DATA/Data_Anna12_HAPDICS_final/nanopore_fastq_pass/HD21N4_BC22/FAL46897_pass.fastq -o assembly_3 -t 10 --existing_long_read_assembly assembly_2/assembly.fasta --mode bold
+#--existing_long_read_assembly /mnt/Seagate_Corona/HyAsP_final/HD21-2.fasta
+cd /mnt/Seagate_Corona/HyAsP_normal_sampled_input/HD21-2_hyasp_res
+unicycler -1 data/HD21-2_trimmed_P_1_preprocessed.fastq -2 data/HD21-2_trimmed_P_2_preprocessed.fastq -l ~/DATA/Data_Anna12_HAPDICS_final/nanopore_fastq_pass/HD21-2_BC01/FAL46897_pass.fastq -o assembly_3 -t 10 --existing_long_read_assembly assembly_2/assembly.fasta --mode bold
+cd /mnt/Seagate_Corona/HyAsP_normal_sampled_input/HD27-3_hyasp_res
+unicycler -1 data/HD27-3_trimmed_P_1_preprocessed.fastq -2 data/HD27-3_trimmed_P_2_preprocessed.fastq -l ~/DATA/Data_Anna12_HAPDICS_final/nanopore_fastq_pass/HD27-3_BC03/FAL46897_pass.fastq -o assembly_3 -t 10 --existing_long_read_assembly assembly_2/assembly.fasta --mode bold
+
+unicycler -1 data/HD21-2_trimmed_P_1_preprocessed.fastq -2 data/HD21-2_trimmed_P_2_preprocessed.fastq -l 6.fasta -o assembly_3 -t 10 --existing_long_read_assembly assembly_2/assembly.fasta --mode bold
+
+circlator fixstart
+
+~/Tools/CONTIGuator_v2.7/CONTIGuator.py -r 6.fasta -a /home/jhuang/Tools/act.jar -c assembly.fasta 
+SSPACE-LongRead.pl -c assembly.fasta  -p 6.fasta -b scaffolds_ 
+
+
+canu \
+ -p HD27-3 -d HD27-3_canu \
+ genomeSize=2.6m \
+ -nanopore-raw ~/DATA/Data_Anna12_HAPDICS_final/nanopore_fastq_pass/HD27-3_BC03/FA_pass.fastq
+canu \
+ -p HD12-1 -d HD12-1_canu \
+ genomeSize=2.6m \
+ -nanopore-raw ~/DATA/Data_Anna12_HAPDICS_final/nanopore_fastq_pass/HD12-1_BC06/FA_pass.fastq
+canu \
+ -p HD21N4 -d HD21N4_canu \
+ genomeSize=2.6m \
+ -nanopore-raw ~/DATA/Data_Anna12_HAPDICS_final/nanopore_fastq_pass/HD21N4_BC22/FA_pass.fastq
+canu \
+ -p HD21-2 -d HD21-2_canu \
+ genomeSize=2.6m \
+ -nanopore-raw ~/DATA/Data_Anna12_HAPDICS_final/nanopore_fastq_pass/HD21-2_BC01/FA_pass.fastq
+ 
+ 
+#SSPACE-LongRead.pl -c assembly.fasta -p 6.fasta -b scaffolds_
+#~/Tools/CONTIGuator_v2.7/CONTIGuator.py -r assembly.fasta -a /home/jhuang/Tools/act.jar -c 6.fasta
+
+#mafft --clustalout --adjustdirection assembly_plus_1.fasta > assembly_plus_1.aln
+#~/Tools/CONTIGuator_v2.7/CONTIGuator.py -r HD27N1.fasta -a /home/jhuang/Tools/act.jar -c assembly.fasta -L 100 -C 10
+#~/Tools/CONTIGuator_v2.7/CONTIGuator.py -r HD27N1.fasta -a /home/jhuang/Tools/act.jar -c assembly.fasta -L 100 -C 10 -B 50
+#circlator minimus2 PseudoContig.fsa minimus2_res #--> if false, add NN to the end
+#circlator fixstart PseudoContig.fsa startfixed_res
+#manual edit with Bandage
+circlator minimus2 path_sequence.fasta minimus2_res
+circlator fixstart path_sequence.fasta path_sequence_startfixed
+
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+
+#HD21-2
+>4_6_8_7_copy_1_7_5_6_copy+ length=2678028 depth=1.00x circular=true
+>2 length=2381 depth=9.20x circular=true
+>3 length=2369 depth=6.79x circular=true
+
+#HD27-3
+>1_6_5_6_copy_2+ length=2475480 depth=1.00x circular=true
+>3 length=15070 depth=2.01x circular=true
+>4 length=2241 depth=14.72x circular=true
+
+#12-1
+>11_10_12_copy_3_9_1_8_copy_4_12_copy2_7_11_copy_3_copy_6_4_copy_5_3_9_copy_2_8_4_copy_copy+ length=2570015 depth=1.00x circular=true
+
+#HD21N4: ~/DATA/Data2/HyAsP_normal_sampled_input/HD21N4_hyasp_res/assembly_3
+#~/Tools/CONTIGuator_v2.7/CONTIGuator.py -r HD21-2.fasta -a /home/jhuang/Tools/act.jar -c assembly.fasta  -B 500
+circlator fixstart PseudoContig.fsa PseudoContig_startfixed
+>PseudoContig_4_6_8_7_copy_1_7_5_6_copy+ length=2767099 depth=1.00x circular=true
+>1 length=873598 depth=1.04x
+>2 length=534490 depth=0.97x
+>3 length=381711 depth=0.95x
+>4 length=294933 depth=1.00x
+>5 length=275572 depth=0.79x
+>6 length=168578 depth=1.13x
+>7 length=83741 depth=1.02x
+>8 length=59029 depth=1.24x
+>9 length=30166 depth=0.80x
+>10 length=27195 depth=0.55x
+>11 length=20480 depth=0.57x
+>12 length=13568 depth=1.34x circular=true
+>13 length=8075 depth=2.43x
+>14 length=5386 depth=2.14x circular=true
+>15 length=4729 depth=0.30x
+>16 length=3403 depth=0.77x circular=true
+
+ 
+
+>contig_length.txt
+for sample in HD04-1 HD05-1 HD12-1 HD15-1 HD17-1 HD21N4 HD21-2 HD25-1 HD26-1 HD26-2  HD27N1 HD27-3 HD29-1 HD31-1 HD33-1 HD33-3 HD39-1 HD40-5 HD43-1 HD46-1 HD47-1 HD59-1 HD66-1 HD66-6 HD69-1 HD75-1 HD99-1 HD99-4 HD104-2 HD104-6; do
+for sample in HD04-1 HD05-1 HD15-1 HD17-1 HD25-1 HD26-1 HD26-2 HD27N1 HD29-1 HD31-1 HD33-1 HD33-3 HD39-1 HD40-5 HD43-1 HD46-1 HD47-1 HD66-1 HD66-6 HD69-1 HD75-1 HD99-1 HD99-4 HD104-2 HD104-6; do
+#cp $(echo $sample | cut -d'_' -f1)_bold.fasta ../HyAsP_final/$(echo $sample | cut -d'_' -f1).fasta
+echo "---- $(echo $sample | cut -d'_' -f1) ----" >> contig_length.txt
+grep ">" $(echo $sample | cut -d'_' -f1).fasta >> contig_length.txt
+done
+
+for genome in HD04-1 HD05-1 HD15-1 HD17-1 HD25-1    HD26-1 HD26-2 HD27N1 HD29-1 HD31-1    HD33-1 HD33-3 HD39-1 HD40-5 HD43-1    HD46-1 HD47-1 HD66-1 HD66-6 HD69-1    HD75-1 HD99-1 HD99-4 HD104-2 HD104-6
+
+for genome in HD04-1 HD05-1 HD104-2 HD104-6 HD12-1 HD15-1 HD17-1 HD21-2 HD21N4 HD25-1 HD26-1 HD26-2 HD27-3 HD27N1 HD29-1 HD31-1 HD33-1 HD33-3 HD39-1 HD40-5 HD43-1 HD46-1 HD47-1 HD59-1 HD66-1 HD66-6 HD69-1 HD75-1 HD99-1 HD99-4; do
+for genome in HD66-1 HD66-6; do
+ #mv ${genome}.fasta ../complete_genomes
+ /usr/local/bin/prokka --force --outdir prokka/${genome}_chr --cpus 10 --usegenus --genus Staphylococcus --kingdom Bacteria --species epidermidis --addgenes --addmrna --prefix ${genome} --locustag ${genome} HyAsP_complete_genomes/${genome}_chr.fasta -hmm /media/jhuang/Titisee/GAMOLA2/TIGRfam_db/TIGRFAMs_15.0_HMM.LIB
+done
+#repeating for paper
+roary -p 8 -f ./roary_repeat_for_paper -i 95 -cd 99 -s -e -n -v  prokka/HD104N10/HD104N10.gff prokka/HD17-01/HD17-01.gff prokka/HD31N1/HD31N1.gff prokka/HD69-1/HD69-1.gff prokka/HD75N6/HD75N6.gff prokka/HD66N1/HD66N1.gff prokka/HD43N12/HD43N12.gff prokka/HD75N1/HD75N1.gff prokka/HD15-10/HD15-10.gff prokka/HD25N1/HD25N1.gff prokka/HD26N5/HD26N5.gff prokka/HD75N4/HD75N4.gff prokka/HD104N1/HD104N1.gff prokka/HD33N2/HD33N2.gff prokka/HD33N1/HD33N1.gff prokka/HD46-1/HD46-1.gff prokka/HD69N1/HD69N1.gff prokka/HD69N4/HD69N4.gff prokka/HD21N9/HD21N9.gff prokka/HD33N28/HD33N28.gff prokka/HD21N1/HD21N1.gff prokka/HD40-4/HD40-4.gff prokka/HD12N3/HD12N3.gff prokka/HD47N1/HD47N1.gff prokka/HD66N8/HD66N8.gff prokka/HD69N5/HD69N5.gff prokka/HD25N15/HD25N15.gff prokka/HD25-1/HD25-1.gff prokka/HD27-1/HD27-1.gff prokka/HD21-1/HD21-1.gff prokka/HD04-01/HD04-01.gff prokka/HD12-01/HD12-01.gff prokka/HD15N6/HD15N6.gff prokka/HD69N2/HD69N2.gff prokka/HD15N1/HD15N1.gff prokka/HD66-1/HD66-1.gff prokka/HD26-1/HD26-1.gff prokka/HD66N5/HD66N5.gff prokka/HD40N3/HD40N3.gff prokka/HD33-1/HD33-1.gff prokka/HD33N12/HD33N12.gff prokka/HD27N4/HD27N4.gff prokka/HD43N5/HD43N5.gff prokka/HD43N1/HD43N1.gff prokka/HD39N1/HD39N1.gff prokka/HD4N3/HD4N3.gff prokka/HD5-2/HD5-2.gff prokka/HD33N3/HD33N3.gff prokka/HD39N2/HD39N2.gff prokka/HD59N1/HD59N1.gff prokka/HD59N3/HD59N3.gff prokka/HD31N3/HD31N3.gff prokka/HD15N5/HD15N5.gff prokka/HD46N1/HD46N1.gff prokka/HD25N9/HD25N9.gff prokka/HD15N7/HD15N7.gff prokka/HD25N3/HD25N3.gff prokka/HD99-1/HD99-1.gff prokka/HD47N2/HD47N2.gff prokka/HD59N12/HD59N12.gff prokka/HD99N1/HD99N1.gff prokka/HD47N3/HD47N3.gff prokka/HD39-2/HD39-2.gff prokka/HD43N14/HD43N14.gff prokka/HD99N2/HD99N2.gff prokka/HD66N2/HD66N2.gff prokka/HD75-1/HD75-1.gff prokka/HD26N2/HD26N2.gff prokka/HD43-01/HD43-01.gff prokka/HD47-1/HD47-1.gff prokka/HD33N4/HD33N4.gff prokka/HD39N4/HD39N4.gff prokka/HD4N10/HD4N10.gff prokka/HD12N4/HD12N4.gff prokka/HD29-1/HD29-1.gff prokka/HD12N2/HD12N2.gff prokka/HD31-1/HD31-1.gff prokka/HD104-6/HD104-6.gff prokka/HD43N3/HD43N3.gff prokka/HD4N4/HD4N4.gff prokka/HD75N5/HD75N5.gff prokka/HD40N1/HD40N1.gff prokka/HD59-01/HD59-01.gff prokka/HD43N2/HD43N2.gff prokka/HD15N8/HD15N8.gff
+&& mv roary_*/* ./roary && rm -rf ./roary_*
+
+https://molbiol-tools.ca/Genomics.htm#Genome%20visualization
+http://stothard.afns.ualberta.ca/cgview_server/
+makeblastdb -in out-baits.fasta_otus_0.87.fa -dbtype nucl
+blastn -db out-baits.fasta_otus_0.87.fa -query out-baits.fasta_otus_0.87.fa -out out-baits.fasta_otus_0.87.fa.blastn -evalue 1e-10 -num_threads 15 -outfmt 6  -strand minus  # -max_target_seqs 1
+blastn -db HD66-1_chr.fasta -query HD66-6.fasta -out HD66-6_HD66-1.blastn -evalue 1e-10 -num_threads 15 -outfmt 6
+
+HD12-1  
+HD21-2  
+HD59-1
+HD27-3
+HD21N4
+
+[location=chromosome]
+[plasmid-name=pHD21N4_1]
+
+
+
+https://bacpathgenomics.wordpress.com/tag/assembly-2/
+https://www.semanticscholar.org/paper/GenomeRing%3A-alignment-visualization-based-on-Herbig-J%C3%A4ger/e72e911f437f63b0aab81a50389fadebb051edf9/figure/5
+GenomeRing: alignment visualization based on SuperGenome coordinates
+shinyCircos: an R/Shiny application for interactive creation of Circos plot
+
+https://academic.oup.com/bioinformatics/article/35/24/5303/5539862
+https://genomevolution.org/coge/GenomeView.pl?gid=16911
+
+
+java -Xmx1500m  -jar cgview/cgview.jar -f svg  -i /home/jhuang/prokka/HD66_tut/scratch/HD66-1.fsa.xml -o /home/jhuang/prokka/HD66_tut/HD66-1.fsa.svg
+cd ~/Tools/BRIG-0.95-dist/
+java -Xmx1500M -jar BRIG.jar
+
+
+
+
+
+
+
+
+
+#------------------------------------------------
+#------------- 14, dN/dS calculation ------------
+setwd("~/DATA/Data_Anna12_HAPDICS_final/dN_dS/S1_file/")
+
+
+
+##################################################################################################
+## draw phylogenetic tree using figtree, oder install.packages(ape), dendroscope or splitstree. ##
+library(ape)
+# Load the ML tree
+MLTree = read.tree("Lieberman_etal_alignment.phylip_phyml_tree.txt")
+# Re-root the tree on the taxon representing the index case
+MLTree = root(MLTree, "Aa_0.000")
+# Get the patient ID from the tip labels
+patientLetters = sapply(MLTree$tip.label, function(t){
+substring(t, 1, 1)
+})
+# Convert patient letters to integers
+patientInts = match(matrix(patientLetters), levels(as.factor(patientLetters)))
+# Assign color to each patient according to patient integers
+cols = sapply(patientInts, function(c){
+rainbow(max(patientInts))[c]
+})
+# Optional: ladderize the tree to improve it's appearance (only affects
+# node rotations)
+MLTree = ladderize(MLTree)
+# Plot the tree
+plot(MLTree, type = "phylo", show.tip.label = TRUE, tip.col = cols, cex = 0.5,
+edge.width = 2)
+# Add a legend for the tip colors
+legend("bottomleft",
+c(LETTERS[seq( from = 1, to = length(unique(patientInts))-1)],"X (outgroup)"),
+col = rainbow(max(patientInts)), lty = 1, lwd = 4, cex = 1,
+title = "Patient letters")
+
+
+##############################################################
+## A) Elevated substitution rates signal positive selection ##
+
+library(dplyr)
+
+#for sample in HD04 HD05    HD12 HD15 HD17 HD21    HD25 HD26 HD27    HD31 HD33      HD39 HD40 HD43    HD46 HD47 HD59    HD66 HD69 HD75 HD99 HD29_deeper HD104_deeper; do
+variants_HD04 <- read.csv("../../HD21/variants/merged_SNPs__.tab", sep="\t")
+#geneNames = variants_HD04$LOCUS_TAG
+## Remove duplicate gene names
+#geneNames = geneNames[!duplicated(geneNames)]
+#geneNames = variants_HD04[!duplicated(variants_HD04)]
+# Lengths of genes
+#geneLengths = xtabs(variants_HD04$Amino_Acid_Length*3~factor(variants_HD04$LOCUS_TAG,levels=geneNames))
+geneNames_Lengths <- distinct(select(variants_HD04, LOCUS_TAG, Amino_Acid_Length))
+geneNames<-geneNames_Lengths[,1]
+geneLengths<-geneNames_Lengths[,2]*3
+#    R base functions
+#        duplicated(): for identifying duplicated elements and
+#        unique(): for extracting unique elements,
+#    distinct() [dplyr package] to remove duplicate rows in a data frame.
+
+
+# Count the number of non-synonymous and synonymous substitutions in each gene
+rawNS = data.frame(matrix(0, nrow = length(geneNames), ncol = 2))
+rownames(rawNS) = geneNames
+colnames(rawNS) = c("N", "S")
+# Find all coding substitutions
+#codingSubs = subAnnotation[which(subAnnotation$Type == "Coding"),]
+# Convert counts of non-synonymous and synonymous substitution to numeric objects
+#aggCounts = aggregate(codingSubs[,6:7],
+#c(variants_HD04[,21], as.numeric(as.character(variants_HD04[,26])))
+#synonymous and non-synonymous
+variants_HD04[,'SynCount']<-as.character(variants_HD04[,'Functional_Class'])=="SILENT"
+variants_HD04[,'NonSynCount']<-as.character(variants_HD04[,'Functional_Class'])!="SILENT"
+
+codingSubs <- select(variants_HD04, LOCUS_TAG, SynCount, NonSynCount)
+aggCounts = aggregate(codingSubs[,2:3], list(as.character(codingSubs$LOCUS_TAG)), sum)
+# Get counts across all genes (i.e. including invariant genes)
+rawNS[match(aggCounts[,1], geneNames),] = aggCounts[,2:3]
+names(aggCounts)[1] <- "LOCUS_TAG"
+write.csv(aggCounts, file="aggCounts.csv")
+
+# Total number of non-synonymous and synonymous substitutions for each gene
+nSubs = rawNS[,1] + rawNS[,2]
+#ERROR nSubs_geneLengths = rawNS[,1] + rawNS[,2] + geneLengths[1]
+
+# Substitution rate per site
+subRate = sum(nSubs)/sum(geneLengths)
+# Calculate the p-value for each gene
+subRatePVal = sapply(1:length(nSubs),function(i){
+t = poisson.test(nSubs[i],r=(subRate*geneLengths[i]))
+t$p.value
+})
+length(subRatePVal)
+
+# Get the genes with significantly more substitutions than expected by chance
+subRateSignif = geneNames[which(subRatePVal<0.001)]
+subRateSignif
+
+
+# Plot number of substitutions for each gene with significantly elevated count
+png(filename = "HD21_No_subs_on_genes.png", width = 1600, height = 800)
+par(mar = c(7,4,1,1))
+nSubsSignif = matrix(nSubs[which(subRatePVal<10)])
+rownames(nSubsSignif) = subRateSignif
+nSubsSignifSorted = nSubsSignif[order(nSubsSignif[,1]),]
+bp = barplot(nSubsSignifSorted, axes = FALSE, axisnames = FALSE)
+mtext(side = 2, text = "Number of substitutions", line = 2, cex = 1.5)
+axis(2)
+axis(1, at = bp, labels = names(nSubsSignifSorted), cex.axis = 1, las = 3)
+dev.off()
+
+
+# -- results --
+Total numbers: 30 43     22 62 5 93    9
+for sample in HD04 HD05    HD12 HD15 HD17 HD21    HD25 HD26 HD27    HD31 HD33      HD39 HD40 HD43    HD46 HD47 HD59    HD66 HD69 HD75 HD99 HD29_deeper HD104_deeper; do
+HD04: group_155
+HD05: None
+HD12: None
+HD15: None
+HD17: None
+HD21: ccrB_2
+HD25: None
+HD26: group_5 rpoB    mnhA    hsdM_3  group_7
+HD27: group_52 hsdM_3
+HD31: None
+
+HD33: uhpT     group_41 opuCC_2  sasC
+HD39: group_65
+HD40: None
+HD43: None
+HD46: None
+
+HD47: None
+HD59: None
+HD66: None
+HD69: None
+HD75: None
+
+HD99: None
+HD29_deeper: group_94   group_191  group_41   group_2391 group_5    group_26
+HD104_deeper:  group_2415 group_2225 group_2400 group_108  group_105  yycJ      
+               butA_1     group_67   trpC       hemY       group_2295 dnaI      
+               thrS       lysP       pcrA       gatA       group_80   mazG_2    
+               group_112  mfd        gcaD       sdhA       group_1776 group_117 
+               ruvB       queA       lamB       group_2405 group_2315 ppi       
+               group_2185 atl        group_96   potA       blaR1      nasF_1    
+               group_2236
+
+ALL:  [1] group_622 narY                                
+ [8]        sdhA_2
+             betA     
+[15]    
+
+#2717
+grep -v "group_622" merged_SNPs__.tab | grep -v "narY" | grep -v "argE_1" | grep -v "atl" | grep -v "addA" | grep -v "mvaD" | grep -v "pdhD_1" | grep -v "group_895" | grep -v "dapF" | grep -v "sdhA_2" | grep -v "gltB" | grep -v "guaB" | grep -v "metH" | grep -v "narY" | grep -v "betA" | grep -v "gbsA_2" | grep -v "dcuA" | grep -v "azlC" | grep -v "azlD" | grep -v "purA" | grep -v "yycI" | grep -v "yycJ" > merged_SNPs___.tab
+
+
+
+
+
+############################
+## B) Estimates of dN /dS ##
+
+#-- STEP1: calculate kappa with phyml --
+
+# Assumes a fasta file representing a single genome
+readFastaRef = function(refFile) {
+row = scan(refFile,what=character(0),sep="\n")
+# Convert each base to an individual character
+chars = substr(row,1,1)
+base = chars!=">"
+seq = paste(row[base],collapse="")
+return(toupper(unlist(strsplit(seq,""))))
+}
+# Assumes a fasta file representing a single genome, split across chromosomes/contigs
+readFastaRefContig = function(refFile) {
+row = scan(refFile,what=character(0),sep="\n")
+chars = substr(row,1,1)
+base = chars!=">"
+chromNumber = rep(cumsum(!base)[base],times=nchar(row[base]))
+return(chromNumber)
+}
+# Read the reference genome
+AU0158 = readFastaRef("../../ALL/spandx/ALL.fasta")
+# Get chromosome number per site
+#AU0158c = readFastaRefContig("inputData/B.dolosa.AU0158.fa")
+table(AU0158) # Number of sites of A, C, G, T
+
+
+
+variants_HD04 <- read.csv("../../ALL/variants/merged_SNPs___.tab", sep="\t")       
+variants_sites <- variants_HD04[,3:55]
+variants_sites_t <- t(variants_sites)
+## Count the number of genomes
+#> dim(variants_sites_t)
+nSeq = 53
+#nSeq = length(seqLabels)
+## Extract base calls & transpose so each row is a genome
+#vSites = t(variants[,outgroup:ncol(variants)])
+## Ensure all characters are in upper case
+#vSites = toupper(vSites)
+
+lengthRef=5252327
+
+# Specify PHYLIP file name
+phylipOutfile = "ALL.phylip"
+# Output PHYLIP header: sequence number and sequence length
+cat(paste(nSeq,lengthRef),sep="\n",file=phylipOutfile)
+# For each genome, append to the PHYLIP file
+for(i in 1:nSeq) {
+# Begin by setting every site to that of the reference
+fullLengthRef = AU0158
+# Then replace the genome-specific calls at variable sites
+fullLengthRef[variants_sites_t] = variants_sites_t[i,]
+# Concatenate the sequence vector and output
+fullLengthRefCat = paste0(fullLengthRef,collapse="")
+cat(paste(rownames(variants_sites_t)[i]," ",fullLengthRefCat,sep=""),
+sep="\n",file=phylipOutfile,append=TRUE)
+cat("Output",i,"of",nSeq,"\n")
+}
+
+
+
+# calculate kappa-value and construct phylogenetic tree
+phyml -i ALL.phylip -b 0 -v 0 -c 1 -s BEST --no_memory_check
+                . Sequence filename:                             ALL.phylip
+                . Data type:                                     dna
+                . Alphabet size:                                 4
+                . Sequence format:                               interleaved
+                . Number of data sets:                           1
+                . Nb of bootstrapped data sets:                  0
+                . Model name:                                    HKY85
+                . Ts/tv ratio:                                   estimated
+                . Proportion of invariable sites:                0.000000
+                . Number of subst. rate categs:                  1
+                . Nucleotide equilibrium frequencies:            empirical
+                . Optimise tree topology:                        yes
+                . Tree topology search:                          Best of NNIs and SPRs
+                . Starting tree:                                 BioNJ
+                . Add random input tree:                         no
+                . Optimise branch lengths:                       yes
+                . Optimise substitution model parameters:        yes
+                . Run ID:                                        none
+                . Random seed:                                   1580836491
+                . Subtree patterns aliasing:                     no
+                . Version:                                       20160207
+#--> . (    9 sec) [  -6019417.6518] [Ts/ts ratio        ][  1.550325] --> kappa-value is 1.550
+
+
+figtree ALL.phylip_phyml_tree
+
+install.packages(ape)
+library(ape)
+# Load the ML tree
+MLTree = read.tree("ALL.phylip_phyml_tree")
+# Re-root the tree on the taxon representing the index case
+#MLTree = root(MLTree, "Aa_0.000")
+# Get the patient ID from the tip labels
+patientLetters = sapply(MLTree$tip.label, function(t){
+substring(t, 1, 1)
+})
+# Convert patient letters to integers
+patientInts = match(matrix(patientLetters), levels(as.factor(patientLetters)))
+# Assign color to each patient according to patient integers
+cols = sapply(patientInts, function(c){
+rainbow(max(patientInts))[c]
+})
+# Optional: ladderize the tree to improve it's appearance (only affects
+# node rotations)
+MLTree = ladderize(MLTree)
+# Plot the tree
+plot(MLTree, type = "phylo", show.tip.label = TRUE, tip.col = cols, cex = 0.5,
+edge.width = 2)
+# Add a legend for the tip colors
+legend("bottomleft",
+c(LETTERS[seq( from = 1, to = length(unique(patientInts))-1)],"X (outgroup)"),
+col = rainbow(max(patientInts)), lty = 1, lwd = 4, cex = 1,
+title = "Patient letters")
+
+#specified an HKY85 model of nucleotide substitution. While some substitution models specify equal base
+#frequencies or rates of transition between bases, the Hasegawa-Kishino-Yano 1985 (HKY85) model accounts
+#for differences in base frequencies (f ) and between the rate of transitions and transversions, modeled with the
+#parameter κ. You should see further down in the file that the value of κ has been estimated by PhyML to be
+#2.222 for this dataset (we will need this value this later on for use in a codon substitution model). 
+#--> kappa . Transition/transversion ratio:        1.550
+
+
+
+
+
+#-- STEP2: calculate codonUsage --
+install.packages(c("genoPlotR","seqinr","geiger"))
+library("genoPlotR")
+library("seqinr")
+library("geiger")
+
+library(GWASTools)
+gbk = read_dna_seg_from_file("NC_004461.1.gb", fileType="genbank", extra_fields="*matching_locus_tag")
+geneticCode = list(
+"TTT"="Phe","TTC"="Phe","TTA"="Leu","TTG"="Leu",
+"TCT"="Ser","TCC"="Ser","TCA"="Ser","TCG"="Ser",
+"TAT"="Tyr","TAC"="Tyr","TAA"="STO","TAG"="STO",
+"TGT"="Cys","TGC"="Cys","TGA"="STO","TGG"="Trp",
+"CTT"="Leu","CTC"="Leu","CTA"="Leu","CTG"="Leu",
+"CCT"="Pro","CCC"="Pro","CCA"="Pro","CCG"="Pro",
+"CAT"="His","CAC"="His","CAA"="Gln","CAG"="Gln",
+"CGT"="Arg","CGC"="Arg","CGA"="Arg","CGG"="Arg",
+"ATT"="Ile","ATC"="Ile","ATA"="Ile","ATG"="Met",
+"ACT"="Thr","ACC"="Thr","ACA"="Thr","ACG"="Thr",
+"AAT"="Asn","AAC"="Asn","AAA"="Lys","AAG"="Lys",
+"AGT"="Ser","AGC"="Ser","AGA"="Arg","AGG"="Arg",
+"GTT"="Val","GTC"="Val","GTA"="Val","GTG"="Val",
+"GCT"="Ala","GCC"="Ala","GCA"="Ala","GCG"="Ala",
+"GAT"="Asp","GAC"="Asp","GAA"="Glu","GAG"="Glu",
+"GGT"="Gly","GGC"="Gly","GGA"="Gly","GGG"="Gly")
+complement = c("A"="T","C"="G","G"="C","T"="A","N"="N")
+
+
+concatTranscripts = c()
+for(i in 1:nrow(gbk)) {
+if(gbk$strand[i]==1){
+concatTranscripts = c(concatTranscripts,apply(matrix(
+toupper(AU0158[gbk$start[i]:gbk$end[i]]),nrow=3),2,paste,collapse=""))
+}
+if(gbk$strand[i]==-1){
+concatTranscripts = c(concatTranscripts,apply(matrix(complement[
+toupper(AU0158[gbk$end[i]:gbk$start[i]])],nrow=3),2,paste,collapse=""))
+}
+}
+codonUsage = table(factor(concatTranscripts,levels=names(geneticCode)))
+
+
+
+
+#-- STEP3: Calculate r0 and f0 from kappa and codonUsage -- 
+
+# Load matrix defining types of substitutions
+chTypes = read.table("inputData/Codon_change_types.txt",h=T,sep="\t")
+# Remove stop codons
+notStop = (chTypes[3:66,1])!="STOP"
+ct61 = matrix(as.integer(as.matrix(chTypes[3:66,4:67][notStop,notStop])),nrow=61)
+ct61[lower.tri(ct61)] = t(ct61)[lower.tri(ct61)]
+# Calculate the NY98 substitution rate matrix
+makeQ = function(kappa,omega,pi=rep(1/61,61),chTypes) {
+aa = chTypes[3:66,1]
+notStop = aa!="STOP"
+C = matrix(as.integer(as.matrix(chTypes[3:66,4:67][notStop,notStop])),nrow=61)
+Q = matrix(0,nrow=61,ncol=61)
+Q[C==2] = 1
+Q[C==3] = kappa
+Q[C==4] = omega
+Q[C==5] = kappa*omega
+Q[lower.tri(Q)] = t(Q)[lower.tri(Q)]
+Q = t(Q * pi)
+diag(Q) = -apply(Q,1,sum)
+Q = Q/sum(-pi*diag(Q))
+return(Q)
+}
+kappa = 1.550 # Estimate during PhyML analysis in Step 2
+dndsNull = 1.0 # Under the null hypothesis
+codonCount = as.vector(codonUsage[unlist(geneticCode)!="STO"]) # Exclude stop codons
+codonFreq = codonCount/sum(codonCount) # Normalize
+# Relative frequency of each substitution
+ny98 = makeQ(kappa,dndsNull,codonFreq,chTypes)*codonFreq
+# Define the expected rate of various types of substitutions
+dsTv = sum(ny98[!is.na(ct61) & ct61==2]) # Synonymous transversions
+dsTs = sum(ny98[!is.na(ct61) & ct61==3]) # Synonymous transitions
+dnTv = sum(ny98[!is.na(ct61) & ct61==4]) # Non-synonymous transversions
+dnTs = sum(ny98[!is.na(ct61) & ct61==5]) # Non-synonymous transitions
+# Compute the relative frequency of non-synonymous vs synonymous
+# Substitutions under the null hypothesis
+(r0 = (dnTv+dnTs)/(dsTv+dsTs))
+## [1] 5.004439
+# Convert r0 to a frequency
+(f0 = r0/(1+r0))
+
+#> # Compute the relative frequency of non-synonymous vs synonymous
+#> # Substitutions under the null hypothesis
+#> (r0 = (dnTv+dnTs)/(dsTv+dsTs))
+#[1] 2.030341
+#> ## [1] 5.004439
+#> # Convert r0 to a frequency
+#> (f0 = r0/(1+r0))
+#[1] 0.6700041
+
+# write.csv(round(makeQ(kappa,dndsNull,codonFreq,chTypes),4), "sub_rate_matrix.txt")
+# 
+# Hi Anna,
+# 
+# I am trying to summarize the dN/dS calculation process.
+# 
+# 1, use the attached formulea (see codon_model.png), we can calculate the substitution rate matrix under the null hypothesis
+# using kappa (transition/transversion ratio), omega (dN/dS ratio) and Pj (the codon frequency of codon j)
+# - kappa in formulae is calulated from SNPs_ALL.xlsx that contains the SNPs between the infection+non_clonal (23+62=85) samples --> 1.550
+# - omega in formulae is 1.0 under the null hypothesis 
+# - the value codon_frequency (Pi_j in formulae) is calculate from "NC_004461.1.gb"
+# The calculated substition rate matrix is in sub_rate_matrix.txt.
+# 2, calculate the table relative_frequency of each substitution by multiplying sub_rate_matrix with codon_frequency
+# 3, count synonymous transversions, synonymous transitions, non-synonymous transversions, and non-synonymous transitions from relative_frequency.
+# and compute the relative frequency of non-synonymous vs synonymous (r0-->2.030341).
+# 4, The r0-value is used for normalization of gene-based dN/dS values.
+# 
+# Best,
+# Jiabin
+
+
+
+
+#################################
+#----> directly use the own data
+#for sample in HD04 HD05    HD12 HD15 HD17 HD21    HD25 HD26 HD27   HD29_deeper  HD31 HD33      HD39 HD40 HD43    HD46 HD47 HD59    HD66 HD69 HD75 HD99 HD104_deeper; do
+variants_HD04 <- read.csv("../../HD104_deeper/variants/merged_SNPs__.tab", sep="\t")
+geneNames_Lengths <- distinct(select(variants_HD04, LOCUS_TAG, Amino_Acid_Length))
+geneNames<-geneNames_Lengths[,1]
+geneLengths<-geneNames_Lengths[,2]*3
+
+# Count the number of non-synonymous and synonymous substitutions in each gene
+rawNS = data.frame(matrix(0, nrow = length(geneNames), ncol = 2))
+rownames(rawNS) = geneNames
+colnames(rawNS) = c("N", "S")
+#synonymous and non-synonymous
+variants_HD04[,'NonSynCount']<-as.character(variants_HD04[,'Functional_Class'])!="SILENT"
+variants_HD04[,'SynCount']<-as.character(variants_HD04[,'Functional_Class'])=="SILENT"
+
+
+codingSubs <- select(variants_HD04, LOCUS_TAG, NonSynCount, SynCount)
+aggCounts = aggregate(codingSubs[,2:3], list(as.character(codingSubs$LOCUS_TAG)), sum)
+# Get counts across all genes (i.e. including invariant genes)
+rawNS[match(aggCounts[,1], geneNames),] = aggCounts[,2:3]
+# Total number of non-synonymous and synonymous substitutions for each gene
+nSubs = rawNS[,1] + rawNS[,2]
+
+
+#-- STEP4: Group genes by the total number of substitutions aggCountsSubs --
+# rawNS and nSubs are calculated from A), refers to a specific HD-group, for example HD21
+subsPerGene = cbind(rawNS, nSubs)
+# Print the number of genes in each substitution group
+table(t(subsPerGene[,3]))
+
+# Calculate dN/dS for each gene and sum 
+subsPerGene_ <- rbind(subsPerGene, c(sum(subsPerGene[,1]), sum(subsPerGene[,2]), sum(subsPerGene[,3])))
+#rownames(subsPerGene_)[94] <- "sum"
+
+#> # Compute the relative frequency of non-synonymous vs synonymous under the null hypothesis
+#> (r0 = (dnTv+dnTs)/(dsTv+dsTs))
+#[1] 2.030341  
+
+dN_dS = apply(subsPerGene_, 1, function(x){
+raw_NS = x[1]/x[2]
+return(raw_NS)
+})
+adjusted_dN_dS = dN_dS/r0
+
+dN_dS_p = apply(subsPerGene_,1,function(x){
+if((x[1]+x[2])==0){
+return(1)
+}
+t = binom.test(x[1],x[1]+x[2],p=f0)
+#print(x[1])
+t$p.value
+})
+adjusted_dN_dS_p <- dN_dS_p/(1-dN_dS_p)/r0
+
+subsPerGene_dnds_padj <- cbind(subsPerGene_, dN_dS, adjusted_dN_dS, dN_dS_p, adjusted_dN_dS_p)
+write.csv(subsPerGene_dnds_padj, file = "HD104_deeper")
+
+
+##(grandNullTest = binom.test(subsPerGene_[,1],subsPerGene_[,3],p=f0))
+#B) Estimates of dN /dS
+Due to the structure of the genetic code, random mutations generate a greater number of non-synonymous than synonymous substitutions. 
+Therefore, in order to estimate dN/dS, the ratio of raw counts of non-synonymous and synonymous substitutions have to be adjusted by the ratio that one would expect to see in the absence of any selection (i.e. under neutrality). 
+The null hypothesis (H0) is that the ratio of non-synonymous and synonymous counts does not significantly differ from the ratio expected by chance (r0).
+First, it is necessary to calculate the ratio expected under neutrality, r0.
+This requires calculation of the codon substitution rate matrix, which describes the probability of substituting from one codon to another.
+The Nielsen and Yang (NY98) model of codon substitution is similar to the HKY85 model of nucleotide substitution and also includes a parameter ω, which represents the value of dN/dS.
+We have already estimated κ in the PhyML analysis and calculated the empirical codon frequencies in Step 3.
+We also know that dN /dS = 1 under H0. Therefore, we can estimate the expected ratio r0 in R using these values.
+
+
+
+
+# # Group genes by the total number of substitutions
+# aggCountsSubs = aggregate(subsPerGene, list(subsPerGene$nSubs), sum)
+# head(aggCountsSubs)
+# 
+# # Select counts for genes mutated one, twice and more than three times
+# aggCountsSubs2 = rbind(aggCountsSubs[2:3,], colSums(aggCountsSubs[4:nrow(aggCountsSubs),]))
+# rownames(aggCountsSubs2) = c("1sub", "2subs", ">=3subs")
+# # Calculate dN/dS for each category
+# dndsVector = apply(aggCountsSubs2, 1, function(x){
+# raw_NS = x[2]/x[3]
+# dnds = raw_NS/r0
+# return(dnds)
+# })
+# # Plot results
+# bp = barplot(dndsVector, axes = FALSE, axisnames = FALSE)
+# mtext(side = 2, text = expression('d'[N]~'/d'[S]), line = 2, cex = 1.5)
+# axis(2)
+# axis(1, at = bp, cex.axis = 1, las = 1, padj = 1,
+# labels = c("Genes mutated\nonce", "Genes mutated\ntwice",
+# "Genes mutated\n>= 3 times"))
+# # Add a red horizontal line to represent the value for dN/dS under neutrality
+# abline(h = 1, col = "red")
+# 
+# #ERROR x[2], x[2]+x[3]
+# dndsPVal = apply(aggCountsSubs2,1,function(x){
+# if((x[1]+x[2])==0){
+# return(1)
+# }
+# t = binom.test(x[1],x[1]+x[2],p=f0)
+# t$p.value
+# })
+# # Print out p-value for dN/dS estimate for each substitution category
+# (dndsPVal)
+# 
+# 
+# # Raw N/S across all genes
+# rawNSCombined = sum(rawNS[,1])/sum(rawNS[,2])
+# # dN/dS estimate across all genes
+# dndsCombined = (sum(rawNS[,1])/sum(rawNS[,2]))/r0
+# (grandNullTest = binom.test(sum(rawNS[,1]),sum(rawNS),p=f0))
+# 
+# # Significance of raw N/S across all genes
+# grandNullTest$p.value/(1-grandNullTest$p.value)
+# ## [1] 1.261383e-07
+# # Significance of dN/dS across all genes
+# grandNullTest$p.value/(1-grandNullTest$p.value)/r0
+
+
+#Under H0, we expect to see many more non-synonymous than synonymous substitutions and we can calculate a expected ratio.
+#We need to perform a statistical test to see whether the estimate of dN/dS for each gene is significantly different from the expected ratio. 
+#I used a binomial test for each gene to calculate a p-value.
+#Since many of the counts of non-synonymous and synonymous substitution for each gene are zero, they are not sufficient power to estimate the statistics and should be ruled out.
+
+
+~/Tools/csv2xls-0.4/csv_to_xls.py HD04 HD05    HD12 HD15 HD17 HD21    HD25 HD26 HD27    HD31 HD33      HD39 HD40 HD43    HD46 HD47 HD59    HD66 HD69 HD75 HD99 HD29_deeper HD104_deeper  -d$',' -o  dN_dS_deeper2.xls
+
+
+################################################################################################
+## C) The McDonald-Kreitman test: namely compare dN/dS between groups and pN/pS within groups ##
+## (vSites --> uniqueSnp --> aggUniqueSnps --> oddsRatio, or Fisher's Test, or Chi-squared t. ##
+#named vector
+patientId_HD = c("HD21","HD21","HD21", "HD21", "HD21", "HD04", "HD04", "HD04", "HD104", "HD12", "HD15", "HD17", "HD21","HD21", "HD21","HD25","HD26","HD26","HD26","HD26","HD27", "HD27","HD29","HD29", "HD29","HD29","HD29","HD29", "HD29","HD29","HD31","HD33","HD33", "HD33", "HD39", "HD40","HD43", "HD46","HD47","HD04","HD04","HD04", "HD04", "HD04", "HD04", "HD04", "HD05", "HD59", "HD59", "HD66","HD69","HD75","HD99") 
+names(patientId_HD) = c("X21N12","X21N13","X21N5", "X21N7", "X21N8", "X4N11", "X4N14", "HD04.01", "HD104.2", "HD12.01", "HD15.01", "HD17.01", "HD21.1","HD21N14", "HD21N4","HD25.1","HD26.1","HD26N1","HD26N3","HD26N4","HD27.2", "HD27N1","HD29.1","HD29N10", "HD29N4","HD29N5","HD29N6","HD29N7", "HD29N8","HD29N9","HD31.1","HD33.1","HD33N22", "HD33N23", "HD39.1", "HD40.1","HD43.01", "HD46.1","HD47.1","HD4N01","HD4N12","HD4N15", "HD4N2", "HD4N6", "HD4N7", "HD4N8", "HD5.1", "HD59.01", "HD59N26", "HD66.1","HD69.1","HD75.1","HD99.1" ) 
+
+#table(variants_sites_t[,1989],patientId_HD)
+#   patientId_HD
+#    HD04 HD05 HD104 HD12 HD15 HD17 HD21 HD25 HD26 HD27 HD29 HD31 HD33 HD39 HD40
+#  A   10    1     0    1    1    0    8    1    4    2    8    1    3    1    1
+#  G    0    0     1    0    0    1    0    0    0    0    0    0    0    0    0
+#   patientId_HD
+#    HD43 HD46 HD47 HD59 HD66 HD69 HD75 HD99
+#  A    1    1    1    2    1    1    0    1
+#  G    0    0    0    0    0    0    1    0
+
+
+# Number of patients
+nPatients_HD = nlevels(factor(patientId_HD))
+## For each variable site, count check whether a snp is 
+#uniqueSnp = apply(variants_sites_t,2,function(x){
+#sum(rowSums(table(x,patientId_HD)==0)!=(nPatients_HD-1))==1
+#})
+#table(uniqueSnp)
+
+uniqueSnp = apply(variants_sites_t,2,function(x){
+sum(rowSums(table(x,patientId_HD)==0))<nPatients_HD
+})
+uniqueSnp = apply(variants_sites_t,2,function(x){
+sum(colSums(table(x,patientId_HD)!=0))>nPatients_HD
+})
+table(uniqueSnp)
+
+
+geneNames_Lengths <- distinct(select(variants_HD04, LOCUS_TAG, Amino_Acid_Length))
+geneNames<-geneNames_Lengths[,1]
+geneLengths<-geneNames_Lengths[,2]*3
+rawNS = data.frame(matrix(0, nrow = length(geneNames), ncol = 2))
+rownames(rawNS) = geneNames
+colnames(rawNS) = c("N", "S")
+variants_HD04[,'SynCount']<-as.character(variants_HD04[,'Functional_Class'])=="SILENT"
+variants_HD04[,'NonSynCount']<-as.character(variants_HD04[,'Functional_Class'])!="SILENT"
+codingSubs <- select(variants_HD04, LOCUS_TAG, SynCount, NonSynCount)
+
+aggUniqueSnps = aggregate(codingSubs[,2:3], list(uniqueSnp), sum)
+head(aggUniqueSnps)
+
+
+oddsRatio = ((aggUniqueSnps$NonSynCount[1] * aggUniqueSnps$SynCount[2])/(aggUniqueSnps$SynCount[1] * aggUniqueSnps$NonSynCount[2]))
+# Print odds ratio
+(oddsRatio)
+fisher.test(aggUniqueSnps)
+chisq.test(aggUniqueSnps)
+
+
+#The McDonald-Kreitman (MK) test compares the number of non-synonymous to synonymous substitutions
+#that are fixed between groups (dN /dS) with those that occur as polymorphisms within groups (P N /P S ). Here,
+#each group is a population of isolates sampled from the same patient. The first step is to identify which 
+#substitutions occur within a population (i.e. substitutions that occur in samples from a single patient).
+#  Group.1 SynCount NonSynCount
+#1   FALSE     2087         550
+#2    TRUE       54          25
+
+
+
+
+
+################################################################################################
+## C) The McDonald-Kreitman test: example from paper (vSites --> uniqueSnp --> aggUniqueSnps) ##
+# Get patient identifier from sequence label (first letter)
+patientId = sapply(newSeqLabels,substr,1,1)
+patientId_wo_outgroup <- patientId[-1]
+# Number of patients
+nPatients = nlevels(factor(patientId))
+# For each variable site, count check whether a snp is unique to one patient
+uniqueSnp = apply(vSites,2,function(x){
+sum(rowSums(table(x,patientId)==0)!=(nPatients-1))==1
+})
+table(uniqueSnp)
+vSites_wo_outgroup <- vSites[-1,]
+
+# count how many 'zero' in the tables, if they are equal to nPatients --> uniq to one patient
+#table(vSites[,8],patientId)
+#rowSums(table(vSites_wo_outgroup[,8],patientId_wo_outgroup)==0)
+#     A  B  C  D  E  F  G  H  I  J  K  L  M  N  X
+#  C  5  4  4  1  5  3 14 13  2 10 15 14  4 17  1
+#  G  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0
+# table(vSites[,1],patientId)
+#  [1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE
+# -fixed between groups dN/dS with those that occur as polymorphims within groups
+# - substitions occur within poplution: 406
+
+
+#=(nPatients-1) since X is reference
+rowSums(table(vSites[,4],patientId)==0)
+
+# OPTIONS: For each variable site, count check whether a snp is unique to 
+# uniqueSnp2 = apply(vSites,2,function(x){
+#  sum(rowSums(table(x,patientId)==0)==(nPatients-1))
+# })
+# uniqueSnp2 = apply(vSites_wo_outgroup,2,function(x){
+#  sum(rowSums(table(x,patientId_wo_outgroup)==0)!=14)
+# })
+# uniqueSnp2 = apply(vSites_wo_outgroup,2,function(x){
+# rowSums(table(x,patientId_wo_outgroup)==0)!=14
+# })
+# uniqueSnp2 = apply(vSites,2,function(x){
+# #sum(rowSums(table(x,patientId)==0))!=nPatients
+# sum(colSums(table(x,patientId)!=0))>nPatients
+# })
+uniqueSnp2 = apply(vSites,2,function(x){
+# For each variable site, count check whether a snp is unique 
+sum(rowSums(table(x,patientId)==0)!=(nPatients))==1
+})
+table(uniqueSnp2)
+
+#There are SNPs occuring only in a sample --> TRUE
+#There are SNPs occuring in more than one samples --> FALSE
+
+
+# Aggregate counts according to whether the substitution is unique to the patient
+aggUniqueSnps = aggregate(subAnnotation[,6:7], list(uniqueSnp2), sum)
+codingSubs
+
+
+
+
+#------------------------------------------------------------------
+#------------- 15, multipe genome aligner for bacteria ------------
+#https://www.researchgate.net/post/Can_anyone_recommend_a_multiple_genome_aligner
+mauve or mugsy
+#https://academic.oup.com/bioinformatics/article/36/7/2040/5650408
+#https://github.com/EvolBioInf/andi/blob/master/scripts/maf2phy.awk
+mugsy BPH0662.fasta IRL01.fasta HD05-1.fasta HD12-1.fasta HD21-2.fasta HD25-1.fasta HD31-1.fasta HD46-1.fasta HD47-1.fasta HD99-1.fasta -p HAPDICS --directory ~/DATA/Data_Anna12_HAPDICS_final/phylo_ST2/mugsy_out2 -plot -refine
+awk -f ~/Scripts/maf2phy.awk -v n=10 HAPDICS.maf > 10isolates.phy
+#convert phylip to fasta using http://sequenceconversion.bugaco.com/converter/biology/sequences/phylip_to_fasta.php
+#NOT_USED: snp-sites 10isolates.aln -o 10isolates_.aln  --> bad, since only 65K remaining!
+#NOT_USED: fasttree -gtr -nt 10isolates_.aln > 10isolates.tree #--> bad, since the branch length is not correct!
+
+#0.1/6563 = x/27000000
+## explanation of branch length
+#The units of branch length are usually nucleotide substitutions per site in the phylogenetic trees.
+#Sometimes they may be given as % change, i.e., the number of changes per 100 nucleotide sites.
+#However, in the graphics which generated by SplitsTree, the numbers are normalized.
+#Namely, the branch length in processed_Ortho_SNP_matrix_detail.pdf and processed_Ortho_SNP_matrix_overview.pdf (see attachments) represents normalized p-distance (substitutions per site).
+#The SNP number matrix and the normalized distance matrix (which is calculated with the Neighbour-Net algorithm) are attached in the file matrix_distances.xlsx.
+raxml-ng --all --model GTR+G --prefix raxml-ng/10isolates.aln --threads 2 --msa mugsy_out2/10isolates.aln --bs-trees 1000 --redo  #--> much better since the scale of branch length is correct!!
+
+#meaning of GTR+G+ASC_LEWIS
+ASC stands for ascertainment bias option raxml
+https://github.com/amkozlov/raxml-ng/issues/15
+Lewis: e.g. --model GTR+G+ASC_LEWIS
+Felsenstein: e.g. --model GTR+G+ASC_FELS{1000} // 1000 invariant sites
+Stamatakis: e.g. --model GTR+G+ASC_STAM{1000/2000/3000/4000} // 1000 invariant As, 2000 Cs, 3000 Gs, 4000 Ts
+
+#meaning of GTR+G: Perform single tree inference on DNA alignment 
+     (random starting tree, general time-reversible model, ML estimate of substitution rates and
+      nucleotide frequencies, discrete GAMMA model of rate heterogeneity with 4 categories):
+
+#describing the tree
+The nucleotide dendrogram was inferred using the UPGMA method with distance calculation by the number of differences method using the MEGA-X software. 
+obtained automatically by applying Neighbor-Join and BioNJ algorithms to a matrix of pairwise distances estimated using the Maximum Composite Likelihood (MCL) approach, and then selecting the topology with superior log likelihood value.
+
+Figure. Molecular Phylogenetic analysis by Maximum Likelihood method 
+The evolutionary history was inferred by using the Maximum Likelihood method based on the General Time Reversible model [1]. The tree with the highest log likelihood (-12411,57) is shown. The percentage of trees in which the associated taxa clustered together is shown next to the branches. Initial tree(s) for the heuristic search were obtained automatically by applying Neighbor-Join and BioNJ algorithms to a matrix of pairwise distances estimated using the Maximum Composite Likelihood (MCL) approach, and then selecting the topology with superior log likelihood value. A discrete Gamma distribution was used to model evolutionary rate differences among sites (5 categories (+G, parameter = 0,3172)). The tree is drawn to scale, with branch lengths measured in the number of substitutions per site. The analysis involved 4 nucleotide sequences. All positions containing gaps and missing data were eliminated. There were a total of 6925 positions in the final dataset. Evolutionary analyses were conducted in MEGA X [2].
+---TODO: add the description using mugsy!---
+Figure. Molecular Phylogenetic analysis by Maximum Likelihood method 
+The evolutionary history was inferred using the Maximum Likelihood method based on the General Time Reversible model [1]. The tree with the highest log-likelihood is shown. A bootstrap [3] of 1000 replicates was performed, and values above 70 are shown. The initial tree for the heuristic search was randomly generated. A discrete Gamma distribution was used to model evolutionary rate differences among sites with four categories. The tree is drawn to scale, with branch lengths measured in the number of substitutions per site. The analysis involved ten nucleotide sequences and based on a 'mugsy' alignment [4]. All positions containing gaps and missing data were eliminated. There were a total of 2288372 positions in the final dataset. Evolutionary analyses were conducted with RaxML-NG [2].
+
+Figure. Molecular Phylogenetic analysis by Maximum Likelihood method
+The evolutionary history was inferred using the Maximum Likelihood method based on the General Time Reversible model [1]. The tree with the highest log-likelihood is shown. A bootstrap [3] of 1000 replicates was performed, and values above 70 are shown. The initial tree for the heuristic search was randomly generated. A discrete Gamma distribution was used to model evolutionary rate differences among sites with four categories. The tree is drawn to scale, with branch lengths measured in the number of substitutions per site. The analysis involved ten nucleotide sequences and based on a 'Mugsy' alignment. All positions containing gaps and missing data were eliminated. There were a total of 2288372 positions in the final dataset. Evolutionary analyses were conducted with RaxML-NG [2].
+
+1. Nei M. and Kumar S. (2000). Molecular Evolution and Phylogenetics. Oxford University Press, New York.
+2. Alexey M. Kozlov, Diego Darriba, Tomáš Flouri, Benoit Morel, and Alexandros Stamatakis (2019) RAxML-NG: A fast, scalable, and user-friendly tool for maximum likelihood phylogenetic inference. Bioinformatics, btz305 doi:10.1093/bioinformatics/btz305
+3. Felsenstein J. (1985). Confidence limits on phylogenies: An approach using the bootstrap. Evolution 39:783-791.
+4. Angiuoli,S.V. and Salzberg,S.L. (2011) Mugsy: fast multiplealignment of closely related whole genomes.Bioinformatics,27,334–342.
+
+1. Nei M. and Kumar S. (2000). Molecular Evolution and Phylogenetics. Oxford University Press, New York.
+2. Alexey M. Kozlov, Diego Darriba, Tomáš Flouri, Benoit Morel, and Alexandros Stamatakis (2019) RAxML-NG: A fast, scalable, and user-friendly tool for maximum likelihood phylogenetic inference. Bioinformatics, btz305 doi:10.1093/bioinformatics/btz305
+3. Felsenstein J. (1985). Confidence limits on phylogenies: An approach using the bootstrap. Evolution 39:783-791.
+
+2. Kumar S., Stecher G., Li M., Knyaz C., and Tamura K. (2018). MEGA X: Molecular Evolutionary Genetics Analysis across computing platforms. Molecular Biology and Evolution 35:1547-1549.
+
+A maximum-likelihood (ML) tree under the general time-reversible model of nucleotide substitution with among-site rate heterogeneity across 4 categories (GTR + Γ), ascertainment bias
+correction (Lewis) and 100 bootstrap (BS) replicates was generated based on the core-genome SNPs in RaxML-NG (available  at https://github.com/amkozlov/raxml-ng), which
+implements the core functionality of RAxML 
+
+https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0095722
+A key feature of molecular evolution is the heterogeneity of substitution rates among sites, which is often modelled using a discrete gamma distribution. A widely used derivative of this is the gamma-invariable mixture model, which assumes that a proportion of sites in the sequence are completely resistant to change, while substitution rates at the remaining sites are gamma-distributed.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# TODO: 先　remove the SNP in the genes which are the results of a combination!
+
+
+Three E-Mails:
+
+1. Mail.
+
+In the last SNP overview file, I used the first time sequenced data for the HD29 and HD104 that is much shallower than the second time sequencing. Therefore, there are very few SNPs in HD29.
+I recalculated the SNPs for HD29 and HD104 and attached the results in the attached SNPs.xls. 
+
+Thanks for your paper about the calculation of dN/dP. I used two approaches for the selection testing.
+1) The first approach tests for differences in selection across genes by testing for the presence of a significantly different number of substitutions than expected in a gene, given the substitution rate estimate for the whole genome. This approach does not distinguish between different types of substitution. Based the results, we can filter those genes having a significantly different number of substitutions than expected by chance out of tree construction.
+2) The second approach compares the number of non-synonymous to synonymous substitutions that are fixed between groups (dN /dS) with those that occur as polymorphisms within groups (PN /PS). Here,
+each group is a population of isolates sampled from the same patient.
+The results of selection testing will be sent as soon as they are available.
+
+
+2. Mail: results of selection
+3. Mail SNP of ALL53 + ALL85 (table + tree).
+
+
+#C) The McDonald-Kreitman test
+
+4. Mail: generate manhattan.png for accessory gene and SNPs + importance against p-value plots.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### TRASH ####
+04: 48      46
+05: 52      45
+104:3235    2578
+12: 38      29
+15: 123     67
+17: 6       6
+21: 185     132
+25: 21      12
+26: 31      220
+27: 0       154
+29: 465     197
+31: 4       1
+33: 43      298
+39: 28      33
+40: 7       1
+43: 20      12
+46: 17      5
+47: 13      0
+59: 23      100
+66: 59      37
+69: 14      5
+75: 25      16
+99: 24      5
+
+
+
+
+
+
+
+
+#https://www.folkstalk.com/2013/03/sed-remove-lines-file-unix-examples.html
+> sed -i '/^$/d' file
+sed -i '$d' file
+sed -i '1d;$d' file
+
+https://academic.oup.com/nar/article/43/3/e15/2410982
+with horizontal exchange of sequence usually limited to the movement of mobile genetic elements (MGEs)
+
+https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-018-2456-z
+
+
+
+Analysis of the alignments using RDP3 detected two recombining regions
+https://core.ac.uk/download/pdf/81922625.pdf
+
+
+
+TODO: - running RNASeq using PBS
+      - SNP_part2 and answer Annas question using gubbins
+
+
+
+BioSample: SAMN00044640; SRA: SRS023422
+SRP044363 and SRP044627,
+
+https://www.ncbi.nlm.nih.gov/bioproject/386260
+Human metagenome sample from G_DNA_Stool of a female participant in the dbGaP study "HMP Core Microbiome Sampling Protocol A (HMP-A)"
+
+Clustering of SNPs can be a result of the mis-alignment of reads because of the presence of the indels (insertions or deletions) at the beginning or end of reads
+https://bmcgenomics.biomedcentral.com/articles/10.1186/1471-2164-11-469
+
+type I restriction-modification system, M subunit, hsdM
+
+
+
+gubbins_drawer.py –o recomb.pdf recomb.final_tree.tre recomb.recombination_predictions.embl
+https://arxiv.org/pdf/1507.03972.pdf
+
+
+
+19 65244
+avium104   G
+###### TRASH ######
+# draw new graphics and roary.
+Now I working on draw the global phylogenetics of infection+non_clonal samples, which I take following samples
+# # representative (23) + # non_clonal (62)
+# for sample in HD21-1 HD04-01 HD5-1 HD66-1 HD104-2 HD12-01 HD15-01 HD17-01 HD25-1 HD26-1 HD27-2 HD29-1 HD31-1 HD33-1 HD39-1 HD40-1 HD43-01 HD46-1 HD47-1 HD59-01 HD69-1 HD75-1 HD99-1 HD66N1 HD66N2 HD66N5 HD66N8 HD69N1 HD69N2 HD69N4 HD69N5 HD104N1 HD104N10 HD12N2 HD12N3 HD12N4 HD15N1 HD15N5 HD15N6 HD15N7 HD15N8 HD21N1 HD21N9 HD25N1 HD25N15 HD25N3 HD25N9 HD26N2 HD26N5 HD27N4 HD31N1 HD31N3 HD33N1 HD33N12 HD33N2 HD33N28 HD33N3 HD33N4 HD39N1 HD39N2 HD39N4 HD40N1 HD40N3 HD43N1 HD43N12 HD43N14 HD43N2 HD43N3 HD43N5 HD46N1 HD47N1 HD47N2 HD47N3 HD4N10 HD4N3 HD4N4 HD59N1 HD59N12 HD59N3 HD75N1 HD75N4 HD75N5 HD75N6 HD99N1 HD99N2; do
+
+@Minyue, you can also take the samples above to unify our analysis-inputs. 
+
+The genes, on which the kmers from your pipeline located, should also find in the roary results based on the 85 samples? 
+
+
+
+
+
+
+#bengal3_ac3
+#conda install -c genomedk raxml-ng
+
+#"filter_percentage": 25,
+
+
+#snippy-core --prefix snippy.core snippy/HD59-01 snippy/HD59-02 snippy/HD59-03 snippy/HD59-04 snippy/HD59-05 snippy/HD59-06 snippy/HD59-07 snippy/HD59-08 snippy/HD59-09 snippy/HD59-10  snippy/HD59N3 snippy/HD59N12 snippy/HD59N26 snippy/HD59N22  snippy/HD59N1
+
+
+#at 1 mutation per site --> 1 mutation per SNPs
+# correct the unit from per SNPs to per site!
+
+
+
+#/usr/bin/convert -quality 100 -resize 1400x pangenome_matrix_raxml.png pangenome_matrix_HD21.png
+
+#https://guangchuangyu.github.io/2015/07/flip-and-rotate-branches-in-ggtree/
+#file <- system.file("extdata/BEAST", "beast_mcc.tree", package="treeio")
+#beast <- read.beast(file)
+#beast
+
+#nw_order -c a raxml-ng/snippy.core.aln.raxml.bestTree_unordered > raxml-ng/snippy.core.aln.raxml.bestTree
+#nw_order -c n raxml-ng/snippy.core.aln.raxml.bestTree_unordered > raxml-ng/snippy.core.aln.raxml.bestTree
+#nw_order -c d raxml-ng/snippy.core.aln.raxml.bestTree_unordered > raxml-ng/snippy.core.aln.raxml.bestTree
+
+
+
+#library(ggtree)
+#> set.seed(123)
+#> tr = rtree(15)
+#> d=fortify(tr)
+#> dd = subset(d, isTip)
+#> dd$label[order(dd$y, decreasing=TRUE)]
+# [1] "t5"  "t8"  "t4"  "t10" "t12" "t1"  "t2"  "t3"  "t11" "t13" "t9"  "t6" 
+#[13] "t14" "t7"  "t15"
+#http://www.phytools.org/Cordoba2017/ex/2/Intro-to-phylogenies.html
+
+
+
+
+#TODO: rerun HD59
+#HD59N2_R1.fastq.gz_
+#HD59N2_R2.fastq.gz_
+
+
+
+
+
+
+#cp -r snippy snippy_all
+#delete non-clonal species
+#mv variants variants_all
+#mv roary roary_all
+#mv raxml-ng raxml-ng_all
+#mv pangenome_frequency_HD27.png pangenome_frequency_all_HD27.png
+#mv pangenome_matrix_HD27.png pangenome_matrix_all_HD27.png
+#mv pangenome_pie_HD27.png pangenome_pie_all_HD27.png
+
+
+# cp variants/snippy.core.full.aln variants/snippy.core.full.with_ref.aln
+# cp variants/snippy.core.aln variants/snippy.core.with_ref.aln
+# awk '{ if ((NR>1)&&($0~/^>/)) { printf("\n%s", $0); } else if (NR==1) { printf("%s", $0); } else { printf("\t%s", $0); } }' variants/snippy.core.full.with_ref.aln | grep -vFf ../patterns.txt - | tr "\t" "\n" > variants/snippy.core.full.aln
+# awk '{ if ((NR>1)&&($0~/^>/)) { printf("\n%s", $0); } else if (NR==1) { printf("%s", $0); } else { printf("\t%s", $0); } }' variants/snippy.core.with_ref.aln | grep -vFf ../patterns.txt - | tr "\t" "\n" > variants/snippy.core.aln
+# snp-sites variants/snippy.core.aln > variants/snippy.core_.aln
+# mv variants/snippy.core_.aln variants/snippy.core.aln
+# sed -i -e 's/"variants_calling": true,/"variants_calling": false,/g' bengal-bay-0.1.json
+# sed -i -e 's/"phylogeny_fasttree": false,/"phylogeny_fasttree": true,/g' bengal-bay-0.1.json
+# sed -i -e 's/"phylogeny_raxml": false,/"phylogeny_raxml": true,/g' bengal-bay-0.1.json
+# sed -i -e 's/"pangenome": false,/"pangenome": true,/g' bengal-bay-0.1.json
+# snakemake --printshellcmds
+# 
+# mv raxml-ng/snippy.core.aln.raxml.bestTree raxml-ng/snippy.core.aln.raxml.bestTree_unordered
+# nw_order -c n raxml-ng/snippy.core.aln.raxml.bestTree_unordered > raxml-ng/snippy.core.aln.raxml.bestTree
+# snakemake --printshellcmds visualize_roary_raxml
+# /usr/bin/convert -quality 100 -resize 1400x pangenome_frequency.png pangenome_frequency_${hd_dir}.png
+# /usr/bin/convert -quality 100 -resize 1400x pangenome_matrix_raxml.png pangenome_matrix_${hd_dir}.png
+# /usr/bin/convert -quality 100 -resize 1400x pangenome_pie.png pangenome_pie_${hd_dir}.png
+# 
+# 
+# snakemake --printshellcmds visualize_roary_fasttree
+# /usr/bin/convert -quality 100 -resize 1400x pangenome_frequency.png pangenome_frequency_clonal_HD27.png
+# /usr/bin/convert -quality 100 -resize 1400x pangenome_matrix_raxml.png pangenome_matrix_clonal_HD27.png
+# /usr/bin/convert -quality 100 -resize 1400x pangenome_pie.png pangenome_pie_clonal_HD27.png
+# 
+# mv variants variants_clonal
+# mv raxml-ng raxml-ng_clonal
+# mv variants_all variants
+# mv raxml-ng_all raxml-ng
+
+
+
+
+
+
+
+
+#sed -i -e 's/"phylogeny_fasttree": true,/"phylogeny_fasttree": false,/g' bengal-bay-0.1.json
+#sed -i -e 's/"pangenome": true,/"pangenome": false,/g' bengal-bay-0.1.json
+#snakemake --printshellcmds
+
+
+
+# HD04 summary_statistics.txt
+#Core genes      (99% <= strains <= 100%)        1990
+#Soft core genes (95% <= strains < 99%)  0
+#Shell genes     (15% <= strains < 95%)  681
+#Cloud genes     (0% <= strains < 15%)   320
+#Total genes     (0% <= strains <= 100%) 2991
+
+# genelist.xls
+
+
+#### TRASH ####
+#tbl2asn -V b -a r10k -l paired-ends -M n -N 1 -y 'Annotated using prokka 1.12 from https://github.com/tseemann/prokka' -Z prokka\/HD04\-03\/HD04\-03\.err -i prokka\/HD04\-03\/HD04\-03\.fsa
+##https://github.com/Ecogenomics/Mannotator   Mannotator
+#http://weizhong-lab.ucsd.edu/webMGA/server/
+#https://github.com/tseemann/prokka/releases/tag/v1.13
+#prokka --listdb
+
+#See https://github.com/tseemann/prokka/releases/tag/v1.13
+#Updated sprot databases and added COG terms where availabe (WORK IN PROGRESS)
+#There are COGs in the Genbank/GFF files.
+
+#accB_1
+#InsideDNA: hmmpress - Prepare HMM database for hmmscan
+#/media/jhuang/Titisee/GAMOLA2/Pfam_db: Pfam_db using hmmpress
+
+
+
+
+
+# cd HD04
+# #set variants_calling and pangenome as true
+# #automatically detected the samples without snippy and running them.
+# snakemake
+# 
+# 
+# #freebayes -p 1 -q 20 -m 60 --min-coverage 20 -V -f reference/ref.fa HD4N01.bam --region HD04:0-61483
+# # TODO: adjust mincov from 10 to 20 if a samples contains one_occurence_SNP, using higher mincov and try again!
+# #Protein msa; AltName: Modulator of SarA_1
+# #sdrD    gram-positive signal peptide, YSIRK family_605  Serine-aspartate repeat-containing protein F; Flags: Precursor Length=1733 Score=0 Expect=0.0   synonymous_variant c.4053C>T p.Asp1351Asp
+# #group_1123      UPF0738 protein SE_0694_848
+# #[R]COG2014: COG2996 Predicted RNA-binding protein, contains S1 domains,  virulence factor B family Length=300 Score=531 Expect=0.0      synonymous_variant c.447C>T p.Phe149Phe
+# #http://www.cbs.dtu.dk/services/FeatureExtract/
+# #https://widdowquinn.github.io/2018-03-06-ibioic/01-introduction/03-parsing.html
+# #https://github.com/katholt/vre/blob/master/scripts/parseGenbank_extractGenes.py
+# #https://biopython.org/wiki/Intergenic_regions
+# #https://pypi.org/project/gbseqextractor/
+# #https://warwick.ac.uk/fac/sci/moac/people/students/peter_cock/python/genbank/
+# #http://manpages.ubuntu.com/manpages/trusty/man1/bp_genbank2gff3.1p.html
+# #bp_genbank2gff3.pl -- Genbank->gbrowse-friendly GFF3
+# #https://bioinformatics.stackexchange.com/questions/4365/how-to-extract-the-protein-fasta-file-from-a-genbank-file
+# #https://www.bioinformatics.org/sms2/genbank_feat.html
+# # Filtering out specific fields from a Genbank file
+# #parseGenbank_extractGenes.py
+# #https://rdrr.io/cran/biofiles/man/write.GenBank-methods.html
+# #install.packages("biofiles")
+# #devtools::install_github("gschofl/biofiles")
+# #library(biofiles)
+
+
+
+
+
+'''
+#ERROR after delete the "  
+cp ../roary/gene_presence_absence.csv ./
+sed -i 's/"//g' gene_presence_absence.csv
+process_gamola_gb_HAPDICS.py gene_presence_absence.csv HD04_comp1__.fa.gb 
+'''
+    
+
+
+## input the file mergedSNP and output reformatted 
+##"Non-unique LOCUS_TAG"
+lines = open(input_for_reformatting)
+padj = 0.0
+for line in lines:
+    if not line.startswith("\"LOCUS_TAG\""):
+        locus_tag = line.split(",")[0].strip()
+        locus_tag = locus_tag.strip("\"")    #BIT33 Gene ID
+
+        
+        #log2fc = float(line.split(",")[2].strip())
+        #log2fc_r = round(log2fc, 2)
+        #fc = round(2**log2fc, 2)
+        #padj_str = line.split(",")[6].strip()
+        #if padj_str != "NA":
+        #  padj = round(float(line.split(",")[6].strip()), 2)
+
+        #print(locus_tag)
+        blast_gene = ""
+        if locus_tag in locustag_gene:
+            blast_gene = locustag_gene[locus_tag]
+
+        blast_product = ""
+        blast_product_1 = ""
+        blast_product_2 = ""
+        if locus_tag in locustag_product:
+            blast_product = locustag_product[locus_tag]
+            blast_product0 = blast_product.split('=')[0]
+            blast_product1 = " ".join(blast_product0.split(' ')[:-1])
+            #blast_product_splited = blast_product.split("]")[0]
+            #bpss = blast_product_splited.split("[")
+            #blast_product_1 = bpss[0].rstrip()
+            #blast_product_2 = bpss[1]
+        translated_seq = ""
+        if locus_tag in locustag_translation:
+            translated_seq = locustag_translation[locus_tag]
+        cogmatch = ""
+        cogcode = ""
+        if locus_tag in locustag_COGmatch:
+            cogmatch = locustag_COGmatch[locus_tag]
+            #if cogmatch:
+            cogmatch_splited = cogmatch.split("]")
+            cogmatch = cogmatch_splited[1]
+            cogcode = cogmatch_splited[0].lstrip("[")
+        pfammatch = ""
+        if locus_tag in locustag_PFAMmatch:
+            #pfammatch = " ".join(locustag_PFAMmatch[locus_tag][0].split(" ")[:-2])
+            pfammatch = locustag_PFAMmatch[locus_tag][0]
+            pfammatch0 = pfammatch.split('=')[0]
+            pfammatch1 = " ".join(pfammatch0.split(' ')[:-1])
+        tigrmatch = ""
+        if locus_tag in locustag_TIGRmatch:
+            tigrmatch = locustag_TIGRmatch[locus_tag][0].split(";")[0]
+
+        ##(",".join(line.split(",")[3:])).strip()
+        #blast_product, pfammatch, tigrmatch, 
+        #print log2fc
+        #print fc
+        #print padj
+        print("\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\""%(locus_tag, line.split("\t")[1], blast_product1, cogcode, cogmatch, pfammatch1, line.split("\t")[3], line.split("\t")[4], line.split("\t")[5], line.split("\t")[6], line.split("\t")[7], line.split("\t")[8], line.split("\t")[9], translated_seq))
+    else:
+        print('"LOCUS_TAG", "GENE", "PRODUCT","COG_Code","COG_Annotation","PFAM_Annotation","Effect","Impact","Functional_Class","Codon_change","Amino_Acid_change","Amino_Acid_Length","Gene_name", "Translation"')
+
+
+
+#------
+#/home/jhuang/Tools/SPANDx_v3.2/SPANDx.sh -v HD04 -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD04/spandx/ -r HD04 -m yes -i yes -a yes -z yes -w 100
+#rm -rf Outputs Phylo  
+
+#change SCHEDULER=PBS under scheduler.config
+#/home/jhuang/Tools/SPANDx_v3.1/SPANDx.sh -v HD04 -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD04/spandx_/ -r HD04 -m yes -i yes -a yes -z yes -w 100  #--> quality is bad
+#v3.1/ATGK.jar -g none are running correctly! 
+#v3.2/ATGK.jar -g none caused the ERROR! 
+/home/jhuang/Tools/SPANDx_v3.2/SPANDx.sh -v HD04 -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD04/spandx/ -r HD04 -m yes -i yes -a yes -z yes -w 100
+#/home/jhuang/Tools/SPANDx_v3.2/SPANDx.sh -v HD33 -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD33/spandx/ -r HD33 -m yes -i yes -a yes -z yes -w 100
+#/home/jhuang/Tools/SPANDx_v3.2/SPANDx.sh -v HD05 -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD05/spandx/ -r HD05 -m yes -i yes -a yes -z yes -w 100
+#/home/jhuang/Tools/SPANDx_v3.2/SPANDx.sh -v HD104 -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD104/spandx/ -r HD104 -m yes -i yes -a yes -z yes -w 100
+/home/jhuang/Tools/SPANDx_v3.2/SPANDx.sh -v HD12 -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD12/spandx/ -r HD12 -m yes -i yes -a yes -z yes -w 100
+#/home/jhuang/Tools/SPANDx_v3.2/SPANDx.sh -v HD15 -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD15/spandx/ -r HD15 -m yes -i yes -a yes -z yes -w 100
+/home/jhuang/Tools/SPANDx_v3.2/SPANDx.sh -v HD17 -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD17/spandx/ -r HD17 -m yes -i yes -a yes -z yes -w 100
+/home/jhuang/Tools/SPANDx_v3.2/SPANDx.sh -v HD21 -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD21/spandx/ -r HD21 -m yes -i yes -a yes -z yes -w 100
+/home/jhuang/Tools/SPANDx_v3.2/SPANDx.sh -v HD25 -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD25/spandx/ -r HD25 -m yes -i yes -a yes -z yes -w 100
+
+#/home/jhuang/Tools/SPANDx_v3.2/SPANDx.sh -v HD26 -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD26/spandx/ -r HD26 -m yes -i yes -a yes -z yes -w 100
+#/home/jhuang/Tools/SPANDx_v3.2/SPANDx.sh -v HD27 -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD27/spandx/ -r HD27 -m yes -i yes -a yes -z yes -w 100
+#/home/jhuang/Tools/SPANDx_v3.2/SPANDx.sh -v HD31 -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD31/spandx/ -r HD31 -m yes -i yes -a yes -z yes -w 100
+#/home/jhuang/Tools/SPANDx_v3.2/SPANDx.sh -v HD39 -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD39/spandx/ -r HD39 -m yes -i yes -a yes -z yes -w 100
+#/home/jhuang/Tools/SPANDx_v3.2/SPANDx.sh -v HD40 -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD40/spandx/ -r HD40 -m yes -i yes -a yes -z yes -w 100
+#/home/jhuang/Tools/SPANDx_v3.2/SPANDx.sh -v HD43 -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD43/spandx/ -r HD43 -m yes -i yes -a yes -z yes -w 100
+/home/jhuang/Tools/SPANDx_v3.2/SPANDx.sh -v HD46 -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD46/spandx/ -r HD46 -m yes -i yes -a yes -z yes -w 100
+#/home/jhuang/Tools/SPANDx_v3.2/SPANDx.sh -v HD47 -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD47/spandx/ -r HD47 -m yes -i yes -a yes -z yes -w 100
+/home/jhuang/Tools/SPANDx_v3.2/SPANDx.sh -v HD59 -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD59/spandx/ -r HD59 -m yes -i yes -a yes -z yes -w 100
+#/home/jhuang/Tools/SPANDx_v3.2/SPANDx.sh -v HD66 -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD66/spandx/ -r HD66 -m yes -i yes -a yes -z yes -w 100
+#/home/jhuang/Tools/SPANDx_v3.2/SPANDx.sh -v HD69 -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD69/spandx/ -r HD69 -m yes -i yes -a yes -z yes -w 100
+#/home/jhuang/Tools/SPANDx_v3.2/SPANDx.sh -v HD75 -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD75/spandx/ -r HD75 -m yes -i yes -a yes -z yes -w 100
+#/home/jhuang/Tools/SPANDx_v3.2/SPANDx.sh -v HD99 -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD99/spandx/ -r HD99 -m yes -i yes -a yes -z yes -w 100
+#/home/jhuang/Tools/SPANDx_v3.2/SPANDx.sh -v HD29 -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/HD29/spandx/ -r HD29 -m yes -i yes -a yes -z yes -w 100
+/home/jhuang/Tools/SPANDx_v3.2/SPANDx.sh -v ALL -d /home/jhuang/DATA/Data_Anna12_HAPDICS_final/ALL/spandx/ -r ALL -m yes -i yes -a yes -z yes -w 100
+
+
+#The standard workhorse for genomic analysis of the evolution of bacterial populations is phylogenetic modelling of mutations in the core genome.
+
+
+#------------------------------------------
+cd HD04
+mkdir spandx
+cd spandx;
+for sample in HD04-01 HD04-02 HD04-03 HD04-04 HD04-05  HD04-06 HD04-07 HD04-08 HD04-09 HD04-10  HD4N2 HD4N6 HD4N7 HD4N8 HD4N12 HD4N15 4N11 4N14  HD4N01; do  #19
+  ln -s ../trimmed/${sample}_trimmed_P_1.fastq.gz ${sample}_1_sequence.fastq.gz
+  ln -s ../trimmed/${sample}_trimmed_P_2.fastq.gz ${sample}_2_sequence.fastq.gz
+done
+cd ../..
+
+cd HD33
+mkdir spandx
+cd spandx;
+for sample in HD33-8 HD33-4 HD33-6 HD33-3 HD33-10 HD33-7 HD33-5 HD33-1 HD33-2 HD33-9  HD33N22 HD33N23; do  #CHANGED  -HD33N28  #12
+  ln -s ../trimmed/${sample}_trimmed_P_1.fastq.gz ${sample}_1_sequence.fastq.gz
+  ln -s ../trimmed/${sample}_trimmed_P_2.fastq.gz ${sample}_2_sequence.fastq.gz
+done
+cd ../..
+
+cd HD05
+mkdir spandx
+cd spandx;
+for sample in HD5-10 HD5-6 HD5-8 HD5-7 HD5-3 HD5-9 HD5-1 HD5-5 HD5-2 HD5-4; do  #10
+  ln -s ../trimmed/${sample}_trimmed_P_1.fastq.gz ${sample}_1_sequence.fastq.gz
+  ln -s ../trimmed/${sample}_trimmed_P_2.fastq.gz ${sample}_2_sequence.fastq.gz
+done
+cd ../..
+
+cd HD104
+mkdir spandx
+cd spandx;
+for sample in HD104-2  HD104-5  HD104-6  HD104-9  HD104-13  HD104-14  HD104-15  HD104-16  HD104-17  HD104-18  HD104-19; do  #11
+  ln -s ../trimmed/${sample}_trimmed_P_1.fastq.gz ${sample}_1_sequence.fastq.gz
+  ln -s ../trimmed/${sample}_trimmed_P_2.fastq.gz ${sample}_2_sequence.fastq.gz
+done
+cd ../..
+
+cd HD12
+mkdir spandx
+cd spandx;
+for sample in HD12-10 HD12-07 HD12-04 HD12-03 HD12-09 HD12-08 HD12-01 HD12-02 HD12-06 HD12-05; do   #10
+  ln -s ../trimmed/${sample}_trimmed_P_1.fastq.gz ${sample}_1_sequence.fastq.gz
+  ln -s ../trimmed/${sample}_trimmed_P_2.fastq.gz ${sample}_2_sequence.fastq.gz
+done
+cd ../..
+
+cd HD15
+mkdir spandx
+cd spandx;
+for sample in HD15-05 HD15-03 HD15-01 HD15-09 HD15-04 HD15-06 HD15-08 HD15-07 HD15-02; do  #9
+  ln -s ../trimmed/${sample}_trimmed_P_1.fastq.gz ${sample}_1_sequence.fastq.gz
+  ln -s ../trimmed/${sample}_trimmed_P_2.fastq.gz ${sample}_2_sequence.fastq.gz
+done
+cd ../..
+
+cd HD17
+mkdir spandx
+cd spandx;
+for sample in HD17-06 HD17-05 HD17-01 HD17-07 HD17-02 HD17-03 HD17-04 HD17-08 HD17-09; do  #9
+  ln -s ../trimmed/${sample}_trimmed_P_1.fastq.gz ${sample}_1_sequence.fastq.gz
+  ln -s ../trimmed/${sample}_trimmed_P_2.fastq.gz ${sample}_2_sequence.fastq.gz
+done
+cd ../..
+
+cd HD21
+mkdir spandx
+cd spandx;
+for sample in HD21-1 HD21-3 HD21-7 HD21-9 HD21-6 HD21-2 HD21-5 HD21-8 HD21-4 HD21-10   21N12 21N7 HD21N4  21N5  21N13 HD21N14 21N8 ; do  #17
+  ln -s ../trimmed/${sample}_trimmed_P_1.fastq.gz ${sample}_1_sequence.fastq.gz
+  ln -s ../trimmed/${sample}_trimmed_P_2.fastq.gz ${sample}_2_sequence.fastq.gz
+done
+cd ../..
+
+cd HD25
+mkdir spandx
+cd spandx;
+for sample in HD25-10 HD25-7 HD25-8 HD25-12 HD25-4 HD25-6 HD25-3 HD25-5 HD25-9 HD25-1 HD25-11 HD25-2; do  #12
+  ln -s ../trimmed/${sample}_trimmed_P_1.fastq.gz ${sample}_1_sequence.fastq.gz
+  ln -s ../trimmed/${sample}_trimmed_P_2.fastq.gz ${sample}_2_sequence.fastq.gz
+done
+cd ../..
+
+cd HD26
+mkdir spandx
+cd spandx;
+for sample in HD26N4 HD26-9 HD26-2 HD26-1 HD26N1 HD26-3 HD26-8 HD26-4 HD26-5 HD26N3 HD26-6 HD26-10 HD26-7; do  #13
+  ln -s ../trimmed/${sample}_trimmed_P_1.fastq.gz ${sample}_1_sequence.fastq.gz
+  ln -s ../trimmed/${sample}_trimmed_P_2.fastq.gz ${sample}_2_sequence.fastq.gz
+done
+cd ../..
+
+cd HD27
+mkdir spandx
+cd spandx;
+for sample in HD27-2 HD27-3 HD27N1; do                                                                          #3
+  ln -s ../trimmed/${sample}_trimmed_P_1.fastq.gz ${sample}_1_sequence.fastq.gz
+  ln -s ../trimmed/${sample}_trimmed_P_2.fastq.gz ${sample}_2_sequence.fastq.gz
+done
+cd ../..
+
+cd HD31
+mkdir spandx
+cd spandx;
+for sample in HD31-1 HD31-2 HD31-3 HD31-4 HD31-5; do                                                           #5
+  ln -s ../trimmed/${sample}_trimmed_P_1.fastq.gz ${sample}_1_sequence.fastq.gz
+  ln -s ../trimmed/${sample}_trimmed_P_2.fastq.gz ${sample}_2_sequence.fastq.gz
+done
+cd ../..
+
+cd HD39
+mkdir spandx
+cd spandx;
+for sample in HD39-1 HD39-2 HD39-8 HD39-9 HD39-3 HD39-10 HD39-7 HD39-4 HD39-6 HD39-5; do    #10
+  ln -s ../trimmed/${sample}_trimmed_P_1.fastq.gz ${sample}_1_sequence.fastq.gz
+  ln -s ../trimmed/${sample}_trimmed_P_2.fastq.gz ${sample}_2_sequence.fastq.gz
+done
+cd ../..
+
+cd HD40
+mkdir spandx
+cd spandx;
+for sample in HD40-2 HD40-5 HD40-3 HD40-1; do       #4
+  ln -s ../trimmed/${sample}_trimmed_P_1.fastq.gz ${sample}_1_sequence.fastq.gz
+  ln -s ../trimmed/${sample}_trimmed_P_2.fastq.gz ${sample}_2_sequence.fastq.gz
+done
+cd ../..
+
+cd HD43
+mkdir spandx
+cd spandx;
+for sample in HD43-09 HD43-07 HD43-01 HD43-05 HD43-06 HD43-03 HD43-08 HD43-02 HD43-10; do    #empty_HD43-04  #9
+  ln -s ../trimmed/${sample}_trimmed_P_1.fastq.gz ${sample}_1_sequence.fastq.gz
+  ln -s ../trimmed/${sample}_trimmed_P_2.fastq.gz ${sample}_2_sequence.fastq.gz
+done
+cd ../..
+
+cd HD46
+mkdir spandx
+cd spandx;
+for sample in HD46-9 HD46-2 HD46-6 HD46-8 HD46-5 HD46-7 HD46-1 HD46-4 HD46-3 HD46-10; do  #10
+  ln -s ../trimmed/${sample}_trimmed_P_1.fastq.gz ${sample}_1_sequence.fastq.gz
+  ln -s ../trimmed/${sample}_trimmed_P_2.fastq.gz ${sample}_2_sequence.fastq.gz
+done
+cd ../..
+
+cd HD47
+mkdir spandx
+cd spandx;
+for sample in HD47-3 HD47-5 HD47-1 HD47-4; do    #4
+  ln -s ../trimmed/${sample}_trimmed_P_1.fastq.gz ${sample}_1_sequence.fastq.gz
+  ln -s ../trimmed/${sample}_trimmed_P_2.fastq.gz ${sample}_2_sequence.fastq.gz
+done
+cd ../..
+
+cd HD59
+mkdir spandx
+cd spandx;
+for sample in HD59-08 HD59-01 HD59-10 HD59-02 HD59-03 HD59-04 HD59-06 HD59-07 HD59-05 HD59-09 HD59N26; do  #11
+  ln -s ../trimmed/${sample}_trimmed_P_1.fastq.gz ${sample}_1_sequence.fastq.gz
+  ln -s ../trimmed/${sample}_trimmed_P_2.fastq.gz ${sample}_2_sequence.fastq.gz
+done
+cd ../..
+
+cd HD66
+mkdir spandx
+cd spandx;
+for sample in HD66-2 HD66-3 HD66-7 HD66-6 HD66-9 HD66-5 HD66-1 HD66-10 HD66-8 HD66-4; do   #10
+  ln -s ../trimmed/${sample}_trimmed_P_1.fastq.gz ${sample}_1_sequence.fastq.gz
+  ln -s ../trimmed/${sample}_trimmed_P_2.fastq.gz ${sample}_2_sequence.fastq.gz
+done
+cd ../..
+
+cd HD69
+mkdir spandx
+cd spandx;
+for sample in HD69-2 HD69-4 HD69-1 HD69-3; do                        #4
+  ln -s ../trimmed/${sample}_trimmed_P_1.fastq.gz ${sample}_1_sequence.fastq.gz
+  ln -s ../trimmed/${sample}_trimmed_P_2.fastq.gz ${sample}_2_sequence.fastq.gz
+done
+cd ../..
+
+cd HD75
+mkdir spandx
+cd spandx;
+for sample in HD75-9 HD75-5 HD75-10 HD75-6 HD75-1 HD75-8 HD75-2 HD75-4 HD75-7 HD75-3; do  #10
+  ln -s ../trimmed/${sample}_trimmed_P_1.fastq.gz ${sample}_1_sequence.fastq.gz
+  ln -s ../trimmed/${sample}_trimmed_P_2.fastq.gz ${sample}_2_sequence.fastq.gz
+done
+cd ../..
+
+cd HD99
+mkdir spandx
+cd spandx;
+for sample in HD99-2 HD99-3 HD99-4 HD99-1; do      #4
+  ln -s ../trimmed/${sample}_trimmed_P_1.fastq.gz ${sample}_1_sequence.fastq.gz
+  ln -s ../trimmed/${sample}_trimmed_P_2.fastq.gz ${sample}_2_sequence.fastq.gz
+done
+cd ../..
+
+cd HD29
+mkdir spandx
+cd spandx;
+for sample in HD29-1  HD29-2  HD29-3  HD29-4  HD29-5  HD29-6  HD29-7  HD29-8  HD29-9  HD29-10  HD29N4  HD29N5  HD29N6  HD29N7  HD29N8  HD29N9  HD29N10; do  #17
+  ln -s ../trimmed/${sample}_trimmed_P_1.fastq.gz ${sample}_1_sequence.fastq.gz
+  ln -s ../trimmed/${sample}_trimmed_P_2.fastq.gz ${sample}_2_sequence.fastq.gz
+done
+cd ../..
+
+cd HD29_deeper
+mkdir spandx
+cd spandx;
+for sample in HD29-1  HD29-2  HD29-3  HD29-4  HD29-5  HD29-6  HD29-7  HD29-8  HD29-9  HD29-10  HD29N4  HD29N5  HD29N6  HD29N7  HD29N8  HD29N9  HD29N10; do  #17
+  ln -s ../trimmed/${sample}_trimmed_P_1.fastq.gz ${sample}_1_sequence.fastq.gz
+  ln -s ../trimmed/${sample}_trimmed_P_2.fastq.gz ${sample}_2_sequence.fastq.gz
+done
+cd ../..
+
+cd HD104_deeper
+mkdir spandx
+cd spandx;
+for sample in HD104-2  HD104-5  HD104-6  HD104-9  HD104-13  HD104-14  HD104-15  HD104-16  HD104-17  HD104-18  HD104-19; do  #11
+  ln -s ../trimmed/${sample}_trimmed_P_1.fastq.gz ${sample}_1_sequence.fastq.gz
+  ln -s ../trimmed/${sample}_trimmed_P_2.fastq.gz ${sample}_2_sequence.fastq.gz
+done
+cd ../..
+
+cd ALL85
+mkdir spandx
+cd spandx;
+for sample in HD21-1 HD04-01 HD5-1 HD66-1 HD104-2 HD12-01 HD15-01 HD17-01 HD25-1 HD26-1 HD27-2 HD29-1 HD31-1 HD33-1 HD39-1 HD40-1 HD43-01 HD46-1 HD47-1 HD59-01 HD69-1 HD75-1 HD99-1 HD66N1     HD66N2 HD66N5 HD66N8 HD69N1 HD69N2 HD69N4 HD69N5 HD104N1 HD104N10 HD12N2 HD12N3 HD12N4 HD15N1 HD15N5 HD15N6 HD15N7 HD15N8 HD21N1 HD21N9 HD25N1 HD25N15 HD25N3 HD25N9 HD26N2 HD26N5 HD27N4 HD31N1 HD31N3 HD33N1 HD33N12 HD33N2 HD33N28 HD33N3 HD33N4 HD39N1 HD39N2 HD39N4 HD40N1 HD40N3 HD43N1 HD43N12 HD43N14 HD43N2 HD43N3 HD43N5 HD46N1 HD47N1 HD47N2 HD47N3 HD4N10 HD4N3 HD4N4 HD59N1 HD59N12 HD59N3 HD75N1 HD75N4 HD75N5 HD75N6 HD99N1 HD99N2; do
+  ln -s ../trimmed/${sample}_trimmed_P_1.fastq.gz ${sample}_1_sequence.fastq.gz
+  ln -s ../trimmed/${sample}_trimmed_P_2.fastq.gz ${sample}_2_sequence.fastq.gz
+done
+cd ../..
+
+
+
+#-------------------------------------------------------------------
+# DEBUG in ALL group --> don't be neccessary anymore with the extended PBS_MEM!
+#see logs/SNP_matrix.txt!!, delete the following lines in the ALL/spandx/Phylo/out/out.vcf
+#/usr/bin/java -jar -XX:+UseSerialGC -Xmx4G snpEff.jar eff -no-downstream -no-intergenic -ud 100 -formatEff -v ALL Phylo/annotated/out.vcf > Phylo/annotated/out.annotated.vcf
+#/home/jhuang/DATA/Data_Anna12_HAPDICS_final/ALL/spandx/Phylo/annotated/out.vcf > /home/jhuang/DATA/Data_Anna12_HAPDICS_final/ALL/spandx/Phylo/annotated/out.annotated.vcf
+# The order of data-generation: Outputs/SNPs_indels_PASS --> Phylo/out/out.vcf --> Phylo/annotated/out.[annotated.]vcf --> Outputs/[Comparative|Single_sample_summary.txt]
+# 
+#                                                             del line 710685
+#                                                             del line 713212
+#                                                             del line 718510
+#                                                             del line 1001911
+#                                                             del line vorletzte line 5252198
+#                                                             del last line: ",7673   0/0:99:250:0,581,7377"
+# rm -rf Comparative && rerun SPANDx.sh
+
+# some groups needs to be renamed!
+#mv HD33N1_1_sequence.fastq.gz HD33N01_1_sequence.fastq.gz
+#mv HD33N1_2_sequence.fastq.gz HD33N01_2_sequence.fastq.gz
+#mv HD43N1_1_sequence.fastq.gz HD43N01_1_sequence.fastq.gz
+#mv HD43N1_2_sequence.fastq.gz HD43N01_2_sequence.fastq.gz
+#mv HD59N1_1_sequence.fastq.gz HD59N01_1_sequence.fastq.gz
+#mv HD59N1_2_sequence.fastq.gz HD59N01_2_sequence.fastq.gz
+
+#qstat
+# try to snippy_core from spandx_results.
+
+
+
+
+
+
+sed -i 's/913514..912994/912994..913514/g' HD39__.fa.gb
+sed -i 's/1198841..1198084/1198084..1198841/g' HD39__.fa.gb
+sed -i 's/1322076..1319462/1319462..1322076/g' HD39__.fa.gb
+sed -i 's/1391536..1391397/1391397..1391536/g' HD39__.fa.gb
+sed -i 's/1996645..1996257/1996257..1996645/g' HD39__.fa.gb
+
+sed -i 's/684179..684166/684166..684179/g' HD40__.fa.gb
+sed -i 's/1042344..1041587/1041587..1042344/g' HD40__.fa.gb
+sed -i 's/1541138..1540618/1540618..1541138/g' HD40__.fa.gb
+
+sed -i 's/845897..845377/845377..845897/g' HD43__.fa.gb
+sed -i 's/939629..939616/939616..939629/g' HD43__.fa.gb
+
+sed -i 's/964909..964896/964896..964909/g' HD46__.fa.gb
+sed -i 's/1851778..1851258/1851258..1851778/g' HD46__.fa.gb
+sed -i 's/2039435..2039404/2039404..2039435/g' HD46__.fa.gb
+
+sed -i 's/503599..503079/503079..503599/g' HD47__.fa.gb
+sed -i 's/1203217..1203204/1203204..1203217/g' HD47__.fa.gb
+sed -i 's/2091735..2091704/2091704..2091735/g' HD47__.fa.gb
+sed -i 's/2368417..2366070/2366070..2368417/g' HD47__.fa.gb
+sed -i 's/2380127..2379370/2379370..2380127/g' HD47__.fa.gb
+
+sed -i 's/535706..535186/535186..535706/g' HD59__.fa.gb
+sed -i 's/841713..841700/841700..841713/g' HD59__.fa.gb
+sed -i 's/1024436..1022089/1022089..1024436/g' HD59__.fa.gb
+sed -i 's/1625907..1625150/1625150..1625907/g' HD59__.fa.gb
+sed -i 's/2194713..2192366/2192366..2194713/g' HD59__.fa.gb
+sed -i 's/2208819..2206745/2206745..2208819/g' HD59__.fa.gb
+
+sed -i 's/682274..682261/682261..682274/g' HD66__.fa.gb
+sed -i 's/1132465..1131945/1131945..1132465/g' HD66__.fa.gb
+
+sed -i 's/890591..890578/890578..890591/g' HD69__.fa.gb
+sed -i 's/1459810..1459290/1459290..1459810/g' HD69__.fa.gb
+
+sed -i 's/142666..142659/142659..142666/g' HD75__.fa.gb
+sed -i 's/873925..872451/872451..873925/g' HD75__.fa.gb
+sed -i 's/1474427..1473907/1473907..1474427/g' HD75__.fa.gb
+sed -i 's/2086022..2085805/2085805..2086022/g' HD75__.fa.gb
+
+sed -i 's/291489..291476/291476..291489/g' HD99__.fa.gb
+sed -i 's/1195024..1194504/1194504..1195024/g' HD99__.fa.gb
+sed -i 's/2410016..2409985/2409985..2410016/g' HD99__.fa.gb
+
+
+sed -i 's/231184..230664/230664..231184/g' ALL__.fa.gb
+sed -i 's/568877..568864/568864..568877/g' ALL__.fa.gb
+sed -i 's/2127788..2127757/2127757..2127788/g' ALL__.fa.gb
+sed -i 's/2403474..2401127/2401127..2403474/g' ALL__.fa.gb
+sed -i 's/3028745..3028066/3028066..3028745/g' ALL__.fa.gb
+sed -i 's/3179018..3178153/3178153..3179018/g' ALL__.fa.gb
+sed -i 's/4053514..4053501/4053501..4053514/g' ALL__.fa.gb
+sed -i 's/5075577..5074103/5074103..5075577/g' ALL__.fa.gb
+sed -i 's/5137870..5137653/5137653..5137870/g' ALL__.fa.gb
+
+sed -i 's/1094186..1094173/1094173..1094186/g' HD05__.fa.gb
+sed -i 's/1417709..1417189/1417189..1417709/g' HD05__.fa.gb
+sed -i 's/1564470..1564439/1564439..1564470/g' HD05__.fa.gb
+
+sed -i 's/873942..873935/873935..873942/g' HD104__.fa.gb
+
+sed -i 's/737941..737421/737421..737941/g' HD12__.fa.gb
+sed -i 's/1220908..1220895/1220895..1220908/g' HD12__.fa.gb
+
+sed -i 's/582711..581954/581954..582711/g' HD15__.fa.gb
+sed -i 's/784717..784704/784704..784717/g' HD15__.fa.gb
+sed -i 's/1569616..1569096/1569096..1569616/g' HD15__.fa.gb
+
+sed -i 's/2221766..2221759/2221759..2221766/g' HD17__.fa.gb
+sed -i 's/2323303..2323290/2323290..2323303/g' HD17__.fa.gb
+
+sed -i 's/709314..709301/709301..709314/g' HD21__.fa.gb
+sed -i 's/1384214..1383694/1383694..1384214/g' HD21__.fa.gb
+sed -i 's/1956764..1956733/1956733..1956764/g' HD21__.fa.gb
+
+sed -i 's/1069700..1069687/1069687..1069700/g' HD25__.fa.gb
+sed -i 's/2083075..2082555/2082555..2083075/g' HD25__.fa.gb
+
+sed -i 's/357846..357326/357326..357846/g' HD26__.fa.gb
+sed -i 's/916474..913860/913860..916474/g' HD26__.fa.gb
+sed -i 's/1562420..1561663/1561663..1562420/g' HD26__.fa.gb
+sed -i 's/1725027..1725014/1725014..1725027/g' HD26__.fa.gb
+sed -i 's/2321656..2319309/2319309..2321656/g' HD26__.fa.gb
+
+sed -i 's/1166927..1166407/1166407..1166927/g' HD27__.fa.gb
+sed -i 's/1260572..1260559/1260559..1260572/g' HD27__.fa.gb
+sed -i 's/2283684..2282927/2282927..2283684/g' HD27__.fa.gb
+
+sed -i 's/717340..717327/717327..717340/g' HD29__.fa.gb
+sed -i 's/870368..867754/867754..870368/g' HD29__.fa.gb
+sed -i 's/1566999..1566479/1566479..1566999/g' HD29__.fa.gb
+
+sed -i 's/425135..424615/424615..425135/g' HD31__.fa.gb
+sed -i 's/1230400..1230387/1230387..1230400/g' HD31__.fa.gb
+sed -i 's/2091336..2091305/2091305..2091336/g' HD31__.fa.gb
+
+sed -i 's/688256..687736/687736..688256/g' HD33__.fa.gb
+sed -i 's/788792..788779/788779..788792/g' HD33__.fa.gb
+sed -i 's/2071736..2070979/2070979..2071736/g' HD33__.fa.gb
+
+sed -i 's/714111..714098/714098..714111/g' HD29_deeper__.fa.gb
+sed -i 's/867139..864525/864525..867139/g' HD29_deeper__.fa.gb
+sed -i 's/1471110..1470590/1470590..1471110/g' HD29_deeper__.fa.gb
+sed -i 's/2437818..2437169/2437169..2437818/g' HD29_deeper__.fa.gb
+sed -i 's/2446666..2444319/2444319..2446666/g' HD29_deeper__.fa.gb
+
+sed -i 's/692977..692970/692970..692977/g' HD104_deeper__.fa.gb
+sed -i 's/2412447..2412296/2412296..2412447/g' HD104_deeper__.fa.gb

@@ -2,6 +2,22 @@
 A pipeline for clinical bacteria NGS data
 
 https://scholar.google.it/citations?user=P1pS4s0AAAAJ&hl=en
+```sh
+#…or create a new repository on the command line
+#echo "# damian_extended" >> README.md
+#git init
+#git add README.md
+#git commit -m "first commit"
+#git remote add origin https://github.com/huang/damian_extended.git
+#git push -u origin master
+#.......or push an existing repository from the command line
+#git remote add origin https://github.com/huang/damian_extended.git or git remote set-url origin https://github.com/huang/damian_extended.git
+#git push -u origin master
+
+#git add --all
+#git commit -am "<commit message>"
+#git push
+```
 
 ## 1, run FastQC to allow manual inspection of the quality of sequences
 ```sh

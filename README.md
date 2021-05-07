@@ -43,6 +43,25 @@ snakemake --printshellcmds
 
 ## 4, Identify species
 - StrainSeeker: fast identification of bacterial strains from unassembled sequencing reads using user-provided guide trees
+- ReferenceSeeker: rapid determination of appropriate reference genomes    https://github.com/oschwengers/referenceseeker
+```sh
+Installation:
+
+$ conda install -c bioconda referenceseeker
+$ wget https://zenodo.org/record/4415843/files/bacteria-refseq.tar.gz
+$ tar -xzf bacteria-refseq.tar.gz
+$ rm bacteria-refseq.tar.gz
+
+Simple:
+
+$ # referenceseeker <REFERENCE_SEEKER_DB> <GENOME>
+$ referenceseeker bacteria-refseq/ genome.fasta
+
+Expert: verbose output and increased output of candidate reference genomes using a defined number of threads:
+
+$ # referenceseeker --crg 500 --verbose --threads 8 <REFERENCE_SEEKER_DB> <GENOME>
+$ referenceseeker --crg 500 --verbose --threads 8 bacteria-refseq/ genome.fasta
+```
 - Reads2Type: a web application for rapid microbial taxonomy identification
 - https://github.com/tseemann/sixess (sixess Hentschke_22927_R1.fastq.gz Hentschke_22927_R2.fastq.gz)
 - https://pubmlst.org/bigsdb?db=pubmlst_rmlst_seqdef_kiosk

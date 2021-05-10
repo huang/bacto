@@ -1,7 +1,6 @@
 # bacto
 A pipeline for clinical bacteria NGS data
 
-https://scholar.google.it/citations?user=P1pS4s0AAAAJ&hl=en
 ```sh
 #…or create a new repository on the command line
 #echo "# damian_extended" >> README.md

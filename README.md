@@ -16,6 +16,8 @@ A pipeline for clinical bacteria NGS data
 #git add --all
 #git commit -am "<commit message>"
 #git push
+
+#https://www.heise.de/tipps-tricks/SSH-Key-fuer-GitHub-Repositories-einrichten-4627459.html
 ```
 
 ## 1, run FastQC to allow manual inspection of the quality of sequences

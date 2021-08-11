@@ -3,6 +3,7 @@ A pipeline for clinical bacteria NGS data
 
 ```sh
 (optional) download genomes https://github.com/kblin/ncbi-genome-download
+ncbi-genome-download --species-taxids 562 --formats fasta --refseq-categories reference --assembly-levels complete --parallel 4  bacteria
 
 #…or create a new repository on the command line
 #echo "# damian_extended" >> README.md

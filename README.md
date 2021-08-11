@@ -2,6 +2,8 @@
 A pipeline for clinical bacteria NGS data
 
 ```sh
+(optional) download genomes https://github.com/kblin/ncbi-genome-download
+
 #…or create a new repository on the command line
 #echo "# damian_extended" >> README.md
 #git init

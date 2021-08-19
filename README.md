@@ -2,6 +2,7 @@
 A pipeline for clinical bacteria NGS data
 
 ```sh
+genbankdownload.py -t fasta CP000851
 (optional) download genomes https://github.com/kblin/ncbi-genome-download
 ncbi-genome-download --species-taxids 562 --formats fasta --refseq-categories reference --assembly-levels complete --parallel 4  bacteria
 ncbi-genome-download --species-taxids 562 --formats fasta  --assembly-levels complete --parallel 10  bacteria

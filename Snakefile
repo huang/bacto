@@ -386,11 +386,13 @@ if config["variants_calling"]:
     rule snippy_core:
         input:
             expand("snippy/{sample}/{sample}.txt", sample=SAMPLES)
+        params:
+            reference = config["snippy"]["reference"]
         output:
             "variants/snippy.core.full.aln",
             "variants/snippy.core.aln"
         shell:
-            "snippy-core --prefix snippy.core snippy/* && "
+            "snippy-core --ref {params.reference} --prefix snippy.core snippy/* && "
             "mv snippy.core.* variants/"
 
 ##########################################################################

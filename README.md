@@ -99,3 +99,10 @@ makeblastdb -in Mixta_theicola_SRCM103227.fasta -dbtype 'nucl' -out Mixta_theico
 blastn -db Mixta_theicola_SRCM103227.fa.db -query contigs_Mixta_theicola.fasta -out newcontigs_Mixta_theicola.blastn -evalue 1e-10  -num_threads 15 -outfmt 6 
 =84.3%
 ```
+
+## 5,
+```sh
+https://cge.cbs.dtu.dk/services/
+https://cge.cbs.dtu.dk/services/MLST/
+https://pubmlst.org/bigsdb?db=pubmlst_pacnes_seqdef&page=batchProfiles&scheme_id=3
+```

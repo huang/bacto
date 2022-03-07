@@ -100,7 +100,46 @@ blastn -db Mixta_theicola_SRCM103227.fa.db -query contigs_Mixta_theicola.fasta -
 =84.3%
 ```
 
-## 5,
+## 5, variant calling
+```sh
+[annotation of contigs]
+python ~/Tools/VAPiD/vapid3.py --db ~/REFs/all_virus/all_virus.fasta contigs.fa ~/REFs/template_Holger.sbt
+#EF9117
+https://www.nature.com/articles/srep34963
+#GFinisher: a new strategy to refine and finish bacterial genome assemblies
+java -Xms2G -Xmx4G -jar GenomeFinisher_1.4/GenomeFinisher.jar  -i shovill/noAB_wildtype/contigs.fa  -ref CP040849.fasta  -o outputDirectory
+http://lu168.cs.nthu.edu.tw/CAR/index.php
+~/Tools/CONTIGuator_v2.7/CONTIGuator.py -r CP040849.fasta -a /home/jhuang/Tools/act.jar -c shovill/noAB_wildtype/contigs.fa 
+~/Tools/CONTIGuator_v2.7/CONTIGuator.py -r CP059793.fasta -a /home/jhuang/Tools/act.jar -c shovill/noAB_wildtype/contigs.fa 
+E50862
+(referenceseeker) ~/Tools/referenceseeker/bin/referenceseeker -v ~/REFs/bacteria-refseq/ shovill/E50862/contigs.fa
+#ID     Mash Distance   ANI     Con. DNA        Taxonomy ID     Assembly Status Organism
+GCF_001281065.1 0.00712 98.70   91.86   1747    complete        Cutibacterium acnes KCOM 1861 (= ChDC B594)
+GCF_000231215.1 0.00710 98.51   91.85   1091045 complete        Cutibacterium acnes subsp. defendens ATCC 11828
+GCF_000240055.1 0.01125 98.42   91.54   1114969 complete        Cutibacterium acnes TypeIA2 P.acn31
+GCF_006739385.1 0.01108 98.42   91.48   1734925 complete        Cutibacterium acnes subsp. acnes NBRC 107605
+GCF_000008345.1 0.01085 98.43   91.41   267747  complete        Cutibacterium acnes KPA171202
+~/Tools/CONTIGuator_v2.7/CONTIGuator.py -r ATCC11828.fasta -a /home/jhuang/Tools/act.jar -c shovill/E50862/scaffolds.fasta
+merge_seq.py Excluded.fsa > ../Excluded_sequence.fasta
+
+[genbank copying]
+#rm -rf ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/data/CP040849.1
+mkdir ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/data/noAB_wildtype
+cp PROKKA_01242022/PROKKA_01242022.gbk ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/data/noAB_wildtype/genes.gbk
+vim ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/snpEff.config
+/home/jhuang/anaconda3/envs/spandx/bin/snpEff build -genbank noAB_wildtype      -d
+
+[spandx calling]
+conda activate spandx
+#NOTE that Realignment disappeared in gatk4.
+#-In GATK4 the indel realignment step will no longer be part of the pipeline. With my great surprise the tool has disappeared. My question, the algorithm is no more there because it doesn't improve the alignment? Do I need to search for a replace or should I just remove it from my pipeline since it is not useful? Any suggestions?
+#-Basically, the realignment step has been integrated into the GATK variant callers and they can output their own realigned BAMs. However, regardless of how you perform realignment, it is still preferred.
+
+#NOTE that it requires two samples for merging! --> VERY IMPORTANT!!!!
+nextflow run spandx/main.nf --fastq "raw_data/*_R{1,2}_001.fastq.gz" --ref NC_045512.fasta --annotation --database NC_045512 -resume
+```
+
+## 6,
 ```sh
 https://cge.cbs.dtu.dk/services/
 https://cge.cbs.dtu.dk/services/MLST/

@@ -2,8 +2,9 @@ conda create -n bacto python=3
 conda activate bacto
 #conda install -c bioconda trimmomatic fastqc shovill prokka mlst roary snippy fasttree raxml-ng gubbins snp-sites
 conda install -c bioconda trimmomatic roary fasttree raxml-ng mlst gubbins prokka
-#conda install -c bioconda perl-bioperl
 conda install -c conda-forge biopython
+#DEBUG prokka error: https://github.com/tseemann/prokka/issues/446
+cpanm Bio::Root::Version
 
 brew install brewsci/bio/shovill
 brew install brewsci/bio/snippy  #which also installs snp-sites

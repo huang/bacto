@@ -2,6 +2,7 @@ conda create -n bacto python=3
 conda activate bacto
 #conda install -c bioconda trimmomatic fastqc shovill prokka mlst roary snippy fasttree raxml-ng gubbins snp-sites
 conda install -c bioconda trimmomatic roary fasttree raxml-ng mlst gubbins
+#conda install -c bioconda perl-bioperl
 conda install -c conda-forge biopython
 
 brew install brewsci/bio/shovill

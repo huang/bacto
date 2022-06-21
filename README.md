@@ -1,6 +1,8 @@
 # bacto
 A pipeline for clinical bacteria NGS data
 
+WARNING: used the absolute path '-hmm /media/jhuang/Titisee/GAMOLA2/TIGRfam_db/TIGRFAMs_15.0_HMM.LIB' in Snakefile
+
 ```sh
 genbankdownload.py -t fasta CP000851
 (optional) download genomes https://github.com/kblin/ncbi-genome-download

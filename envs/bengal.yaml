@@ -1,7 +1,6 @@
 name: bengal2
 channels:
 - biobuilds
-- esteinig
 - conda-forge
 - bioconda
 - defaults

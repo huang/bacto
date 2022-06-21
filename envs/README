@@ -1,9 +1,16 @@
-conda env create -f=envs/bengal_m.yaml    # python3 is included
-conda env update -f=envs/mykrobe_m.yaml
-conda activate bengal3_ac3
+conda create -n bacto python=3
+conda activate bacto
+#conda install -c bioconda trimmomatic fastqc shovill prokka mlst roary snippy fasttree raxml-ng gubbins snp-sites
+conda install -c bioconda trimmomatic shovill prokka mlst roary snippy fasttree raxml-ng snp-sites
+conda install -c conda-forge biopython
+
+
+#conda env create -f=envs/bengal_m.yaml    # python3 is included
+#conda env update -f=envs/mykrobe_m.yaml
+#conda activate bengal3_ac3
 conda install -c bioconda ariba
-conda install snp-sites
+#conda install snp-sites
 conda install seq-seq-pan
 
-conda remove -n bengal
-conda remove -n bengal2
+#conda remove -n bengal
+#conda remove -n bengal2

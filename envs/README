@@ -4,7 +4,9 @@ conda activate bacto
 conda install -c bioconda trimmomatic roary fasttree raxml-ng mlst gubbins prokka
 conda install -c conda-forge biopython
 #DEBUG prokka error: https://github.com/tseemann/prokka/issues/446
-[/home/jhuang/anaconda3/envs/bacto/bin/]cpan Time::Piece XML::Simple Digest::MD5 Bio::Perl
+cpan 
+install Bio::Perl Time::Piece XML::Simple Digest::MD5
+
 
 brew install brewsci/bio/shovill
 brew install brewsci/bio/snippy  #which also installs snp-sites

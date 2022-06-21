@@ -1,7 +1,6 @@
 name: bengal3_ac3
 channels:
 - biobuilds
-- esteinig
 - conda-forge
 - bioconda
 - defaults

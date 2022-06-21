@@ -7,7 +7,6 @@ conda install -c conda-forge biopython
 cpan 
 install Bio::Perl Time::Piece XML::Simple Digest::MD5
 
-
 brew install brewsci/bio/shovill
 brew install brewsci/bio/snippy  #which also installs snp-sites
 

@@ -1,12 +1,11 @@
 conda create -n bacto python=3
 conda activate bacto
 #conda install -c bioconda trimmomatic fastqc shovill prokka mlst roary snippy fasttree raxml-ng gubbins snp-sites
-conda install -c bioconda trimmomatic roary fasttree raxml-ng mlst gubbins
+conda install -c bioconda trimmomatic roary fasttree raxml-ng mlst gubbins prokka
 #conda install -c bioconda perl-bioperl
 conda install -c conda-forge biopython
 
 brew install brewsci/bio/shovill
-brew install brewsci/bio/prokka
 brew install brewsci/bio/snippy  #which also installs snp-sites
 
 #conda env create -f=envs/bengal_m.yaml    # python3 is included

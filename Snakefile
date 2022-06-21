@@ -251,6 +251,7 @@ if config["typing_ariba"]:
     #    conda:
     #        "envs/mykrobe.yaml"
     #    shell:
+    #        #considering removing LIBRARY_PATH management from the code
     #        "LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH && "
     #        "echo $LD_LIBRARY_PATH && "
     #        "mykrobe predict --skeleton_dir ./mykrobe/{wildcards.sample} {wildcards.sample} {params.species} "
@@ -376,7 +377,8 @@ if config["variants_calling"]:
             "snippy/{sample}/{sample}.txt",
             #"snippy/{sample}/{sample}.depth"
         shell:
-            "LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH && "
+	    #removing LIBRARY_PATH management from the code
+            #"LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH && "
             "snippy --force --outdir {params.outdir} --ref {params.reference} "
             "--R1 {input.forward} --R2 {input.reverse} --cpus {params.cpu} "
             "--mincov {params.mincov} --minfrac {params.minfrac} "

@@ -7,8 +7,7 @@ conda create -n bacto2 -c conda-forge -c bioconda -c defaults python=3.7
 #prokka to be installed under base-env
 conda activate base
 conda install -c conda-forge -c bioconda -c defaults prokka
-sudo apt install cpanminus
-cpanm Bio::Root::Version  #--> Successfully installed BioPerl-1.7.8 (upgraded from 1.7.7)
+
 conda deactivate
 conda activate bacto2
 conda install -c conda-forge -c bioconda -c defaults trimmomatic fastqc shovill 
@@ -16,6 +15,9 @@ conda install -c conda-forge -c bioconda -c defaults mlst roary snippy fasttree
 conda install -c conda-forge -c bioconda -c defaults raxml-ng gubbins snp-sites
 #conda install -c conda-forge -c bioconda -c defaults biopython
 
+#----install BioPerl in root-env----
+#sudo apt install cpanminus
+#cpanm Bio::Root::Version  #--> Successfully installed BioPerl-1.7.8 (upgraded from 1.7.7)
 
 #---------------------------------------- TRASH ---------------------------------------
 #conda create -n bacto3 python=3.7 libgcc-ng=7.3 libstdcxx-ng=7.3

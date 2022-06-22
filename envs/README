@@ -12,7 +12,7 @@ conda activate base
 #sudo cpan Bio::Perl
 #git clone https://github.com/tseemann/prokka.git $HOME/prokka
 #$HOME/prokka/bin/prokka --setupdb
-(base) conda install -c conda-forge -c bioconda -c defaults prokka perl-bioperl perl-datetime perl-xml-simple perl-digest-md5
+(base) conda install -c conda-forge -c bioconda -c defaults perl-bioperl perl-datetime perl-xml-simple perl-digest-md5
 conda deactivate
 
 conda create -n bacto2 -c conda-forge -c bioconda -c defaults python=3.7

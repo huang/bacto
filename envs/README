@@ -12,7 +12,6 @@ conda install -c conda-forge biopython
 #sudo apt install bioperl libdatetime-perl libxml-simple-perl libdigest-md5-perl libbio-searchio-hmmer-perl
 #conda install -c bioconda perl-bioperl perl-datetime perl-xml-simple perl-digest-md5 perl-bio-searchio-hmmer
 brew install brewsci/bio/prokka
-brew install hmmer
 
 brew install brewsci/bio/shovill
 brew install brewsci/bio/snippy  #which also installs snp-sites

@@ -5,6 +5,7 @@ conda activate bacto2
 conda install -c conda-forge -c bioconda -c defaults trimmomatic fastqc shovill 
 conda install -c conda-forge -c bioconda -c defaults mlst roary snippy fasttree 
 conda install -c conda-forge -c bioconda -c defaults raxml-ng gubbins snp-sites
+cpanm Bio::Root::Version
 #conda install -c conda-forge -c bioconda -c defaults biopython
 
 
@@ -12,7 +13,6 @@ conda install -c conda-forge -c bioconda -c defaults raxml-ng gubbins snp-sites
 #conda create -n bacto3 python=3.7 libgcc-ng=7.3 libstdcxx-ng=7.3
 #conda install -c bioconda prokka perl-bioperl
 conda install -c bioconda prokka perl-bioperl perl-datetime perl-xml-simple perl-digest-md5 perl-bio-searchio-hmmer
-cpanm Bio::Root::Version
 #-->ERROR: ! Installing the dependencies failed: Module 'XML::Parser::PerlSAX' is not installed, Module 'DB_File' is not installed, Module 'XML::LibXML' is not installed, Module 'Test::Memory::Cycle' is not installed, Module 'XML::DOM' is not installed, Module 'Graph::Directed' is not installed, Module 'XML::Twig' is not installed, Module 'XML::LibXML::Reader' is not installed
 ! Bailing out the installation for BioPerl-1.7.8.
 

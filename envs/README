@@ -8,8 +8,8 @@ conda install -c conda-forge biopython
 #cpan 
 #install Bio::Perl Time::Piece XML::Simple Digest::MD5
 #conda install -c bioconda perl-xml-simple perl-bioperl
-#Solution:
-conda install -c bioconda hmmer
+#Solution: https://github.com/tseemann/prokka/issues/528
+sudo apt install bioperl libdatetime-perl libxml-simple-perl libdigest-md5-perl libbio-searchio-hmmer-perl
 brew install brewsci/bio/prokka
 
 brew install brewsci/bio/shovill

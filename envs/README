@@ -1,13 +1,15 @@
 conda create -n bacto python=3
 conda activate bacto
 #conda install -c bioconda trimmomatic fastqc shovill prokka mlst roary snippy fasttree raxml-ng gubbins snp-sites
-conda install -c bioconda trimmomatic roary fasttree raxml-ng mlst gubbins prokka
+conda install -c bioconda trimmomatic roary fasttree raxml-ng mlst gubbins
 conda install -c conda-forge biopython
+
 #DEBUG prokka error: https://github.com/tseemann/prokka/issues/446
 #cpan 
 #install Bio::Perl Time::Piece XML::Simple Digest::MD5
-# Tomorrow debug, why prokka doesn't work correctly?
-conda install -c bioconda perl-xml-simple perl-bioperl
+#conda install -c bioconda perl-xml-simple perl-bioperl
+#Solution:
+brew install brewsci/bio/prokka
 
 brew install brewsci/bio/shovill
 brew install brewsci/bio/snippy  #which also installs snp-sites

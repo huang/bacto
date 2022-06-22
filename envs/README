@@ -24,7 +24,6 @@ conda activate bacto2
 (bacto2) conda install -c conda-forge -c bioconda -c defaults raxml-ng gubbins snp-sites
 #conda install -c conda-forge -c bioconda -c defaults biopython
 
-
 conda create -n prokka -c conda-forge -c bioconda -c defaults python=3.7 prokka
 (prokka) conda install -c conda-forge -c bioconda -c defaults shovill mlst trimmomatic 
 

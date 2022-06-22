@@ -15,6 +15,9 @@ conda activate base
 (base) conda install -c conda-forge -c bioconda -c defaults perl-bioperl perl-datetime perl-xml-simple perl-digest-md5
 (base) cpanm Bio::Root::Version
 conda deactivate
+#----> prokka in base environment is still not working!
+
+
 
 conda create -n bacto2 -c conda-forge -c bioconda -c defaults python=3.7
 conda activate bacto2
@@ -24,6 +27,8 @@ conda activate bacto2
 #conda install -c conda-forge -c bioconda -c defaults biopython
 
 
+conda create -n prokka -c conda-forge -c bioconda -c defaults python=3.7 prokka
+(prokka) only for the step prokka.
 
 
 

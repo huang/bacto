@@ -1,25 +1,37 @@
 #https://stackoverflow.com/questions/63990487/package-conflict-with-anaconda
 #IMPORTANT: By telling conda that it can visit multiple channels (conda-forge, bioconda and defaults), it has some extra options to resolve the dependency conflicts.
-conda create -n bacto2 -c conda-forge -c bioconda -c defaults python=3.7
-#prokka need to be installed with root-env
+
+#prokka need to be installed with root-env --> FAILED
 #sudo apt install prokka
 #--> no databases: https://github.com/tseemann/prokka/issues/540
+
 #prokka to be installed under base-env
 conda activate base
-conda install -c conda-forge -c bioconda -c defaults prokka
-
+(base) conda install -c conda-forge -c bioconda -c defaults prokka
+#sudo apt-get install libdatetime-perl libxml-simple-perl libdigest-md5-perl git default-jre bioperl
+#sudo cpan Bio::Perl
+#git clone https://github.com/tseemann/prokka.git $HOME/prokka
+#$HOME/prokka/bin/prokka --setupdb
+(base) conda install -c conda-forge -c bioconda -c defaults prokka perl-bioperl perl-datetime perl-xml-simple perl-digest-md5
 conda deactivate
+
+conda create -n bacto2 -c conda-forge -c bioconda -c defaults python=3.7
 conda activate bacto2
-conda install -c conda-forge -c bioconda -c defaults trimmomatic fastqc shovill 
-conda install -c conda-forge -c bioconda -c defaults mlst roary snippy fasttree 
-conda install -c conda-forge -c bioconda -c defaults raxml-ng gubbins snp-sites
+(bacto2) conda install -c conda-forge -c bioconda -c defaults trimmomatic fastqc shovill 
+(bacto2) conda install -c conda-forge -c bioconda -c defaults mlst roary snippy fasttree 
+(bacto2) conda install -c conda-forge -c bioconda -c defaults raxml-ng gubbins snp-sites
 #conda install -c conda-forge -c bioconda -c defaults biopython
 
+
+
+
+
+#---------------------------------------- TRASH ---------------------------------------
 #----install BioPerl in root-env----
 #sudo apt install cpanminus
 #cpanm Bio::Root::Version  #--> Successfully installed BioPerl-1.7.8 (upgraded from 1.7.7)
 
-#---------------------------------------- TRASH ---------------------------------------
+
 #conda create -n bacto3 python=3.7 libgcc-ng=7.3 libstdcxx-ng=7.3
 #conda install -c bioconda prokka perl-bioperl
 conda install -c bioconda prokka perl-bioperl perl-datetime perl-xml-simple perl-digest-md5 perl-bio-searchio-hmmer

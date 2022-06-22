@@ -35,6 +35,6 @@ conda install -c bioconda ariba
 conda install seq-seq-pan
 
 
-#conda remove -n bengal
-#conda remove -n bengal2
+#conda remove -n bengal --all
+#conda remove -n bengal2 --all
 

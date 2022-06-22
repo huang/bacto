@@ -7,6 +7,8 @@ conda create -n bacto2 -c conda-forge -c bioconda -c defaults python=3.7
 #prokka to be installed under base-env
 conda activate base
 conda install -c conda-forge -c bioconda -c defaults prokka
+sudo apt install cpanminus
+cpanm Bio::Root::Version
 conda deactivate
 conda activate bacto2
 conda install -c conda-forge -c bioconda -c defaults trimmomatic fastqc shovill 

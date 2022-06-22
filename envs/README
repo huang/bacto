@@ -8,7 +8,7 @@ conda create -n bacto2 -c conda-forge -c bioconda -c defaults python=3.7
 conda activate base
 conda install -c conda-forge -c bioconda -c defaults prokka
 sudo apt install cpanminus
-cpanm Bio::Root::Version
+cpanm Bio::Root::Version  #--> Successfully installed BioPerl-1.7.8 (upgraded from 1.7.7)
 conda deactivate
 conda activate bacto2
 conda install -c conda-forge -c bioconda -c defaults trimmomatic fastqc shovill 

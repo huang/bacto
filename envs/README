@@ -1,11 +1,11 @@
 #https://stackoverflow.com/questions/63990487/package-conflict-with-anaconda
 #IMPORTANT: By telling conda that it can visit multiple channels (conda-forge, bioconda and defaults), it has some extra options to resolve the dependency conflicts.
 
-#prokka need to be installed with root-env --> FAILED
+#-- prokka need to be installed with root-env --> FAILED
 #sudo apt install prokka
 #--> no databases: https://github.com/tseemann/prokka/issues/540
 
-#prokka to be installed under base-env --> FAILED
+#-- prokka to be installed under base-env --> FAILED
 conda activate base
 (base) conda install -c conda-forge -c bioconda -c defaults prokka
 #sudo apt-get install libdatetime-perl libxml-simple-perl libdigest-md5-perl git default-jre bioperl

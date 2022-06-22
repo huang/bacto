@@ -9,6 +9,7 @@ conda install -c conda-forge biopython
 #install Bio::Perl Time::Piece XML::Simple Digest::MD5
 #conda install -c bioconda perl-xml-simple perl-bioperl
 #Solution:
+conda install -c bioconda hmmer
 brew install brewsci/bio/prokka
 
 brew install brewsci/bio/shovill

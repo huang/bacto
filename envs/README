@@ -1,12 +1,12 @@
 #https://stackoverflow.com/questions/63990487/package-conflict-with-anaconda
 #IMPORTANT: By telling conda that it can visit multiple channels (conda-forge, bioconda and defaults), it has some extra options to resolve the dependency conflicts.
-conda create -n bacto2 -c conda-forge -c bioconda -c defaults python=3.7 prokka
+conda create -n bacto2 -c conda-forge -c bioconda -c defaults python=3.7
+#prokka need to be installed with root-env
+sudo apt install prokka
 conda activate bacto2
 conda install -c conda-forge -c bioconda -c defaults trimmomatic fastqc shovill 
 conda install -c conda-forge -c bioconda -c defaults mlst roary snippy fasttree 
 conda install -c conda-forge -c bioconda -c defaults raxml-ng gubbins snp-sites
-conda install -c conda-forge -c bioconda -c defaults perl-xml-simple
-cpanm Bio::Root::Version
 #conda install -c conda-forge -c bioconda -c defaults biopython
 
 

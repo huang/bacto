@@ -3,7 +3,7 @@
 conda create -n bacto2 -c conda-forge -c bioconda -c defaults python=3.7
 #prokka need to be installed with root-env
 #sudo apt install prokka
-#--> no databases
+#--> no databases: https://github.com/tseemann/prokka/issues/540
 #prokka to be installed under base-env
 conda activate base
 conda install -c conda-forge -c bioconda -c defaults prokka

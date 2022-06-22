@@ -5,6 +5,7 @@ cpanm Bio::Root::Version
 #-->ERROR: ! Installing the dependencies failed: Module 'XML::Parser::PerlSAX' is not installed, Module 'DB_File' is not installed, Module 'XML::LibXML' is not installed, Module 'Test::Memory::Cycle' is not installed, Module 'XML::DOM' is not installed, Module 'Graph::Directed' is not installed, Module 'XML::Twig' is not installed, Module 'XML::LibXML::Reader' is not installed
 ! Bailing out the installation for BioPerl-1.7.8.
 conda install -c bioconda perl-bioperl
+conda install -c bioconda perl-datetime perl-xml-simple perl-digest-md5 perl-bio-searchio-hmmer
 #conda install -c bioconda trimmomatic fastqc shovill prokka mlst roary snippy fasttree raxml-ng gubbins snp-sites
 conda install -c bioconda trimmomatic roary fasttree raxml-ng mlst gubbins
 conda install -c conda-forge biopython
@@ -16,7 +17,7 @@ conda install -c conda-forge biopython
 #conda install -c bioconda perl-xml-simple perl-bioperl
 #Solution: https://github.com/tseemann/prokka/issues/528
 #sudo apt install bioperl libdatetime-perl libxml-simple-perl libdigest-md5-perl libbio-searchio-hmmer-perl
-#conda install -c bioconda perl-bioperl perl-datetime perl-xml-simple perl-digest-md5 perl-bio-searchio-hmmer
+
 #brew install brewsci/bio/prokka
 #brew install brewsci/bio/shovill
 #brew install brewsci/bio/snippy  #which also installs snp-sites

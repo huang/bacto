@@ -26,8 +26,9 @@ conda activate bacto2
 
 
 conda create -n prokka -c conda-forge -c bioconda -c defaults python=3.7 prokka
-(prokka) only for the step prokka.
+(prokka) conda install -c conda-forge -c bioconda -c defaults shovill mlst trimmomatic 
 
+(prokka) for the steps trimmomatic + shovill + prokka + mlst
 (bacto2) running the remaining steps.
 
 

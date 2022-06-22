@@ -1,9 +1,12 @@
-conda create -n bacto python=3
-conda activate bacto
+conda create -n bacto2 python=3
+conda activate bacto2
+conda install -c bioconda prokka
+cpanm Bio::
 #conda install -c bioconda trimmomatic fastqc shovill prokka mlst roary snippy fasttree raxml-ng gubbins snp-sites
 conda install -c bioconda trimmomatic roary fasttree raxml-ng mlst gubbins
 conda install -c conda-forge biopython
 
+#---- brew is not a good idea: DEACTIVATing it in .bashrc ----
 #DEBUG prokka error: https://github.com/tseemann/prokka/issues/446
 #cpan 
 #install Bio::Perl Time::Piece XML::Simple Digest::MD5
@@ -11,10 +14,9 @@ conda install -c conda-forge biopython
 #Solution: https://github.com/tseemann/prokka/issues/528
 #sudo apt install bioperl libdatetime-perl libxml-simple-perl libdigest-md5-perl libbio-searchio-hmmer-perl
 #conda install -c bioconda perl-bioperl perl-datetime perl-xml-simple perl-digest-md5 perl-bio-searchio-hmmer
-brew install brewsci/bio/prokka
-
-brew install brewsci/bio/shovill
-brew install brewsci/bio/snippy  #which also installs snp-sites
+#brew install brewsci/bio/prokka
+#brew install brewsci/bio/shovill
+#brew install brewsci/bio/snippy  #which also installs snp-sites
 
 #conda env create -f=envs/bengal_m.yaml    # python3 is included
 #conda env update -f=envs/mykrobe_m.yaml

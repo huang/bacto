@@ -2,6 +2,7 @@ conda create -n bacto2 python=3
 conda activate bacto2
 conda install -c bioconda prokka
 cpanm Bio::Root::Version
+#Error: 
 #conda install -c bioconda trimmomatic fastqc shovill prokka mlst roary snippy fasttree raxml-ng gubbins snp-sites
 conda install -c bioconda trimmomatic roary fasttree raxml-ng mlst gubbins
 conda install -c conda-forge biopython

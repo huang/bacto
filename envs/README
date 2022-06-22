@@ -1,5 +1,5 @@
-conda create -n bacto2 python=3.6
-conda activate bacto2
+#conda create -n bacto2 python=3.6
+#conda activate bacto2
 https://stackoverflow.com/questions/63990487/package-conflict-with-anaconda
 conda create -n bacto2 -c conda-forge -c bioconda python=3.7 trimmomatic fastqc shovill prokka mlst roary snippy fasttree raxml-ng gubbins snp-sites biopython
 

@@ -5,7 +5,7 @@
 #sudo apt install prokka
 #--> no databases: https://github.com/tseemann/prokka/issues/540
 
-#prokka to be installed under base-env
+#prokka to be installed under base-env --> FAILED
 conda activate base
 (base) conda install -c conda-forge -c bioconda -c defaults prokka
 #sudo apt-get install libdatetime-perl libxml-simple-perl libdigest-md5-perl git default-jre bioperl
@@ -15,8 +15,6 @@ conda activate base
 (base) conda install -c conda-forge -c bioconda -c defaults perl-bioperl perl-datetime perl-xml-simple perl-digest-md5
 (base) cpanm Bio::Root::Version
 conda deactivate
-#----> prokka in base environment is still not working!
-
 
 
 conda create -n bacto2 -c conda-forge -c bioconda -c defaults python=3.7

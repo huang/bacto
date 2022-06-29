@@ -13,10 +13,10 @@ or sudo apt install nvidia-driver-390
 sudo reboot
 #https://www.reddit.com/r/Ubuntu/comments/nuhurp/downgrading_linux_kernel_ubuntu_2004/
 #sudo apt install linux-generic
-#sudo apt install linux-image-5.4.0-92-generic
 #sudo apt install linux-headers-5.4.0-92-generic
-#sudo apt install linux-image-5.8.0-55-generic
+#sudo apt install linux-image-5.4.0-92-generic
 #sudo apt install linux-headers-5.8.0-55-generic
+#sudo apt install linux-image-5.8.0-55-generic
 sudo apt remove linux-{headers,image,modules}-5.8*
 dpkg -l linux-\* | grep ^ii
 sudo apt remove linux-hwe-5.8-headers-5.8.0-55

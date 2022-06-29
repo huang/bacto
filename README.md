@@ -5,6 +5,7 @@ WARNING: used the absolute path '-hmm /media/jhuang/Titisee/GAMOLA2/TIGRfam_db/T
 
 ```sh
 #--minimal install--
+http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images/netboot/
 https://help.ubuntu.com/community/Installation/MinimalCD#mini_system_in_UEFI_mode
 http://cdimages.ubuntu.com/netboot/focal/
 

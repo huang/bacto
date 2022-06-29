@@ -7,6 +7,10 @@ WARNING: used the absolute path '-hmm /media/jhuang/Titisee/GAMOLA2/TIGRfam_db/T
 #https://www.reddit.com/r/Ubuntu/comments/nuhurp/downgrading_linux_kernel_ubuntu_2004/
 #sudo apt install linux-generic
 #sudo apt install linux-image-5.4.0-92-generic
+https://askubuntu.com/questions/75709/how-do-i-install-kernel-header-files
+sudo apt remove linux-{headers,image,modules}-5.4-0-101-*
+sudo apt install linux-generic
+
 #https://www.cyberciti.biz/faq/installing-latest-stable-mainline-linux-kernel-on-ubuntu-with-apt-get/
 #https://askubuntu.com/questions/89710/how-do-i-free-up-more-space-in-boot
 #dpkg -l 'linux-*' | sed '/^ii/!d;/'"$(uname -r | sed "s/\(.*\)-\([^0-9]\+\)/\1/")"'/d;s/^[^ ]* [^ ]* \([^ ]*\).*/\1/;/[0-9]/!d' | xargs sudo apt-get -y purge

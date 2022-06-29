@@ -7,6 +7,7 @@ WARNING: used the absolute path '-hmm /media/jhuang/Titisee/GAMOLA2/TIGRfam_db/T
 #--install graphics driver--
 #https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-20-04-focal-fossa-linux
 sudo add-apt-repository ppa:graphics-drivers/ppa
+ubuntu-drivers devices
 sudo ubuntu-drivers autoinstall
 or sudo apt install nvidia-driver-440
 sudo reboot

@@ -4,6 +4,7 @@ A pipeline for clinical bacteria NGS data
 WARNING: used the absolute path '-hmm /media/jhuang/Titisee/GAMOLA2/TIGRfam_db/TIGRFAMs_15.0_HMM.LIB' in Snakefile
 
 ```sh
+#https://askubuntu.com/questions/89710/how-do-i-free-up-more-space-in-boot
 genbankdownload.py -t fasta CP000851
 (optional) download genomes https://github.com/kblin/ncbi-genome-download
 ncbi-genome-download --species-taxids 562 --formats fasta --refseq-categories reference --assembly-levels complete --parallel 4  bacteria

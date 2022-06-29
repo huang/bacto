@@ -4,6 +4,11 @@ A pipeline for clinical bacteria NGS data
 WARNING: used the absolute path '-hmm /media/jhuang/Titisee/GAMOLA2/TIGRfam_db/TIGRFAMs_15.0_HMM.LIB' in Snakefile
 
 ```sh
+#--install graphics driver--
+#https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-20-04-focal-fossa-linux
+sudo add-apt-repository ppa:graphics-drivers/ppa
+sudo ubuntu-drivers autoinstall
+sudo reboot
 #https://www.reddit.com/r/Ubuntu/comments/nuhurp/downgrading_linux_kernel_ubuntu_2004/
 #sudo apt install linux-generic
 #sudo apt install linux-image-5.4.0-92-generic

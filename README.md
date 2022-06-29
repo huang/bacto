@@ -4,6 +4,40 @@ A pipeline for clinical bacteria NGS data
 WARNING: used the absolute path '-hmm /media/jhuang/Titisee/GAMOLA2/TIGRfam_db/TIGRFAMs_15.0_HMM.LIB' in Snakefile
 
 ```sh
+#--boot from a live-usb--
+#https://forums.linuxmint.com/viewtopic.php?p=1570850#p1570850
+I don't know if there's a simple guide, but I pieced this together from a lot of Googling and testing. If anyone has any corrections to this unprofessional and informal mini-guide, please don't hesitate to correct me, because I'm likely missing something important. :D
+
+For most systems, the basic process should be really simple.
+
+1. Boot into your live USB of Mint
+
+2. Figure out which partition is your root partition. On a default installation of Mint where you just let the installer use the whole drive, it will probably be /dev/sda1. It's easy to check if this is the case. Just open up gparted (this app is already part of the live USB), then look for the partition with the /boot flag. It should be the same partition as your root partition unless you did a special install with a separate /boot partition.
+
+3. Once you've figured out where your root partition is, run this:
+
+sudo mount /dev/sda1 /mnt
+
+Replace /dev/sda1 with whatever the location of your root partition is, if you have a nonstandard installation.
+
+3a. If you have a separate /boot partition somewhere else (let's say /dev/sda4), you can mount that as well:
+
+sudo mount /dev/sda4 /mnt/boot
+
+4. If you need Internet access while doing things to your unbootable installation, such as to download packages, run this:
+
+sudo cp /etc/resolv.conf /mnt/etc/resolv.conf
+
+5. sudo chroot /mnt
+
+6. If everything worked out, you will now see a # symbol instead of a $ symbol in front of your next line. This # symbol means you have chrooted into your installed system, and the commands you run will apply to that system instead of to your live environment. You already have root access when you are chrooted, so you don't need to use sudo. So for example, to remove a package called gtkhash, you'd just run apt-get remove gtkhash, as if you were booted into the system instead of into your live USB. Note that I didn't use sudo.
+
+If you do something special like edit /etc/default/grub, you will also need to do the same things you normally would in the system, but without sudo. So for example, after making a change, I would run update-grub while in chroot.
+
+7. If you forgot something, you can exit the chroot environment (change the # back into a $) by just typing exit. For example, you might do this if you forgot step 4 to get Internet access, and you find that you can't download packages into the chrooted environment. After doing what you forgot, just chroot back in with sudo chroot /mnt
+
+8. That's it! Do what you need to do: remove driver packages, install driver packages, or whatever, then reboot into your fixed system.
+
 #--install graphics driver--
 #https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-20-04-focal-fossa-linux
 sudo add-apt-repository ppa:graphics-drivers/ppa

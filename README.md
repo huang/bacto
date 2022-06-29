@@ -6,6 +6,7 @@ WARNING: used the absolute path '-hmm /media/jhuang/Titisee/GAMOLA2/TIGRfam_db/T
 ```sh
 #--minimal install--
 https://help.ubuntu.com/community/Installation/MinimalCD#mini_system_in_UEFI_mode
+http://cdimages.ubuntu.com/netboot/focal/
 
 #--boot from a live-usb--
 #https://forums.linuxmint.com/viewtopic.php?p=1570850#p1570850

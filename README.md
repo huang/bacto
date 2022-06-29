@@ -9,7 +9,7 @@ WARNING: used the absolute path '-hmm /media/jhuang/Titisee/GAMOLA2/TIGRfam_db/T
 sudo add-apt-repository ppa:graphics-drivers/ppa
 ubuntu-drivers devices
 sudo ubuntu-drivers autoinstall
-or sudo apt install nvidia-driver-440
+or sudo apt install nvidia-driver-390
 sudo reboot
 #https://www.reddit.com/r/Ubuntu/comments/nuhurp/downgrading_linux_kernel_ubuntu_2004/
 #sudo apt install linux-generic

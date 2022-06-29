@@ -8,6 +8,8 @@ WARNING: used the absolute path '-hmm /media/jhuang/Titisee/GAMOLA2/TIGRfam_db/T
 #sudo apt install linux-generic
 #sudo apt install linux-image-5.4.0-92-generic
 #sudo apt install linux-headers-5.4.0-92-generic
+#sudo apt install linux-image-5.8.0-55-generic
+#sudo apt install linux-headers-5.8.0-55-generic
 https://askubuntu.com/questions/75709/how-do-i-install-kernel-header-files
 sudo apt remove linux-{headers,image,modules}-5.4-0-101-*
 sudo apt install linux-generic

@@ -4,6 +4,9 @@ A pipeline for clinical bacteria NGS data
 WARNING: used the absolute path '-hmm /media/jhuang/Titisee/GAMOLA2/TIGRfam_db/TIGRFAMs_15.0_HMM.LIB' in Snakefile
 
 ```sh
+#--minimal install--
+https://help.ubuntu.com/community/Installation/MinimalCD#mini_system_in_UEFI_mode
+
 #--boot from a live-usb--
 #https://forums.linuxmint.com/viewtopic.php?p=1570850#p1570850
 I don't know if there's a simple guide, but I pieced this together from a lot of Googling and testing. If anyone has any corrections to this unprofessional and informal mini-guide, please don't hesitate to correct me, because I'm likely missing something important. :D

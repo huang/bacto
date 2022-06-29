@@ -20,7 +20,7 @@ sudo reboot
 sudo apt remove linux-{headers,image,modules}-5.8*
 dpkg -l linux-\* | grep ^ii
 sudo apt remove linux-hwe-5.8-headers-5.8.0-55
-https://askubuntu.com/questions/75709/how-do-i-install-kernel-header-files
+#https://askubuntu.com/questions/75709/how-do-i-install-kernel-header-files
 sudo apt remove linux-{headers,image,modules}-5.4-0-101-*
 sudo apt install linux-generic
 

@@ -10,6 +10,8 @@ sudo add-apt-repository ppa:graphics-drivers/ppa
 ubuntu-drivers devices
 sudo ubuntu-drivers autoinstall
 or sudo apt install nvidia-driver-390
+#https://www.cyberciti.biz/faq/ubuntu-linux-install-nvidia-driver-latest-proprietary-driver/
+sudo apt install nvidia-driver-510 nvidia-dkms-510
 sudo reboot
 #https://www.reddit.com/r/Ubuntu/comments/nuhurp/downgrading_linux_kernel_ubuntu_2004/
 #sudo apt install linux-generic

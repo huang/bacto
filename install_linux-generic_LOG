@@ -104,3 +104,10 @@ Dateisystem    Größe Benutzt Verf. Verw% Eingehängt auf
 /dev/sdb6       180M     51M  117M   31% /tmp
 udev             32G       0   32G    0% /dev
 
+
+root@lubuntu:~# apt install linux-image-5.4.0-92-generic
+Paketlisten werden gelesen... Fertig
+Abhängigkeitsbaum wird aufgebaut.       
+Statusinformationen werden eingelesen.... Fertig
+linux-image-5.4.0-92-generic ist schon die neueste Version (5.4.0-92.103).
+0 aktualisiert, 0 neu installiert, 0 zu entfernen und 0 nicht aktualisiert.

@@ -1,0 +1,54 @@
+1 nicht vollständig installiert oder entfernt.
+Nach dieser Operation werden 0 B Plattenplatz zusätzlich benutzt.
+Möchten Sie fortfahren? [J/n] J
+E: Schreiben des Protokolls nicht möglich (Ist /dev/pts eingebunden?) - posix_openpt (19: Kein passendes Gerät gefunden)
+linux-image-5.4.0-92-generic (5.4.0-92.103) wird eingerichtet ...
+Trigger für linux-image-5.4.0-92-generic (5.4.0-92.103) werden verarbeitet ...
+/etc/kernel/postinst.d/dkms:
+ * dkms: running auto installation service for kernel 5.4.0-92-generic
+
+Kernel preparation unnecessary for this kernel.  Skipping...
+applying patch buildfix_kernel_4.11.patch...patching file uvm/nvidia_uvm_lite.c
+
+applying patch buildfix_kernel_5.2.patch...patching file uvm/nvidia_uvm_lite.c
+
+applying patch buildfix_kernel_5.7.patch...patching file Makefile
+patching file conftest.sh
+patching file nv-drm.c
+patching file nv-linux.h
+Hunk #2 succeeded at 779 (offset -7 lines).
+Hunk #3 succeeded at 1987 (offset -7 lines).
+Hunk #4 succeeded at 2011 (offset -7 lines).
+Hunk #5 succeeded at 2053 (offset -7 lines).
+Hunk #6 succeeded at 2088 (offset -7 lines).
+patching file nv-procfs.c
+patching file nv-time.h
+patching file nv.c
+patching file os-interface.c
+patching file uvm/Makefile
+patching file uvm/conftest.sh
+patching file uvm/nvidia_uvm_lite.c
+
+applying patch buildfix_kernel_5.8.patch...patching file nv-linux.h
+patching file nvidia-modules-common.mk
+patching file os-mlock.c
+patching file uvm/nvidia_uvm_lite_api.c
+
+applying patch buildfix_kernel_5.9.patch...patching file nv-drm.c
+patching file nv-linux.h
+Hunk #2 succeeded at 2251 (offset -7 lines).
+patching file nv.c
+patching file uvm/nvidia_uvm_linux.h
+
+applying patch use-kmem_cache_create_usercopy-on-4.16.patch...patching file nv-linux.h
+Hunk #1 succeeded at 772 (offset 15 lines).
+
+applying patch disable_fstack-clash-protection_fcf-protection.patch...patching file nvidia-modules-common.mk
+
+applying patch do-not-call-pci_save_state.patch...patching file nv.c
+Hunk #1 succeeded at 3171 (offset 4 lines).
+
+
+Building module:
+cleaning build area...
+[ ! -h /usr/bin/cc ] && export CC=/usr/bin/gcc; make -k module KERNDIR=/lib/modules/5.4.0-92-generic IGNORE_XEN_PRESENCE=1 IGNORE_CC_MISMATCH=1 SYSSRC=/lib/modules/5.4.0-92-generic/build LD=/usr/bin/ld.bfd; make -C uvm module KERNEL_UNAME=5.4.0-92-generic KBUILD_EXTMOD=/var/lib/dkms/nvidia-340/340.108/build/uvm..................

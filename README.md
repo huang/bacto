@@ -37,8 +37,16 @@ sudo mount /dev/sda1 /mnt/home
 sudo mount /dev/sdb5 /mnt/ref
 sudo mount /dev/sdb6 /mnt/unused
 sudo mount /dev/sdb7 /mnt/tmp
+
+mount -o bind /dev /mnt/dev
+mount -o bind /proc /mnt/proc
+mount -o bind /sys /mnt/sys
+
 sudo chroot /mnt
-su jhuang
+#su jhuang
+#top -c --> hinits "mount -t proc proc /proc"
+mkinitrd
+check, exit, reboot.
 
 #--install graphics driver--
 #https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-20-04-focal-fossa-linux

@@ -88,7 +88,7 @@ initrd-Abbild gefunden: /boot/initrd.img-5.4.0-92-generic
 Found memtest86+ image: /memtest86+.elf                                                                       
 Found memtest86+ image: /memtest86+.bin                                                                       
 grub-probe: Fehler: Für /dev/sdd1 konnte kein GRUB-Laufwerk gefunden werden. Überprüfen Sie Ihre device.map.  
-abgeschlossen                                                                                                 
+abgeschlossen               HINWEIS:/dev/sdd1                    1,9G  1,9G     0 100% /cdrom                                                                                   
 root@lubuntu:/# df -h
 Dateisystem    Größe Benutzt Verf. Verw% Eingehängt auf
 /dev/sdb1       376G     56G  302G   16% /

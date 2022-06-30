@@ -7,6 +7,7 @@ WARNING: used the absolute path '-hmm /media/jhuang/Titisee/GAMOLA2/TIGRfam_db/T
 #--MultiDisplay Lubuntu--
 https://askubuntu.com/questions/657055/dual-monitor-extended-desktop-in-lubuntu
 https://help.ubuntu.com/community/Lubuntu/MultiDisplay
+https://askubuntu.com/questions/1230924/ubuntu-20-04-does-not-recognize-second-monitor
 
 jhuang@hamburg:~$ xrandr --verbose
 Screen 0: minimum 8 x 8, current 1920 x 1080, maximum 16384 x 16384

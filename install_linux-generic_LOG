@@ -52,3 +52,49 @@ Hunk #1 succeeded at 3171 (offset 4 lines).
 Building module:
 cleaning build area...
 [ ! -h /usr/bin/cc ] && export CC=/usr/bin/gcc; make -k module KERNDIR=/lib/modules/5.4.0-92-generic IGNORE_XEN_PRESENCE=1 IGNORE_CC_MISMATCH=1 SYSSRC=/lib/modules/5.4.0-92-generic/build LD=/usr/bin/ld.bfd; make -C uvm module KERNEL_UNAME=5.4.0-92-generic KBUILD_EXTMOD=/var/lib/dkms/nvidia-340/340.108/build/uvm..................
+
+cleaning build area...
+
+DKMS: build completed.
+
+nvidia.ko:
+Running module version sanity check.
+ - Original module
+   - No original module exists within this kernel
+ - Installation
+   - Installing to /lib/modules/5.4.0-92-generic/updates/dkms/
+
+nvidia_uvm.ko:
+Running module version sanity check.
+ - Original module
+   - No original module exists within this kernel
+ - Installation
+   - Installing to /lib/modules/5.4.0-92-generic/updates/dkms/
+
+depmod......
+
+DKMS: install completed.
+   ...done.
+/etc/kernel/postinst.d/initramfs-tools:
+update-initramfs: Generating /boot/initrd.img-5.4.0-92-generic
+/etc/kernel/postinst.d/zz-update-grub:
+Quelldatei `/etc/default/grub'###############################################.............................] 
+Quelldatei `/etc/default/grub.d/init-select.cfg'                                                              
+GRUB-Konfigurationsdatei wird erstellt …                                                                      
+Linux-Abbild gefunden: /boot/vmlinuz-5.4.0-97-generic                                                         
+initrd-Abbild gefunden: /boot/initrd.img-5.4.0-97-generic                                                     
+Linux-Abbild gefunden: /boot/vmlinuz-5.4.0-92-generic                                                         
+initrd-Abbild gefunden: /boot/initrd.img-5.4.0-92-generic                                                     
+Found memtest86+ image: /memtest86+.elf                                                                       
+Found memtest86+ image: /memtest86+.bin                                                                       
+grub-probe: Fehler: Für /dev/sdd1 konnte kein GRUB-Laufwerk gefunden werden. Überprüfen Sie Ihre device.map.  
+abgeschlossen                                                                                                 
+root@lubuntu:/# df -h
+Dateisystem    Größe Benutzt Verf. Verw% Eingehängt auf
+/dev/sdb1       376G     56G  302G   16% /
+/dev/sda2       180M    125M   43M   75% /boot
+/dev/sda1       7,3T    6,1T  843G   88% /home
+/dev/sdb5       431G    381G   29G   94% /ref
+/dev/sdb6       180M     51M  117M   31% /tmp
+udev             32G       0   32G    0% /dev
+

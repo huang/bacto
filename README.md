@@ -7,6 +7,74 @@ WARNING: used the absolute path '-hmm /media/jhuang/Titisee/GAMOLA2/TIGRfam_db/T
 #--MultiDisplay Lubuntu--
 https://askubuntu.com/questions/657055/dual-monitor-extended-desktop-in-lubuntu
 https://help.ubuntu.com/community/Lubuntu/MultiDisplay
+
+jhuang@hamburg:~$ xrandr --verbose
+Screen 0: minimum 8 x 8, current 1920 x 1080, maximum 16384 x 16384
+VGA-0 disconnected (normal left inverted right x axis y axis)
+	Identifier: 0x27e
+	Timestamp:  70527
+	Subpixel:   unknown
+	Clones:    
+	CRTCs:      0 1 2 3
+	Transform:  1.000000 0.000000 0.000000
+	            0.000000 1.000000 0.000000
+	            0.000000 0.000000 1.000000
+	           filter: 
+	BorderDimensions: 4 
+		supported: 4
+	Border: 0 0 0 0 
+		range: (0, 65535)
+	SignalFormat: VGA 
+		supported: VGA
+	ConnectorType: VGA 
+	ConnectorNumber: 2 
+	_ConnectorLocation: 2 
+	non-desktop: 0 
+		supported: 0, 1
+DVI-D-0 connected primary 1920x1080+0+0 (0x280) normal (normal left inverted right x axis y axis) 521mm x 293mm
+	Identifier: 0x27f
+	Timestamp:  70527
+	Subpixel:   unknown
+	Gamma:      1.0:1.0:1.0
+	Brightness: 1.0
+	Clones:    
+	CRTC:       0
+	CRTCs:      0 1 2 3
+	Transform:  1.000000 0.000000 0.000000
+	            0.000000 1.000000 0.000000
+	            0.000000 0.000000 1.000000
+	           filter: 
+	EDID: 
+		00ffffffffffff004c2dcd095131585a
+		0219010380341d782a2cc1a45650a128
+		0f5054bfef80714f81c0810081809500
+		a9c0b3000101023a801871382d40582c
+		450009252100001e000000fd00384b1e
+		5111000a202020202020000000fc0053
+		3234433435300a2020202020000000ff
+		00485450473130303330380a2020010c
+		02010400023a80d072382d40102c4580
+		09252100001e011d007251d01e206e28
+		550009252100001e011d00bc52d01e20
+		b828554009252100001e8c0ad0902040
+		31200c4055000925210000188c0ad08a
+		20e02d10103e96000925210000180000
+		00000000000000000000000000000000
+		0000000000000000000000000000005e
+	BorderDimensions: 4 
+		supported: 4
+	Border: 0 0 0 0 
+		range: (0, 65535)
+	SignalFormat: TMDS 
+		supported: TMDS
+	ConnectorType: DVI-D 
+	ConnectorNumber: 0 
+	_ConnectorLocation: 0 
+	non-desktop: 0 
+		supported: 0, 1
+
+
+
 #--minimal install--
 http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images/netboot/
 https://help.ubuntu.com/community/Installation/MinimalCD#mini_system_in_UEFI_mode

@@ -14,6 +14,7 @@ wget -c https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.7/amd64/linux-headers-
 wget -c https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.7/amd64/linux-image-unsigned-5.7.0-050700-generic_5.7.0-050700.202006082127_amd64.deb   
 wget -c https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.7/amd64/linux-modules-5.7.0-050700-generic_5.7.0-050700.202006082127_amd64.deb
 sudo dpkg -i *.deb
+#initrd.img.old -> ../ref/initrd.img-5.4.0-92-generic
 #sudo apt install nvidia-cuda-toolkit
 lspci | egrep 'VGA|3D'
 

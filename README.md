@@ -14,8 +14,7 @@ https://askubuntu.com/questions/1230924/ubuntu-20-04-does-not-recognize-second-m
 #wget -c https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.7/amd64/linux-image-unsigned-5.7.0-050700-generic_5.7.0-050700.202006082127_amd64.deb   
 #wget -c https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.7/amd64/linux-modules-5.7.0-050700-generic_5.7.0-050700.202006082127_amd64.deb
 
-#-before install 5.7.0
-jhuang@hamburg:/boot$ ls -tlrh
+#-before install 5.8.0
 total 115M
 drwx------ 2 root root  12K Nov 10  2017 lost+found
 -rw-r--r-- 1 root root 181K Aug 18  2020 memtest86+_multiboot.bin
@@ -42,6 +41,28 @@ sudo ln -s ../ref/initrd.img-5.4.0-92-generic initrd.img-5.4.0-92-generic
 #sudo dpkg -i *.deb
 sudo apt install linux-headers-5.8.0-55-generic
 sudo apt install linux-image-5.8.0-55-generic
+
+total 131M
+drwx------ 2 root root  12K Nov 10  2017 lost+found
+-rw-r--r-- 1 root root 181K Aug 18  2020 memtest86+_multiboot.bin
+-rw-r--r-- 1 root root 181K Aug 18  2020 memtest86+.elf
+-rw-r--r-- 1 root root 179K Aug 18  2020 memtest86+.bin
+-rw------- 1 root root 5,3M Jun  1  2021 System.map-5.8.0-55-generic
+-rw-r--r-- 1 root root 243K Jun  1  2021 config-5.8.0-55-generic
+-rw------- 1 root root 9,4M Jun  1  2021 vmlinuz-5.8.0-55-generic
+-rw------- 1 root root 4,6M Nov 26  2021 System.map-5.4.0-92-generic
+-rw-r--r-- 1 root root 233K Nov 26  2021 config-5.4.0-92-generic
+-rw------- 1 root root  14M Nov 26  2021 vmlinuz-5.4.0-92-generic
+-rw-r--r-- 1 root root 8,3M Jun 27 17:06 initrd.img-4.10.0-38-generic
+-rw-r--r-- 1 root root 8,3M Jun 27 17:06 initrd.img-4.10.0-28-generic
+lrwxrwxrwx 1 root root   24 Jun 30 16:18 vmlinuz.old -> vmlinuz-5.4.0-92-generic
+lrwxrwxrwx 1 root root   27 Jun 30 16:56 initrd.img.old -> initrd.img-5.4.0-92-generic
+lrwxrwxrwx 1 root root   34 Jun 30 16:59 initrd.img-5.4.0-92-generic -> ../ref/initrd.img-5.4.0-92-generic
+lrwxrwxrwx 1 root root   24 Jun 30 17:10 vmlinuz -> vmlinuz-5.8.0-55-generic
+lrwxrwxrwx 1 root root   27 Jun 30 17:10 initrd.img -> initrd.img-5.8.0-55-generic
+-rw-r--r-- 1 root root  82M Jun 30 17:11 initrd.img-5.8.0-55-generic
+drwxr-xr-x 5 root root 1,0K Jun 30 17:11 grub
+
 
 #sudo apt install nvidia-cuda-toolkit
 

@@ -13,9 +13,35 @@ wget -c https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.7/amd64/linux-headers-
 wget -c https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.7/amd64/linux-headers-5.7.0-050700-generic_5.7.0-050700.202006082127_amd64.deb   
 wget -c https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.7/amd64/linux-image-unsigned-5.7.0-050700-generic_5.7.0-050700.202006082127_amd64.deb   
 wget -c https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.7/amd64/linux-modules-5.7.0-050700-generic_5.7.0-050700.202006082127_amd64.deb
+
+-before install 5.7.0
+jhuang@hamburg:/boot$ ls -tlrh
+total 115M
+drwx------ 2 root root  12K Nov 10  2017 lost+found
+-rw-r--r-- 1 root root 181K Aug 18  2020 memtest86+_multiboot.bin
+-rw-r--r-- 1 root root 181K Aug 18  2020 memtest86+.elf
+-rw-r--r-- 1 root root 179K Aug 18  2020 memtest86+.bin
+-rw------- 1 root root 4,6M Nov 26  2021 System.map-5.4.0-92-generic
+-rw-r--r-- 1 root root 233K Nov 26  2021 config-5.4.0-92-generic
+-rw------- 1 root root  14M Nov 26  2021 vmlinuz-5.4.0-92-generic
+-rw-r--r-- 1 root root 8,3M Jun 27 17:06 initrd.img-4.10.0-38-generic
+-rw-r--r-- 1 root root 8,3M Jun 27 17:06 initrd.img-4.10.0-28-generic
+lrwxrwxrwx 1 root root   24 Jun 30 16:18 vmlinuz.old -> vmlinuz-5.4.0-92-generic
+-rw-r--r-- 1 root root  80M Jun 30 16:19 initrd.img-5.4.0-92-generic
+lrwxrwxrwx 1 root root   24 Jun 30 16:56 vmlinuz -> vmlinuz-5.4.0-92-generic
+lrwxrwxrwx 1 root root   27 Jun 30 16:56 initrd.img.old -> initrd.img-5.4.0-92-generic
+lrwxrwxrwx 1 root root   27 Jun 30 16:56 initrd.img -> initrd.img-5.4.0-92-generic
+drwxr-xr-x 5 root root 1,0K Jun 30 16:56 grub
+
+sudo mv initrd.img-5.4.0-92-generic ../ref/initrd.img-5.4.0-92-generic
+sudo ln -s ../ref/initrd.img-5.4.0-92-generic initrd.img-5.4.0-92-generic
+# --> total 35M under /boot
+
 sudo dpkg -i *.deb
-#initrd.img.old -> ../ref/initrd.img-5.4.0-92-generic
+
+
 #sudo apt install nvidia-cuda-toolkit
+
 lspci | egrep 'VGA|3D'
 
 jhuang@hamburg:~$ xrandr --verbose

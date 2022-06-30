@@ -35,7 +35,7 @@ sudo mount /dev/sdb1 /mnt
 sudo mount /dev/sda2 /mnt/boot
 sudo mount /dev/sda1 /mnt/home
 sudo mount /dev/sdb5 /mnt/ref
-sudo mount /dev/sdb6 /mnt/unused
+#sudo mount /dev/sdb6 /mnt/unused
 sudo mount /dev/sdb7 /mnt/tmp
 
 mount -o bind /dev /mnt/dev

@@ -31,6 +31,14 @@ sudo cp /etc/resolv.conf /mnt/etc/resolv.conf
 If you do something special like edit /etc/default/grub, you will also need to do the same things you normally would in the system, but without sudo. So for example, after making a change, I would run update-grub while in chroot.
 7. If you forgot something, you can exit the chroot environment (change the # back into a $) by just typing exit. For example, you might do this if you forgot step 4 to get Internet access, and you find that you can't download packages into the chrooted environment. After doing what you forgot, just chroot back in with sudo chroot /mnt
 8. That's it! Do what you need to do: remove driver packages, install driver packages, or whatever, then reboot into your fixed system.
+sudo mount /dev/sdb1 /mnt
+sudo mount /dev/sda2 /mnt/boot
+sudo mount /dev/sda1 /mnt/home
+sudo mount /dev/sdb5 /mnt/ref
+sudo mount /dev/sdb6 /mnt/unused
+sudo mount /dev/sdb7 /mnt/tmp
+sudo chroot /mnt
+su jhuang
 
 #--install graphics driver--
 #https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-20-04-focal-fossa-linux

@@ -3,7 +3,10 @@ A pipeline for clinical bacteria NGS data
 
 WARNING: used the absolute path '-hmm /media/jhuang/Titisee/GAMOLA2/TIGRfam_db/TIGRFAMs_15.0_HMM.LIB' in Snakefile
 
-```sh
+```
+#--MultiDisplay Lubuntu--
+https://askubuntu.com/questions/657055/dual-monitor-extended-desktop-in-lubuntu
+https://help.ubuntu.com/community/Lubuntu/MultiDisplay
 #--minimal install--
 http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images/netboot/
 https://help.ubuntu.com/community/Installation/MinimalCD#mini_system_in_UEFI_mode

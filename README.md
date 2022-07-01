@@ -8,6 +8,8 @@ WARNING: used the absolute path '-hmm /media/jhuang/Titisee/GAMOLA2/TIGRfam_db/T
 https://askubuntu.com/questions/657055/dual-monitor-extended-desktop-in-lubuntu
 https://help.ubuntu.com/community/Lubuntu/MultiDisplay
 https://askubuntu.com/questions/1230924/ubuntu-20-04-does-not-recognize-second-monitor
+
+#--install kernel--
 #cd /tmp/
 #wget -c https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.7/amd64/linux-headers-5.7.0-050700_5.7.0-050700.202006082127_all.deb
 #wget -c https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.7/amd64/linux-headers-5.7.0-050700-generic_5.7.0-050700.202006082127_amd64.deb   

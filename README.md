@@ -75,6 +75,11 @@ DVI-D-1-0 connected (normal left inverted right x axis y axis) --> NEW!
    640x480       75.00    72.81    59.94  
 HDMI-1-0 disconnected (normal left inverted right x axis y axis)
 
+sudo apt update
+sudo apt remove '^nvidia'
+sudo apt autoremove
+sudo apt install nvidia-driver-460
+
 
 #------------------
 #--install kernel--
@@ -138,6 +143,7 @@ lrwxrwxrwx 1 root root   27 Jun 30 17:10 initrd.img -> initrd.img-5.8.0-55-gener
 -rw-r--r-- 1 root root  82M Jun 30 17:11 initrd.img-5.8.0-55-generic
 drwxr-xr-x 5 root root 1,0K Jun 30 17:11 grub
 #sudo apt install nvidia-cuda-toolkit
+
 
 #-----------------------------------------------------------------
 #--boot from a live-usb or lubuntu 20.04 (black small USB-stick)--

@@ -22,13 +22,14 @@ xrandr
 -->VGA-1-0 connected (normal left inverted right x axis y axis)
    1920x1080     60.00 +
 
-sudo apt install arandr  #ARandR Screen Layout Editor
+sudo apt install arandr
 arandr
-(arandr:12378): Gdk-CRITICAL **: 08:45:22.406: gdk_atom_intern: assertion 'atom_name != NULL' failed
-(arandr:12378): Gdk-CRITICAL **: 08:45:22.406: gdk_atom_intern: assertion 'atom_name != NULL' failed
 #try to save the configuration file under ~/.screenlayout$ vim xx.sh
 ##!/bin/sh
 #xrandr --output VGA-0 --off --output DVI-D-0 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output HDMI-0 --off --output VGA-1-0 --mode 1920x1080 --pos 1920x0 --rotate normal --output DVI-D-1-0 --off --output HDMI-1-0 --off
+xrandr --output DVI-D-0 --primary --mode 1920x1080 --pos 0x0 --rotate normal          --output VGA-1-0 --mode 1920x1080 --pos 1920x0 --rotate normal     
+#-->xrandr: Configure crtc 4 failed
+
 
 #------------------
 #--install kernel--

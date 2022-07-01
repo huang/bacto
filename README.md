@@ -83,8 +83,15 @@ sudo apt install nvidia-driver-460
 
 #------------------
 #--install kernel--
-# VERY IMPORTANT: ensuring suitable addiational driver for nvidia installed for example 340.108.
-# FINAL INSTALLED: NVIDIA driver metapackage from nvidia-driver-470 (proprietary)                
+# VERY IMPORTANT: firstly ensuring suitable addiational driver for nvidia installed for example 340.108.
+# nvidia-driver-470 (proprietary) --> not good, always frozen after few minutes!          
+# driver installation via GUI "additional drivers" or via command lines as follows.
+sudo ubuntu-drivers devices
+#and either you install the one you want by hand:
+sudo apt install (your driver)
+#or you let the system install the recommended ones:
+sudo ubuntu-drivers autoinstall
+#If you installed any new drivers, do reboot afterwards!
 
 #cd /tmp/
 #wget -c https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.7/amd64/linux-headers-5.7.0-050700_5.7.0-050700.202006082127_all.deb

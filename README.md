@@ -83,7 +83,7 @@ sudo apt install nvidia-driver-460
 
 #------------------
 #--install kernel--
-# VERY IMPORTANT: ensuring suitable addiational driver for nvidia installed for example 340.180.
+# VERY IMPORTANT: ensuring suitable addiational driver for nvidia installed for example 340.108.
 # FINAL INSTALLED: NVIDIA driver metapackage from nvidia-driver-470 (proprietary)                
 
 #cd /tmp/

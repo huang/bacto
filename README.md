@@ -32,7 +32,8 @@ arandr
 
 #------------------
 #--install kernel--
-# NOTE: ensuring suitable addiational driver for nvidia installed for example 340.180.
+# VERY IMPORTANT: ensuring suitable addiational driver for nvidia installed for example 340.180.
+# FINAL INSTALLED: NVIDIA driver metapackage from nvidia-driver-470 (proprietary)                
 
 #cd /tmp/
 #wget -c https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.7/amd64/linux-headers-5.7.0-050700_5.7.0-050700.202006082127_all.deb

@@ -9,7 +9,14 @@ https://askubuntu.com/questions/657055/dual-monitor-extended-desktop-in-lubuntu
 https://help.ubuntu.com/community/Lubuntu/MultiDisplay
 https://askubuntu.com/questions/1230924/ubuntu-20-04-does-not-recognize-second-monitor
 
+xrandr --verbose
+lspci | egrep 'VGA|3D'
+lshw -c video
+sudo apt install arandr  #ARandR Screen Layout Editor
+
 #--install kernel--
+# NOTE: ensuring suitable addiational driver for nvidia installed for example 340.180.
+
 #cd /tmp/
 #wget -c https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.7/amd64/linux-headers-5.7.0-050700_5.7.0-050700.202006082127_all.deb
 #wget -c https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.7/amd64/linux-headers-5.7.0-050700-generic_5.7.0-050700.202006082127_amd64.deb   
@@ -39,10 +46,12 @@ sudo ln -s ../ref/initrd.img-5.4.0-92-generic initrd.img-5.4.0-92-generic
 # --> total 35M under /boot
 #-delete other versions
 #dpkg -l 'linux-*' | sed '/^ii/!d;/'"$(uname -r | sed "s/\(.*\)-\([^0-9]\+\)/\1/")"'/d;s/^[^ ]* [^ ]* \([^ ]*\).*/\1/;/[0-9]/!d' | xargs sudo apt-get -y purge
+sudo apt -y purge linux-hwe-5.13-headers-5.13.0-52 linux-{headers,image,modules,modules-extra}-5.13.0-52-generic
 
 #sudo dpkg -i *.deb
 sudo apt install linux-headers-5.8.0-55-generic
 sudo apt install linux-image-5.8.0-55-generic
+sudo apt install linux-hwe-5.13-headers-5.13.0-52 linux-{headers,image,modules,modules-extra}-5.13.0-52-generic
 
 total 131M
 drwx------ 2 root root  12K Nov 10  2017 lost+found
@@ -67,10 +76,6 @@ drwxr-xr-x 5 root root 1,0K Jun 30 17:11 grub
 
 
 #sudo apt install nvidia-cuda-toolkit
-
-lspci | egrep 'VGA|3D'
-
-jhuang@hamburg:~$ xrandr --verbose
 
 #--minimal install--
 http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images/netboot/

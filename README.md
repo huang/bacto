@@ -4,6 +4,7 @@ A pipeline for clinical bacteria NGS data
 WARNING: used the absolute path '-hmm /media/jhuang/Titisee/GAMOLA2/TIGRfam_db/TIGRFAMs_15.0_HMM.LIB' in Snakefile
 
 ```
+#------------------------
 #--MultiDisplay Lubuntu--
 https://askubuntu.com/questions/657055/dual-monitor-extended-desktop-in-lubuntu
 https://help.ubuntu.com/community/Lubuntu/MultiDisplay
@@ -12,8 +13,24 @@ https://askubuntu.com/questions/1230924/ubuntu-20-04-does-not-recognize-second-m
 xrandr --verbose
 lspci | egrep 'VGA|3D'
 lshw -c video
-sudo apt install arandr  #ARandR Screen Layout Editor
+xrandr
+   Screen 0: minimum 8 x 8, current 1920 x 1080, maximum 16384 x 16384
+   VGA-0 disconnected (normal left inverted right x axis y axis)
+-->DVI-D-0 connected primary 1920x1080+0+0 (normal left inverted right x axis y axis) 521mm x 293mm
+   1920x1080     60.00*+  50.00  
+   HDMI-0 disconnected (normal left inverted right x axis y axis)
+-->VGA-1-0 connected (normal left inverted right x axis y axis)
+   1920x1080     60.00 +
 
+sudo apt install arandr  #ARandR Screen Layout Editor
+arandr
+(arandr:12378): Gdk-CRITICAL **: 08:45:22.406: gdk_atom_intern: assertion 'atom_name != NULL' failed
+(arandr:12378): Gdk-CRITICAL **: 08:45:22.406: gdk_atom_intern: assertion 'atom_name != NULL' failed
+#try to save the configuration file under ~/.screenlayout$ vim xx.sh
+##!/bin/sh
+#xrandr --output VGA-0 --off --output DVI-D-0 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output HDMI-0 --off --output VGA-1-0 --mode 1920x1080 --pos 1920x0 --rotate normal --output DVI-D-1-0 --off --output HDMI-1-0 --off
+
+#------------------
 #--install kernel--
 # NOTE: ensuring suitable addiational driver for nvidia installed for example 340.180.
 
@@ -73,16 +90,13 @@ lrwxrwxrwx 1 root root   24 Jun 30 17:10 vmlinuz -> vmlinuz-5.8.0-55-generic
 lrwxrwxrwx 1 root root   27 Jun 30 17:10 initrd.img -> initrd.img-5.8.0-55-generic
 -rw-r--r-- 1 root root  82M Jun 30 17:11 initrd.img-5.8.0-55-generic
 drwxr-xr-x 5 root root 1,0K Jun 30 17:11 grub
-
-
 #sudo apt install nvidia-cuda-toolkit
 
-#--minimal install--
-http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images/netboot/
-https://help.ubuntu.com/community/Installation/MinimalCD#mini_system_in_UEFI_mode
-http://cdimages.ubuntu.com/netboot/focal/
-
-#--boot from a live-usb--
+#-----------------------------------------------------------------
+#--boot from a live-usb or lubuntu 20.04 (black small USB-stick)--
+#http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images/netboot/
+#https://help.ubuntu.com/community/Installation/MinimalCD#mini_system_in_UEFI_mode
+#http://cdimages.ubuntu.com/netboot/focal/
 #https://forums.linuxmint.com/viewtopic.php?p=1570850#p1570850
 I don't know if there's a simple guide, but I pieced this together from a lot of Googling and testing. If anyone has any corrections to this unprofessional and informal mini-guide, please don't hesitate to correct me, because I'm likely missing something important. :D
 
@@ -140,6 +154,8 @@ sudo apt install linux-generic
 
 #https://www.cyberciti.biz/faq/installing-latest-stable-mainline-linux-kernel-on-ubuntu-with-apt-get/
 #https://askubuntu.com/questions/89710/how-do-i-free-up-more-space-in-boot
+
+
 
 
 

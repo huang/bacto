@@ -4,6 +4,10 @@ A pipeline for clinical bacteria NGS data
 WARNING: used the absolute path '-hmm /media/jhuang/Titisee/GAMOLA2/TIGRfam_db/TIGRFAMs_15.0_HMM.LIB' in Snakefile
 
 ```
+#------------------------------------------
+#--Always install essential after upgrade--
+sudo apt install build-essential
+
 #------------------------
 #--MultiDisplay Lubuntu--
 https://askubuntu.com/questions/657055/dual-monitor-extended-desktop-in-lubuntu

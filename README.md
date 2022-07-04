@@ -7,6 +7,7 @@ WARNING: used the absolute path '-hmm /media/jhuang/Titisee/GAMOLA2/TIGRfam_db/T
 #------------------------------------------
 #--Always install essential after upgrade--
 sudo apt install build-essential
+sudo apt install gfortran
 
 #------------------------
 #--MultiDisplay Lubuntu--

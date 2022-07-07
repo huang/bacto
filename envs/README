@@ -1,22 +1,9 @@
 #https://stackoverflow.com/questions/63990487/package-conflict-with-anaconda
 #IMPORTANT: By telling conda that it can visit multiple channels (conda-forge, bioconda and defaults), it has some extra options to resolve the dependency conflicts.
 
-#-- prokka need to be installed with root-env --> FAILED
-#sudo apt install prokka
-#--> no databases: https://github.com/tseemann/prokka/issues/540
 
-#-- prokka to be installed under base-env --> FAILED
-conda activate base
-(base) conda install -c conda-forge -c bioconda -c defaults prokka
-#sudo apt-get install libdatetime-perl libxml-simple-perl libdigest-md5-perl git default-jre bioperl
-#sudo cpan Bio::Perl
-#git clone https://github.com/tseemann/prokka.git $HOME/prokka
-#$HOME/prokka/bin/prokka --setupdb
-(base) conda install -c conda-forge -c bioconda -c defaults perl-bioperl perl-datetime perl-xml-simple perl-digest-md5
-(base) cpanm Bio::Root::Version
-conda deactivate
-
-
+#-- we should create two environments: prokka and bacto2 --> SUCCESSFUL
+# ---------------------- env bacto2 ---------------------
 conda create -n bacto2 -c conda-forge -c bioconda -c defaults python=3.7
 conda activate bacto2
 (bacto2) conda install -c conda-forge -c bioconda -c defaults trimmomatic fastqc shovill 
@@ -24,11 +11,15 @@ conda activate bacto2
 (bacto2) conda install -c conda-forge -c bioconda -c defaults raxml-ng gubbins snp-sites
 #conda install -c conda-forge -c bioconda -c defaults biopython
 
+# ---------------------- env prokka ---------------------
 conda create -n prokka -c conda-forge -c bioconda -c defaults python=3.7 prokka
 (prokka) conda install -c conda-forge -c bioconda -c defaults shovill mlst trimmomatic 
 
+# ------------ using prokka for first three steps and bacto2 for last 5 steps --------------
 (prokka) for the steps trimmomatic + shovill + prokka + mlst (f,f,t,t,t,f,f,f,f,f in bacto-0.1.json)
 (bacto2) running the remaining steps (f,f,f,f,f,t,t,t,t,t in bacto-0.1.json)
+
+
 
 
 

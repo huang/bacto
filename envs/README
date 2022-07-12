@@ -13,7 +13,7 @@ conda activate base
 conda update --all --yes
 conda create -n snippy
 conda activate snippy
-(snippy) conda install -c conda-forge -c bioconda -c defaults snippy roary
+(snippy) conda install -c conda-forge -c bioconda -c defaults snippy=4.6 roary
 (snippy) conda list (To check version is above 4)
 (snippy) snippy --check
 

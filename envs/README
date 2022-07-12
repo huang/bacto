@@ -14,6 +14,7 @@ conda activate bacto2
 (bacto2) conda install -c conda-forge -c bioconda -c defaults trimmomatic fastqc shovill 
 (bacto2) conda install -c conda-forge -c bioconda -c defaults mlst roary snippy fasttree 
 (bacto2) conda install -c conda-forge -c bioconda -c defaults raxml-ng gubbins snp-sites
+(bacto2) conda install -c conda-forge -c bioconda -c defaults perl-bioperl
 #(bacto2) conda install -c conda-forge -c bioconda -c defaults biopython
 #(bacto2) conda install -c conda-forge -c bioconda -c defaults snakemake
 

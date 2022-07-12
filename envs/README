@@ -16,6 +16,8 @@ conda create -n prokka -c conda-forge -c bioconda -c defaults python=3.7 prokka
 #(snippy) conda install -c conda-forge -c bioconda -c defaults snippy=4.6 roary
 #(snippy) conda list (To check version is above 4)
 #(snippy) snippy --check
+#-- install brew on ubuntu --
+https://www.how2shout.com/linux/how-to-install-brew-ubuntu-20-04-lts-linux/#google_vignette
 
 # ---------------------- env bacto2 ---------------------
 conda create -n bacto2 -c conda-forge -c bioconda -c defaults python=3.7

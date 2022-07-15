@@ -47,10 +47,6 @@ conda activate bacto2
 [In project C.acnes] (bacto2 on titisee) ./roary$ fasttree -gtr -nt core_gene_alignment.aln > core_gene_alignment.tree
 [In project C.acnes] (bacto2 on titisee) ./roary$ snp-sites core_gene_alignment.aln > core_gene_alignment_.aln     #372992 --> 16848
 [In project C.acnes] (bacto2 on titisee) ./roary$ raxml-ng --all --model GTR+G+ASC_LEWIS --prefix core_gene_raxml --threads 6 --msa core_gene_alignment_.aln --bs-trees 1000
-[In project C.acnes] (bacto2 on titisee) ./roary$ raxml-ng --all --model GTR+G+ASC_LEWIS --prefix core_gene_raxml --threads 6 --msa core_gene_alignment_.aln --bs-trees 1000
-
-
-
 
 
 

@@ -45,7 +45,7 @@ conda activate bacto2
 #(bacto2) conda install -c conda-forge -c bioconda -c defaults snakemak
 
 # ------------ using prokka for first three steps and bacto2 for last 5 steps --------------
-(prokka on titisee) for the steps trimmomatic + shovill + prokka + mlst (f,f,t,t,t,f,f,f,f,f in bacto-0.1.json)
+(prokka on titisee) for the steps trimmomatic + shovill + prokka + mlst (f,f,t,f,t,f,f,f,f,f in bacto-0.1.json)
 [In most projects]   (bacto2 on titisee) for the remaining steps (f,f,f,f,f,t,f,t,t,t in bacto-0.1.json)
 [In project C.acnes] (bacto2 on titisee) for the step roary (f,f,f,f,f,t,f,f,f,f in bacto-0.1.json) 
 [In project C.acnes] (bacto2 on titisee) ./roary$ samtools faidx core_gene_alignment.aln

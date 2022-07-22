@@ -1,7 +1,12 @@
 #https://stackoverflow.com/questions/63990487/package-conflict-with-anaconda
 #IMPORTANT: By telling conda that it can visit multiple channels (conda-forge, bioconda and defaults), it has some extra options to resolve the dependency conflicts.
 
-
+cd raw_data
+for file in *.fastq.gz; do mv $file $(echo $file | cut -d'_' -f1)_$(echo $file | cut -d'_' -f4).fastq.gz; done
+cd ..
+git clone https://github.com/huang/bacto
+mv bacto/* ./
+rmdir bacto
 #-- we should create two environments: prokka and bacto2 --> SUCCESSFUL
 # ---------------------- install env prokka ---------------------
 conda create -n prokka -c conda-forge -c bioconda -c defaults python=3.7 prokka

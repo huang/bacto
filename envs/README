@@ -45,13 +45,60 @@ conda activate bacto2
 #(bacto2) conda install -c conda-forge -c bioconda -c defaults snakemak
 
 # ------------ using prokka for first three steps and bacto2 for last 5 steps --------------
-(prokka on titisee) for the steps trimmomatic + shovill + prokka + mlst (f,f,t,f,t,f,f,f,f,f in bacto-0.1.json)
-[In most projects]   (bacto2 on titisee) for the remaining steps (f,f,f,f,f,t,f,t,t,t in bacto-0.1.json)
-[In project C.acnes] (bacto2 on titisee) for the step roary (f,f,f,f,f,t,f,f,f,f in bacto-0.1.json) 
-[In project C.acnes] (bacto2 on titisee) ./roary$ samtools faidx core_gene_alignment.aln
-[In project C.acnes] (bacto2 on titisee) ./roary$ fasttree -gtr -nt core_gene_alignment.aln > core_gene_alignment.tree
-[In project C.acnes] (bacto2 on titisee) ./roary$ snp-sites core_gene_alignment.aln > core_gene_alignment_.aln     #372992 --> 16848
-[In project C.acnes] (bacto2 on titisee) ./roary$ raxml-ng --all --model GTR+G+ASC_LEWIS --prefix core_gene_raxml --threads 6 --msa core_gene_alignment_.aln --bs-trees 1000
+(prokka) for the first 3 steps (f,f,t,f,t,f,f,f,f,f in bacto-0.1.json)
+
+# ---- The strategies for choosing the best reference ----
+#1. if the reference is given in bacto-0.1.json.
+(bacto2 on titisee) for the remaining steps (f,f,f,f,f,t,f,t,t,t in bacto-0.1.json)
+
+#2. if the reference is given in bacto-0.1.json, for example in project C.acnes.
+(bacto2 on titisee) for the step roary (f,f,f,f,f,t,f,f,f,f in bacto-0.1.json) generating roary.
+(bacto2 on titisee) ./roary$ samtools faidx core_gene_alignment.aln
+(bacto2 on titisee) ./roary$ fasttree -gtr -nt core_gene_alignment.aln > core_gene_alignment.tree
+(bacto2 on titisee) ./roary$ snp-sites core_gene_alignment.aln > core_gene_alignment_.aln     #372992 --> 16848
+(bacto2 on titisee) ./roary$ raxml-ng --all --model GTR+G+ASC_LEWIS --prefix core_gene_raxml --threads 6 --msa core_gene_alignment_.aln --bs-trees 1000
+
+#3. seek the next closely reference
+(referenceseeker) ~/Tools/referenceseeker/bin/referenceseeker -v ~/REFs/bacteria-refseq/ shovill/E50862/contigs.fa
+#ID     Mash Distance   ANI     Con. DNA        Taxonomy ID     Assembly Status Organism
+GCF_001281065.1 0.00712 98.70   91.86   1747    complete        Cutibacterium acnes KCOM 1861 (= ChDC B594)
+GCF_000231215.1 0.00710 98.51   91.85   1091045 complete        Cutibacterium acnes subsp. defendens ATCC 11828
+GCF_000240055.1 0.01125 98.42   91.54   1114969 complete        Cutibacterium acnes TypeIA2 P.acn31
+GCF_006739385.1 0.01108 98.42   91.48   1734925 complete        Cutibacterium acnes subsp. acnes NBRC 107605
+GCF_000008345.1 0.01085 98.43   91.41   267747  complete        Cutibacterium acnes KPA171202
+
+
+#4. choose and annotate an isolate as reference (using spandx)
+#-4.1. generate PseudoContig_wildtype.fasta --
+#./shovill/noAB_wildtype/contigs.fasta
+~/Tools/CONTIGuator_v2.7/CONTIGuator.py -r CP040849.fasta -a /home/jhuang/Tools/act.jar -c shovill/noAB_wildtype/contigs.fa 
+~/Tools/CONTIGuator_v2.7/CONTIGuator.py -r CP059793.fasta -a /home/jhuang/Tools/act.jar -c shovill/noAB_wildtype/contigs.fa 
+merge_seq.py Excluded.fsa > ../Excluded_sequence.fasta
+#add Excluded_sequence.fasta to PseudoContig.fsa or only use PseudoContig.fsa
+
+prokka PseudoContig_wildtype.fasta #result in PROKKA_01242022
+#../../vrap/external_tools/blast/makeblastdb -in nucleotide.fa -dbtype nucl -parse_seqids -out nucleotide.fasta
+python ~/Tools/VAPiD/vapid3.py --db ~/REFs/all_virus/all_virus.fasta contigs.fa ~/REFs/template_Fischer.sbt
+python ~/Tools/VAPiD/vapid3.py --db ~/REFs/all_virus/all_virus.fasta contigs.fa ~/REFs/template_Holger.sbt
+
+#-4.2. generate genebank in snpEff for noAB_wildtype --
+mkdir ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/data/noAB_wildtype
+cp PROKKA_01242022/PROKKA_01242022.gbk ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/data/noAB_wildtype/genes.gbk
+vim ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/snpEff.config
+/home/jhuang/anaconda3/envs/spandx/bin/snpEff build -genbank noAB_wildtype      -d
+
+
+#-4.3. using spandx calling variants --
+#ln -s /home/jhuang/Tools/spandx/ spandx
+#-t
+snpEff eff -nodownload -no-downstream -no-intergenic -ud 100 -v CP040849.1 noAB_wildtype_trimmed.PASS.snps.vcf > noAB_wildtype_trimmed.PASS.snps.annotated.vcf
+#
+#               'CP040849'      2659111 Standard
+(spandx) nextflow run spandx/main.nf --fastq "trimmed/*_P_{1,2}.fastq.gz" --ref PseudoContig_wildtype.fasta --annotation --database noAB_wildtype -resume
+
+
+
+
 
 
 

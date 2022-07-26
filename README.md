@@ -122,7 +122,7 @@ raxml-ng --all --model GTR+G+ASC_LEWIS --prefix core_gene_raxml --threads 6 --ms
 #cp ../plotTreeHeatmap/typing_188.csv ./
 #,If_inf
 Command: /home/jhuang/anaconda3/envs/bengal3_ac3/bin/scoary -g ../roary/gene_presence_absence.csv -t f1_13 -r restrict_to_186.csv
-scoary -g ../roary/gene_presence_absence.csv -t f1_13 -r restrict_to_186.csv
+(bengal3_ac3) scoary -g ../roary/gene_presence_absence.csv -t f1_13 -r restrict_to_186.csv
 ```
 
 
@@ -312,7 +312,7 @@ sudo apt install linux-generic
 
 
 
-
+```sh
 genbankdownload.py -t fasta CP000851
 (optional) download genomes https://github.com/kblin/ncbi-genome-download
 ncbi-genome-download --species-taxids 562 --formats fasta --refseq-categories reference --assembly-levels complete --parallel 4  bacteria

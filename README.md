@@ -62,7 +62,7 @@ conda activate bacto2
 (bacto2 on titisee) for the remaining steps (f,f,f,f,f,t,f,t,t,t in bacto-0.1.json)
 
 #2. if the reference is given in bacto-0.1.json, for example in project C.acnes.
-(bacto2 on titisee) for the step roary (f,f,f,f,f,t,f,f,f,f in bacto-0.1.json) generating roary, gathering samples only from raw_data/*.fastq.gz.
+(bacto2 on titisee) for the step roary (f,f,f,f,f,t,f,f,f,f in bacto-0.1.json) generating roary, gathering samples only from raw_data/*.fastq.gz, be careful need to delete all roary* directories before, otherwise it will occur errors during running!
 (bacto2 on titisee) ./roary$ samtools faidx core_gene_alignment.aln
 (bacto2 on titisee) ./roary$ fasttree -gtr -nt core_gene_alignment.aln > core_gene_alignment.tree
 (bacto2 on titisee) ./roary$ snp-sites core_gene_alignment.aln > core_gene_alignment_.aln     #372992 --> 16848

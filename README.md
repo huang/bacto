@@ -56,6 +56,10 @@ conda activate bacto2
 # ------------------------------------------------------------------------------------------
 # ------------ using prokka for first three steps and bacto2 for last 5 steps --------------
 (prokka) for the first 3 steps (f,f,t,t,t,f,f,f,f,f in bacto-0.1.json)
+(prokka) run prokka manually if needed: 
+for sample in 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87; do 
+    prokka --force --outdir prokka/${sample} --cpus 2 --usegenus --genus Staphylococcus --kingdom Bacteria --species epidermidis --addgenes --addmrna --prefix ${sample} --locustag ${sample} shovill/${sample}/contigs.fa -hmm /media/jhuang/Titisee/GAMOLA2/TIGRfam_db/TIGRFAMs_15.0_HMM.LIB
+done
 
 # ---- The strategies for choosing the best reference ----
 #1. if the reference is given in bacto-0.1.json.

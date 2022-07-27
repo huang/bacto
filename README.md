@@ -61,18 +61,23 @@ for sample in 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87; do
     prokka --force --outdir prokka/${sample} --cpus 2 --usegenus --genus Staphylococcus --kingdom Bacteria --species epidermidis --addgenes --addmrna --prefix ${sample} --locustag ${sample} shovill/${sample}/contigs.fa #-hmm /media/jhuang/Titisee/GAMOLA2/TIGRfam_db/TIGRFAMs_15.0_HMM.LIB
 done
 
-# ---- The strategies for choosing the best reference ----
-#1. if the reference is given in bacto-0.1.json.
+#1. if the reference is given in bacto-0.1.json, automatically run all the remaining steps.
 (bacto2 on titisee) for the remaining steps (f,f,f,f,f,t,f,t,t,t in bacto-0.1.json)
 
-#2. if the reference is given in bacto-0.1.json, for example in project C.acnes.
+#2. if the reference is not given, manually run until raxml, then call plotTreeHeatmap and scoary
 (bacto2 on titisee) for the step roary (f,f,f,f,f,t,f,f,f,f in bacto-0.1.json) generating roary, gathering samples only from raw_data/*.fastq.gz, be careful need to delete all roary* directories before, otherwise it will occur errors during running!
 (bacto2 on titisee) ./roary$ samtools faidx core_gene_alignment.aln
 (bacto2 on titisee) ./roary$ fasttree -gtr -nt core_gene_alignment.aln > core_gene_alignment.tree
 (bacto2 on titisee) ./roary$ snp-sites core_gene_alignment.aln > core_gene_alignment_.aln     #372992 --> 16848
 (bacto2 on titisee) ./roary$ raxml-ng --all --model GTR+G+ASC_LEWIS --prefix core_gene_raxml --threads 6 --msa core_gene_alignment_.aln --bs-trees 1000
+---- plotTreeHeatmap (optional) ----
+---- scoary (optional) ----
+#cp ../plotTreeHeatmap/typing_188.csv ./
+#,If_inf
+Command: /home/jhuang/anaconda3/envs/bengal3_ac3/bin/scoary -g ../roary/gene_presence_absence.csv -t f1_13 -r restrict_to_186.csv
+(bengal3_ac3) scoary -g ../roary/gene_presence_absence.csv -t f1_13 -r restrict_to_186.csv
 
-#3. seek the next closely reference
+#3. seek the next closely reference (optional)
 (referenceseeker) ~/Tools/referenceseeker/bin/referenceseeker -v ~/REFs/bacteria-refseq/ shovill/E50862/contigs.fa
 #ID     Mash Distance   ANI     Con. DNA        Taxonomy ID     Assembly Status Organism
 GCF_001281065.1 0.00712 98.70   91.86   1747    complete        Cutibacterium acnes KCOM 1861 (= ChDC B594)
@@ -81,8 +86,7 @@ GCF_000240055.1 0.01125 98.42   91.54   1114969 complete        Cutibacterium ac
 GCF_006739385.1 0.01108 98.42   91.48   1734925 complete        Cutibacterium acnes subsp. acnes NBRC 107605
 GCF_000008345.1 0.01085 98.43   91.41   267747  complete        Cutibacterium acnes KPA171202
 
-
-#4. choose and annotate an isolate as reference (using spandx)
+#4. varicant calling using spandx
 #-4.1. generate PseudoContig_wildtype.fasta --
 #./shovill/noAB_wildtype/contigs.fasta
 ~/Tools/CONTIGuator_v2.7/CONTIGuator.py -r CP040849.fasta -a /home/jhuang/Tools/act.jar -c shovill/noAB_wildtype/contigs.fa 
@@ -101,7 +105,6 @@ cp PROKKA_01242022/PROKKA_01242022.gbk ~/anaconda3/envs/spandx/share/snpeff-4.3.
 vim ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/snpEff.config
 /home/jhuang/anaconda3/envs/spandx/bin/snpEff build -genbank noAB_wildtype      -d
 
-
 #-4.3. using spandx calling variants --
 #ln -s /home/jhuang/Tools/spandx/ spandx
 #-t
@@ -109,24 +112,6 @@ snpEff eff -nodownload -no-downstream -no-intergenic -ud 100 -v CP040849.1 noAB_
 #
 #               'CP040849'      2659111 Standard
 (spandx) nextflow run spandx/main.nf --fastq "trimmed/*_P_{1,2}.fastq.gz" --ref PseudoContig_wildtype.fasta --annotation --database noAB_wildtype -resume
-
-# -------------------
-# ---- draw tree ----
-~/DATA/Data_Anna_C.acnes/182samples_roaries/roary_182s_95$ samtools faidx core_gene_alignment.aln
-
-FastTree -gtr -nt core_gene_alignment.aln > core_gene_alignment.tree
-cd ~/DATA/Data_Anna_C.acnes/182samples_roaries/roary_182s_95
-snp-sites core_gene_alignment.aln > core_gene_alignment_.aln     #372992 --> 16848
-raxml-ng --all --model GTR+G+ASC_LEWIS --prefix core_gene_raxml --threads 6 --msa core_gene_alignment_.aln --bs-trees 1000
-raxml-ng --all --model GTR+G+ASC_LEWIS --prefix core_gene_raxml --threads 6 --msa core_gene_alignment_.aln --bs-trees 1000
-#--> to dir plotTreeHeatmap
-
-# ----------------
-# ---- scoary ----
-#cp ../plotTreeHeatmap/typing_188.csv ./
-#,If_inf
-Command: /home/jhuang/anaconda3/envs/bengal3_ac3/bin/scoary -g ../roary/gene_presence_absence.csv -t f1_13 -r restrict_to_186.csv
-(bengal3_ac3) scoary -g ../roary/gene_presence_absence.csv -t f1_13 -r restrict_to_186.csv
 ```
 
 

@@ -55,7 +55,7 @@ conda activate bacto2
 
 # ------------------------------------------------------------------------------------------
 # ------------ using prokka for first three steps and bacto2 for last 5 steps --------------
-(prokka) for the first 3 steps (f,f,t,f,t,f,f,f,f,f in bacto-0.1.json)
+(prokka) for the first 3 steps (f,f,t,t,t,f,f,f,f,f in bacto-0.1.json)
 
 # ---- The strategies for choosing the best reference ----
 #1. if the reference is given in bacto-0.1.json.

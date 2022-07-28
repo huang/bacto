@@ -112,6 +112,22 @@ snpEff eff -nodownload -no-downstream -no-intergenic -ud 100 -v CP040849.1 noAB_
 #
 #               'CP040849'      2659111 Standard
 (spandx) nextflow run spandx/main.nf --fastq "trimmed/*_P_{1,2}.fastq.gz" --ref PseudoContig_wildtype.fasta --annotation --database noAB_wildtype -resume
+
+#-4.4. post-processing --
+awk '{if($6!=$7) print}' < All_SNPs_indels_annotated.txt > All_SNPs_indels_annotated_.txt
+cut -d$'\t' -f1-7 All_SNPs_indels_annotated_.txt > f1_7
+grep -v "/" f1_7 > f1_7_
+grep -v "\." f1_7_ > f1_7__
+grep -v "*" f1_7__ > f1_7___
+grep -v "INDEL" f1_7___ > f1_7____
+
+cut -d$'\t' -f2-2 f1_7____ > f2
+
+\n --> " All_SNPs_indels_annotated_.txt >> All_SNPs_annotated.txt\ngrep "
+grep "CHROM" All_SNPs_indels_annotated_.txt > All_SNPs_annotated.txt
+grep "46882" All_SNPs_indels_annotated_.txt >> All_SNPs_annotated.txt
+grep "46892" All_SNPs_indels_annotated_.txt >> All_SNPs_annotated.txt
+...
 ```
 
 

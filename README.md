@@ -131,8 +131,8 @@ grep -v "SNP" f1_7___ > f1_7_indels
 cut -d$'\t' -f2-2 f1_7_indels > f1_7_indels_f2
 \n --> " All_SNPs_indels_annotated_.txt >> All_indels_annotated.txt\ngrep "
 #grep "CHROM" All_SNPs_indels_annotated_.txt > All_indels_annotated.txt
-#grep "46882" All_SNPs_indels_annotated_.txt >> All_indels_annotated.txt
-#grep "46892" All_SNPs_indels_annotated_.txt >> All_indels_annotated.txt
+#grep "49848" All_SNPs_indels_annotated_.txt >> All_indels_annotated.txt
+#grep "53872" All_SNPs_indels_annotated_.txt >> All_indels_annotated.txt
 ```
 
 

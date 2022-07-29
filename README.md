@@ -81,7 +81,8 @@ Command: /home/jhuang/anaconda3/envs/bengal3_ac3/bin/scoary -g ../roary/gene_pre
 (bengal3_ac3) scoary -g ../roary/gene_presence_absence.csv -t f1_13 -r restrict_to_186.csv
 
 #3. seek the next closely reference (optional)
-(referenceseeker) ~/Tools/referenceseeker/bin/referenceseeker -v ~/REFs/bacteria-refseq/ shovill/E50862/contigs.fa
+#download referenceseeker reference databases under https://zenodo.org/record/3725706#.YuPMtGFBzCI
+(referenceseeker) ~/Tools/referenceseeker/bin/referenceseeker -v ~/REFs/bacteria_refseeker_db/ shovill/E50862/contigs.fa
 #ID     Mash Distance   ANI     Con. DNA        Taxonomy ID     Assembly Status Organism
 GCF_001281065.1 0.00712 98.70   91.86   1747    complete        Cutibacterium acnes KCOM 1861 (= ChDC B594)
 GCF_000231215.1 0.00710 98.51   91.85   1091045 complete        Cutibacterium acnes subsp. defendens ATCC 11828

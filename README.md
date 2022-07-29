@@ -83,12 +83,13 @@ Command: /home/jhuang/anaconda3/envs/bengal3_ac3/bin/scoary -g ../roary/gene_pre
 #3. seek the next closely reference (optional)
 #download referenceseeker reference databases under https://zenodo.org/record/3725706#.YuPMtGFBzCI
 (referenceseeker) ~/Tools/referenceseeker/bin/referenceseeker -v ~/REFs/bacteria_refseeker_db/ shovill/E50862/contigs.fa
-#ID     Mash Distance   ANI     Con. DNA        Taxonomy ID     Assembly Status Organism
-GCF_001281065.1 0.00712 98.70   91.86   1747    complete        Cutibacterium acnes KCOM 1861 (= ChDC B594)
-GCF_000231215.1 0.00710 98.51   91.85   1091045 complete        Cutibacterium acnes subsp. defendens ATCC 11828
-GCF_000240055.1 0.01125 98.42   91.54   1114969 complete        Cutibacterium acnes TypeIA2 P.acn31
-GCF_006739385.1 0.01108 98.42   91.48   1734925 complete        Cutibacterium acnes subsp. acnes NBRC 107605
-GCF_000008345.1 0.01085 98.43   91.41   267747  complete        Cutibacterium acnes KPA171202
+#refseeker_results  #ID     Mash Distance   ANI     Con. DNA        Taxonomy ID     Assembly Status Organism
+#refseeker_results  GCF_001281065.1 0.00712 98.70   91.86   1747    complete        Cutibacterium acnes KCOM 1861 (= ChDC B594)
+#refseeker_results  GCF_000231215.1 0.00710 98.51   91.85   1091045 complete        Cutibacterium acnes subsp. defendens ATCC 11828
+#refseeker_results  GCF_000240055.1 0.01125 98.42   91.54   1114969 complete        Cutibacterium acnes TypeIA2 P.acn31
+#refseeker_results  GCF_015697645.1	0.00138	99.92	94.97	287	complete	Pseudomonas aeruginosa B-I-1
+#refseeker_results  GCF_003812885.1	0.00137	99.86	94.80	287	complete	Pseudomonas aeruginosa FDAARGOS_571
+
 
 #4. varicant calling using spandx
 #-4.1. generate PseudoContig_wildtype.fasta --

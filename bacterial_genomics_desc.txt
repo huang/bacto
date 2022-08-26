@@ -2213,6 +2213,52 @@ A key feature of molecular evolution is the heterogeneity of substitution rates 
 
 
 
+#-------------------------------------------------------------------------
+#------------- 16, searching for predefined genes in isolates ------------
+#From command line use the -S option. (Query strands to search against database, 0 or 3 is both directions, 1 is top strand, 2 is bottom; BLASTN uses 0 by default).
+#makeblastdb -in Genliste_interesting_w80.fasta -dbtype nucl
+blastn -query 74_contigs.fa -db ../../Genliste_interesting_w80.fasta -out outputFile -evalue 1e-10 -num_threads 15 -outfmt 6  -max_target_seqs 1
+
+export LC_ALL=C LC_LANG=C; sort -k1,1 -k12,12gr -k11,11g -k3,3gr outputFile > sortedFile
+#Then get the top 5 hits for every query:
+for next in $(cut -f2 sortedFile | sort -u); do grep -w -m 1 "$next" sortedFile; done > top1
+cut -f2-4 -d$'\t' top1 > top1_
+
+grep IS256  ../../Genliste_interesting_genlength.txt > top1_genelength 
+grep PSM_beta1_3 ../../Genliste_interesting_genlength.txt >> top1_genelength
+grep Staphyloferrin ../../Genliste_interesting_genlength.txt >> top1_genelength
+grep Zinc_Metalloprotease ../../Genliste_interesting_genlength.txt >> top1_genelength
+grep aae   ../../Genliste_interesting_genlength.txt >> top1_genelength
+grep atlE  ../../Genliste_interesting_genlength.txt >> top1_genelength
+grep capA   ../../Genliste_interesting_genlength.txt >> top1_genelength
+grep dltA   ../../Genliste_interesting_genlength.txt >> top1_genelength
+grep embp   ../../Genliste_interesting_genlength.txt >> top1_genelength
+grep fmtC   ../../Genliste_interesting_genlength.txt >> top1_genelength
+grep gehC   ../../Genliste_interesting_genlength.txt >> top1_genelength
+grep sdrF   ../../Genliste_interesting_genlength.txt >> top1_genelength
+grep sdrG    ../../Genliste_interesting_genlength.txt >> top1_genelength
+grep sdrH    ../../Genliste_interesting_genlength.txt >> top1_genelength
+grep sesA_fmtB   ../../Genliste_interesting_genlength.txt >> top1_genelength
+grep sesC   ../../Genliste_interesting_genlength.txt >> top1_genelength
+
+grep HH2 ../../Genliste_interesting_genlength.txt > top1_genelength
+grep Staphyloferrin ../../Genliste_interesting_genlength.txt >> top1_genelength
+grep aap   ../../Genliste_interesting_genlength.txt >> top1_genelength
+grep atlE  ../../Genliste_interesting_genlength.txt >> top1_genelength
+grep bhp  ../../Genliste_interesting_genlength.txt >> top1_genelength
+grep capA   ../../Genliste_interesting_genlength.txt >> top1_genelength
+grep cidA   ../../Genliste_interesting_genlength.txt >> top1_genelength
+grep fmtC   ../../Genliste_interesting_genlength.txt >> top1_genelength
+grep geh   ../../Genliste_interesting_genlength.txt >> top1_genelength
+grep sdrG    ../../Genliste_interesting_genlength.txt >> top1_genelength
+grep sdrH    ../../Genliste_interesting_genlength.txt >> top1_genelength
+grep sesA_fmtB   ../../Genliste_interesting_genlength.txt >> top1_genelength
+grep sesC   ../../Genliste_interesting_genlength.txt >> top1_genelength
+
+
+#cut -d$'\t' -f2 top1_genelength > top1_genelength_
+paste top1_ top1_genelength > top1__
+
 
 
 

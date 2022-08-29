@@ -68,7 +68,7 @@ done
 (bacto2 on titisee) for the step roary (f,f,f,f,f,t,f,f,f,f in bacto-0.1.json) generating roary, gathering samples only from raw_data/*.fastq.gz, be careful need to delete all roary* directories before, otherwise it will occur errors during running!
 (bacto2 on titisee) export PERL5LIB=$CONDA_PREFIX/lib/perl5/site_perl/5.22.0/
 (bacto2 on titisee) roary -p 15 -f ./roary -i 95 -cd 99 -s -e -n -v  prokka/E47727/E47727.gff prokka/BK16922/BK16922.gff ...
-(bacto2 on titisee) ./roary$ samtools faidx core_gene_alignment.aln
+./roary$ samtools faidx core_gene_alignment.aln
 (bacto2 on titisee) ./roary$ fasttree -gtr -nt core_gene_alignment.aln > core_gene_alignment.tree
 (bacto2 on titisee) ./roary$ snp-sites core_gene_alignment.aln > core_gene_alignment_.aln     #372992 --> 16848
 (bacto2 on titisee) ./roary$ raxml-ng --all --model GTR+G+ASC_LEWIS --prefix core_gene_raxml --threads 6 --msa core_gene_alignment_.aln --bs-trees 1000

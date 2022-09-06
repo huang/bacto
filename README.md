@@ -107,11 +107,22 @@ prokka PseudoContig_wildtype.fasta #result in PROKKA_01242022
 python ~/Tools/VAPiD/vapid3.py --db ~/REFs/all_virus/all_virus.fasta contigs.fa ~/REFs/template_Fischer.sbt
 python ~/Tools/VAPiD/vapid3.py --db ~/REFs/all_virus/all_virus.fasta contigs.fa ~/REFs/template_Holger.sbt
 
-#-4.2. generate genebank in snpEff for noAB_wildtype --
+#-4.2-1. generate genebank in snpEff under the example noAB_wildtype --
 mkdir ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/data/noAB_wildtype
 cp PROKKA_01242022/PROKKA_01242022.gbk ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/data/noAB_wildtype/genes.gbk
 vim ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/snpEff.config
 /home/jhuang/anaconda3/envs/spandx/bin/snpEff build -genbank noAB_wildtype      -d
+
+#-4.2-2. generate genbank in snpEff under the example Holger_Kpneumoniae_SNP --
+cat reordered.fasta unmatched.fasta > PseudoContig_wildtype_.fasta
+echo ">wildtype_150" > wildtype_150.fa;
+~/Scripts/merge_seq.py PseudoContig_wildtype_.fasta >> wildtype_150.fa;
+prokka wildtype_150.fa
+conda activate spandx
+mkdir ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/data/wildtype_150
+cp PROKKA_09062022/PROKKA_09062022.gbk ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/data/wildtype_150/genes.gbk
+vim ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/snpEff.config
+/home/jhuang/anaconda3/envs/spandx/bin/snpEff build -genbank wildtype_150      -d
 
 #-4.3. using spandx calling variants --
 #ln -s /home/jhuang/Tools/spandx/ spandx

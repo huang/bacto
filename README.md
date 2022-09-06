@@ -98,6 +98,7 @@ Command: /home/jhuang/anaconda3/envs/bengal3_ac3/bin/scoary -g ../roary/gene_pre
 #./shovill/noAB_wildtype/contigs.fasta
 ~/Tools/CONTIGuator_v2.7/CONTIGuator.py -r CP040849.fasta -a /home/jhuang/Tools/act.jar -c shovill/noAB_wildtype/contigs.fa 
 ~/Tools/CONTIGuator_v2.7/CONTIGuator.py -r CP059793.fasta -a /home/jhuang/Tools/act.jar -c shovill/noAB_wildtype/contigs.fa 
+#or using r2cat or CAR: http://lu168.cs.nthu.edu.tw/CAR/index.php 
 merge_seq.py Excluded.fsa > ../Excluded_sequence.fasta
 #add Excluded_sequence.fasta to PseudoContig.fsa or only use PseudoContig.fsa
 

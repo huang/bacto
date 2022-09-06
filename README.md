@@ -106,13 +106,7 @@ prokka PseudoContig_wildtype.fasta #result in PROKKA_01242022
 python ~/Tools/VAPiD/vapid3.py --db ~/REFs/all_virus/all_virus.fasta contigs.fa ~/REFs/template_Fischer.sbt
 python ~/Tools/VAPiD/vapid3.py --db ~/REFs/all_virus/all_virus.fasta contigs.fa ~/REFs/template_Holger.sbt
 
-#-4.2-1 generate genebank in snpEff for noAB_wildtype --
-mkdir ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/data/noAB_wildtype
-cp PROKKA_01242022/PROKKA_01242022.gbk ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/data/noAB_wildtype/genes.gbk
-vim ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/snpEff.config
-/home/jhuang/anaconda3/envs/spandx/bin/snpEff build -genbank noAB_wildtype      -d
-
-#-4.2-2 generate genebank from roary and spandx --
+#-4.2. generate genebank in snpEff for noAB_wildtype --
 mkdir ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/data/noAB_wildtype
 cp PROKKA_01242022/PROKKA_01242022.gbk ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/data/noAB_wildtype/genes.gbk
 vim ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/snpEff.config
@@ -127,8 +121,6 @@ snpEff eff -nodownload -no-downstream -no-intergenic -ud 100 -v CP040849.1 noAB_
 (spandx) nextflow run spandx/main.nf --fastq "trimmed/*_P_{1,2}.fastq.gz" --ref PseudoContig_wildtype.fasta --annotation --database noAB_wildtype -resume
 
 #-4.4. post-processing --
-#annotate the snp-table using GAMOLA
-
 awk '{if($6!=$7) print}' < All_SNPs_indels_annotated.txt > All_SNPs_indels_annotated_.txt
 cut -d$'\t' -f1-7 All_SNPs_indels_annotated_.txt > f1_7
 grep -v "/" f1_7 > f1_7_

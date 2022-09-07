@@ -123,6 +123,7 @@ mkdir ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/data/wildtype_150
 cp PROKKA_09062022/PROKKA_09062022.gbk ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/data/wildtype_150/genes.gbk
 vim ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/snpEff.config
 /home/jhuang/anaconda3/envs/spandx/bin/snpEff build -genbank wildtype_150      -d
+gzip 148_trimmed_P_1.fastq 148_trimmed_P_2.fastq 149_trimmed_P_1.fastq 149_trimmed_P_2.fastq
 
 #-4.3. using spandx calling variants --
 #ln -s /home/jhuang/Tools/spandx/ spandx
@@ -131,6 +132,7 @@ snpEff eff -nodownload -no-downstream -no-intergenic -ud 100 -v CP040849.1 noAB_
 #
 #               'CP040849'      2659111 Standard
 (spandx) nextflow run spandx/main.nf --fastq "trimmed/*_P_{1,2}.fastq.gz" --ref PseudoContig_wildtype.fasta --annotation --database noAB_wildtype -resume
+(spandx) nextflow run spandx/main.nf --fastq "trimmed/*_P_{1,2}.fastq.gz" --ref wildtype_150.fasta --annotation --database wildtype_150 -resume
 
 #-4.4. post-processing --
 awk '{if($6!=$7) print}' < All_SNPs_indels_annotated.txt > All_SNPs_indels_annotated_.txt

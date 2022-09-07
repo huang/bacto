@@ -114,10 +114,10 @@ vim ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/snpEff.config
 /home/jhuang/anaconda3/envs/spandx/bin/snpEff build -genbank noAB_wildtype      -d
 
 #-4.2-2. generate genbank in snpEff under the example Holger_Kpneumoniae_SNP --
-cat reordered.fasta unmatched.fasta > PseudoContig_wildtype_.fasta
-echo ">wildtype_150" > wildtype_150.fa;
-~/Scripts/merge_seq.py PseudoContig_wildtype_.fasta >> wildtype_150.fa;
-prokka wildtype_150.fa
+cat reordered.fasta unmatched.fasta > PseudoContig_wildtype.fasta
+echo ">wildtype_150" > wildtype_150.fasta;
+~/Scripts/merge_seq.py PseudoContig_wildtype.fasta >> wildtype_150.fasta;
+prokka wildtype_150.fasta
 conda activate spandx
 mkdir ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/data/wildtype_150
 cp PROKKA_09062022/PROKKA_09062022.gbk ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/data/wildtype_150/genes.gbk

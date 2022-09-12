@@ -4,6 +4,8 @@ A pipeline for clinical bacteria NGS data
 WARNING: used the absolute path '-hmm /media/jhuang/Titisee/GAMOLA2/TIGRfam_db/TIGRFAMs_15.0_HMM.LIB' in Snakefile
 
 ```sh
+#Extract features from genbank-file
+https://services.healthtech.dtu.dk/service.php?FeatureExtract-1.2
 #https://stackoverflow.com/questions/63990487/package-conflict-with-anaconda
 #IMPORTANT: By telling conda that it can visit multiple channels (conda-forge, bioconda and defaults), it has some extra options to resolve the dependency conflicts.
 

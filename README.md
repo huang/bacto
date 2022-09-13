@@ -6,6 +6,8 @@ WARNING: used the absolute path '-hmm /media/jhuang/Titisee/GAMOLA2/TIGRfam_db/T
 ```sh
 #Extract features from genbank-file
 https://services.healthtech.dtu.dk/service.php?FeatureExtract-1.2
+#extract gff3 from Genbank-file
+bp_genbank2gff3 roary_.fa.gb
 #https://stackoverflow.com/questions/63990487/package-conflict-with-anaconda
 #IMPORTANT: By telling conda that it can visit multiple channels (conda-forge, bioconda and defaults), it has some extra options to resolve the dependency conflicts.
 

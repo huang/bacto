@@ -493,3 +493,20 @@ https://cge.cbs.dtu.dk/services/
 https://cge.cbs.dtu.dk/services/MLST/
 https://pubmlst.org/bigsdb?db=pubmlst_pacnes_seqdef&page=batchProfiles&scheme_id=3
 ```
+
+## 7, calculate mapping table between GWAS and reference Genbank
+```sh
+echo "##FASTA" gene_presence_absence.csv >> CP023676.gff3
+cat CP023676.1.fasta gene_presence_absence.csv >> CP023676.gff3
+
+echo "##FASTA" gene_presence_absence.csv >> CP012351.gff3
+cat CP012351.1.fasta gene_presence_absence.csv >> CP012351.gff3
+
+echo "##FASTA" gene_presence_absence.csv >> CP003084.gff3
+cat CP003084.1.fasta gene_presence_absence.csv >> CP003084.gff3
+
+#modify unnamed to roary_189_selected_genes
+
+roary -p 15 -f ./roary -i 95 -cd 99 -s -e -n -v  roary_.fa.gb.gff CP012351.gff3 CP003084.gff3 CP023676.gff3 
+```
+

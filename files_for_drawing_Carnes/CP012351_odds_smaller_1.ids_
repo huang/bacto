@@ -1,0 +1,43 @@
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT36653.1_2277" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT36069.1_1987" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT35217.1_988" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT35188.1_957" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT35539.1_1364" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT34928.1_645" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT36610.1_1997" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT35096.1_845" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT36068.1_1986" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT36085.1_2008" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT36083.1_2006" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT36609.1_1994" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT36075.1_1995" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT36611.1_2003" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT36082.1_2005" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT35095.1_844" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT36612.1_2004" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT36088.1_2011" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT36084.1_2007" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT36086.1_2009" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT36076.1_1996" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT36608.1_1991" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT36074.1_1993" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT35094.1_842" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT36072.1_1990" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT36067.1_1985" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT36089.1_2012" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT35097.1_846" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT36066.1_1984" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT35977.1_1879" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT36091.1_2014" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT35976.1_1878" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT36071.1_1989" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT36070.1_1988" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT36073.1_1992" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT36438.1_843" >> CP012351_odds_smaller_1.fasta
+samtools faidx CP012351_gene.fasta "lcl|CP012351.1_cds_ALT36365.1_352" >> CP012351_odds_smaller_1.fasta
+
+#merge_seq.py CP003084_odds_greater_1.fasta > CP003084_odds_greater_1_merged.fasta
+
+#merge_seq.py CP012351_odds_smaller_1.fasta > CP012351_odds_smaller_1_merged.fasta
+#prokka CP012351_odds_smaller_1_merged.fasta --force
+#mv PROKKA_09132022/PROKKA_09132022.gbk files_for_drawing_Carnes/CP012351_odds_smaller_1.gbk

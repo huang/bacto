@@ -1,0 +1,12 @@
+samtools faidx CP003084_gene.fasta "lcl|CP003084.1_cds_AER04956.1_420" > CP003084_odds_smaller_1.fasta
+samtools faidx CP003084_gene.fasta "lcl|CP003084.1_cds_AER05424.1_889" >> CP003084_odds_smaller_1.fasta
+samtools faidx CP003084_gene.fasta "lcl|CP003084.1_cds_AER06368.1_1833" >> CP003084_odds_smaller_1.fasta
+samtools faidx CP003084_gene.fasta "lcl|CP003084.1_cds_AER05978.1_1443" >> CP003084_odds_smaller_1.fasta
+samtools faidx CP003084_gene.fasta "lcl|CP003084.1_cds_AER06702.1_2167" >> CP003084_odds_smaller_1.fasta
+samtools faidx CP003084_gene.fasta "lcl|CP003084.1_cds_AER05778.1_1243" >> CP003084_odds_smaller_1.fasta
+
+
+#echo ">CP003084_odds_smaller_1_merged" > CP003084_odds_smaller_1_merged.fasta
+#merge_seq.py CP003084_odds_smaller_1.fasta >> CP003084_odds_smaller_1_merged.fasta
+#prokka CP003084_odds_smaller_1_merged.fasta --force
+#mv PROKKA_09132022/PROKKA_09132022.gbk files_for_drawing_Carnes/CP003084_odds_smaller_1.gbk

@@ -1,0 +1,309 @@
+#GeneID in CP012351
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+grep "ALT36653.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+grep "ALT36069.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+grep "ALT35217.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+grep "ALT35188.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+
+grep "ALT35539.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+
+grep "ALT34928.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+
+
+
+grep "ALT36610.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+grep "ALT35096.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+
+grep "ALT36068.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+grep "ALT36085.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+grep "ALT36083.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+grep "ALT36609.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+grep "ALT36075.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+grep "ALT36611.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+grep "ALT36082.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+
+
+grep "ALT35095.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+grep "ALT36612.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+grep "ALT36088.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+grep "ALT36084.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+grep "ALT36086.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+grep "ALT36076.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+
+grep "ALT36608.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+grep "ALT36074.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+
+grep "ALT35094.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+grep "ALT36072.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+grep "ALT36067.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+grep "ALT36089.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+grep "ALT35097.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+grep "ALT36066.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+grep "ALT35977.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+grep "ALT36091.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+grep "ALT35976.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+grep "ALT36071.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+grep "ALT36070.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+grep "ALT36073.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+grep "ALT36438.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+grep "ALT36365.1" CP012351_gene.fasta >> CP012351_odds_smaller_1.ids
+

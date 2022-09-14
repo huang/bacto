@@ -1,0 +1,156 @@
+LOCUS       CP023676_odds_smaller_1_merged3566 bp   DNA linear      13-SEP-2022
+DEFINITION  Genus species strain strain.
+ACCESSION   
+VERSION
+KEYWORDS    .
+SOURCE      Genus species
+  ORGANISM  Genus species
+            Unclassified.
+COMMENT     Annotated using prokka 1.12 from
+            https://github.com/tseemann/prokka.
+FEATURES             Location/Qualifiers
+     source          1..3566
+                     /organism="Genus species"
+                     /mol_type="genomic DNA"
+                     /strain="strain"
+     CDS             1..447
+                     /gene="rnpA"
+                     /locus_tag="EOOBFDFM_00001"
+                     /EC_number="3.1.26.5"
+                     /inference="ab initio prediction:Prodigal:2.6"
+                     /inference="similar to AA sequence:UniProtKB:P9WGZ3"
+                     /codon_start=1
+                     /transl_table=11
+                     /product="Ribonuclease P protein component"
+                     /translation="MLPARSRMHRPGDYRAAVRGGVRSGRPTLVVHAGRHAQFRFDSA
+                     DKTELPTAPVGNCGSGEPLVSTTTSRSDLDVTPRVGFVVSKAVGNAVTRNRVKRRLRH
+                     LCRPLVDELEDGTVVVVRALPAAATQPDRVAKDLDGAWHQALRKLR"
+     assembly_gap    448..547
+                     /estimated_length=100
+                     /gap_type="within scaffold"
+                     /linkage_evidence="paired-ends"
+     CDS             548..970
+                     /locus_tag="EOOBFDFM_00002"
+                     /inference="ab initio prediction:Prodigal:2.6"
+                     /codon_start=1
+                     /transl_table=11
+                     /product="hypothetical protein"
+                     /translation="MPPEVAMPSYAHHQRRTQEGKDQYHSRSGHDRDGSPHTQHHDRC
+                     HGWSGDRNRGRPGYYRRAQTTFVIEGVSIVQSCPVGAGKLLWRPGAPFRSRVGHAARR
+                     LIESMTLKESVPIHRVRRCEVLVIVQVIFEFPDLYLCL"
+     assembly_gap    971..1070
+                     /estimated_length=100
+                     /gap_type="within scaffold"
+                     /linkage_evidence="paired-ends"
+     assembly_gap    1272..1371
+                     /estimated_length=100
+                     /gap_type="within scaffold"
+                     /linkage_evidence="paired-ends"
+     assembly_gap    1759..1858
+                     /estimated_length=100
+                     /gap_type="within scaffold"
+                     /linkage_evidence="paired-ends"
+     CDS             1859..2224
+                     /locus_tag="EOOBFDFM_00003"
+                     /inference="ab initio prediction:Prodigal:2.6"
+                     /codon_start=1
+                     /transl_table=11
+                     /product="hypothetical protein"
+                     /translation="MNVMIPVRPDGSVEPRFGKAPMVAVAQVDNDGHVTDWHTFKVEW
+                     DRLHNEGTERRHHARIVRFLREHDVVACVATHAGMGMQRTLAAMKVPLLPATLPRARE
+                     SVEHAMISAYADTKGTEES"
+     assembly_gap    2225..2324
+                     /estimated_length=100
+                     /gap_type="within scaffold"
+                     /linkage_evidence="paired-ends"
+     CDS             2325..2777
+                     /locus_tag="EOOBFDFM_00004"
+                     /inference="ab initio prediction:Prodigal:2.6"
+                     /codon_start=1
+                     /transl_table=11
+                     /product="hypothetical protein"
+                     /translation="MHHSSAEIDLDSSVLVPKVASFEDEGGDKFVELIDVEGSVHSGG
+                     ELGGYGVVDVGDRASDTEGKGMQMNFSTWLHVRLGTLEIQTMDLHRRFSRFSTTSNPT
+                     YPPKLFRQSCHACGRTHGAHSFPLPIGCKRCRAEHSEQGLQDESIRRH"
+     assembly_gap    2778..2877
+                     /estimated_length=100
+                     /gap_type="within scaffold"
+                     /linkage_evidence="paired-ends"
+     CDS             2952..3119
+                     /locus_tag="EOOBFDFM_00005"
+                     /inference="ab initio prediction:Prodigal:2.6"
+                     /codon_start=1
+                     /transl_table=11
+                     /product="hypothetical protein"
+                     /translation="MPTSVRSRNSSRHPFSNGPRYPHDAKPEQHVETAGIEHLHCQEP
+                     RHQNVEDQDAL"
+     assembly_gap    3160..3259
+                     /estimated_length=100
+                     /gap_type="within scaffold"
+                     /linkage_evidence="paired-ends"
+     assembly_gap    3467..3566
+                     /estimated_length=100
+                     /gap_type="within scaffold"
+                     /linkage_evidence="paired-ends"
+ORIGIN      
+        1 atgctgcctg cccggtcgcg gatgcaccgt cccggtgact atcgtgccgc ggtccgcgga
+       61 ggcgtcaggt cgggtcgtcc tactcttgtc gttcacgccg gacgacacgc gcaattcagg
+      121 ttcgactcag ctgataagac cgagttaccc acagcacctg tgggtaactg tggttctggt
+      181 gaaccattag tgtcaacgac gacttcccga tctgaccttg acgttacgcc gcgggtcggt
+      241 tttgtcgtgt ccaaggccgt gggcaatgcc gtgacacgta atcgggtcaa acgtcgactg
+      301 cgtcacctct gccgtcctct cgtggatgag ctcgaggatg gcaccgtggt cgtcgtgcga
+      361 gctctaccgg ctgcagcgac ccaacctgat cgggttgcca aggatctcga cggggcatgg
+      421 caccaggcat tgcggaaact gcgatgannn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn
+      481 nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn
+      541 nnnnnnngtg ccacccgaag tagctatgcc ttcctatgct caccatcaac gccgaacgca
+      601 ggagggcaag gatcagtacc actctaggtc cggtcatgat cgggatggat ccccacacac
+      661 gcagcatcac gatcgatgtc atggatggtc aggagaccgc aatcgcgggc ggccgggtta
+      721 ctaccgtcgc gcccagacca ccttcgtgat tgagggggta tcgattgttc aatcgtgtcc
+      781 tgttggggcg gggaaacttt tgtggaggcc gggggcacct tttcgttctc gagtaggtca
+      841 tgctgctaga aggttaatag agagtatgac tctcaaagag agtgttccta ttcaccgtgt
+      901 gaggagatgt gaggtacttg tgatcgtgca ggtgatattc gagttccctg atttatatct
+      961 gtgtttgtga nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn
+     1021 nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn atgggactct
+     1081 tcgataaggc caaggacgcc atcagcgacc gccaggacga catcaagaat caggccagcc
+     1141 agcacagcga tcaggtcgag cagggcatcg acaaggctgg caacactgtc gacgacaaga
+     1201 ccggcggcaa gttctccgat cagatcgaca agggccagga cgccctcaaa gacaagcttg
+     1261 gcgacctctg annnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn
+     1321 nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn ngtgccagta
+     1381 gcagaatatg tcacctcaac aactcgatcc acccctgccc attacatggg taacatatcc
+     1441 atggaggttc gatgtatact cgaggataca gtcgtccatc acgcccgcct acatacccat
+     1501 tacatcagca tagaaatatg ctccaacagc aactccgatg cctcatttgc cagccggcca
+     1561 catgcctata tccacgagca gtggttatca cccagatgtg ggtgccgtag agaagaccgc
+     1621 attctcgcgc gcgacatttg cacccgtcac catgtcccca ctcgcaagct ttccaccgcc
+     1681 caaatacggg ccgatatggc gggaatatac agttcggcgc ctcacaagtc cgaccacgac
+     1741 gacgaccccg gaccttgann nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn
+     1801 nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnat
+     1861 gaacgtcatg atccccgttc gtccggacgg ctcagtggag ccacgattcg gtaaggcgcc
+     1921 tatggtagcc gtcgcacagg ttgacaacga cggtcacgtc accgactggc acacctttaa
+     1981 ggttgagtgg gaccgcctcc ataatgaggg cactgaacgt cgtcaccacg cccgcatcgt
+     2041 tcgcttcctg cgtgagcacg acgtcgtagc atgcgtcgcc acccacgctg ggatgggaat
+     2101 gcagcgcacc ctggcagcga tgaaggtccc gttactgccg gccacgttgc ctcgtgctag
+     2161 ggaatcagtg gagcacgcca tgatttcggc atatgcggac accaagggca cggaggaatc
+     2221 atgannnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn
+     2281 nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnatgcat cattcctcgg
+     2341 ctgagattga cttagacagc tcggtgttag tgccgaaggt ggcgagtttt gaggacgagg
+     2401 gcggggataa gttcgttgag ctgattgacg tcgagggttc cgttcattcc ggcggcgagt
+     2461 taggcggtta tggtgtggtc gacgttggtg atcgtgccag tgatactgaa ggcaaaggta
+     2521 tgcagatgaa cttcagtact tggctgcacg tgcgtcttgg aacactggag atccaaacaa
+     2581 tggatttaca tcggagattt tcacgctttt cgaccacatc caacccaaca tatcctccca
+     2641 aattatttag acaatcctgc cacgcatgcg ggcgcactca cggtgcacat agttttccac
+     2701 tccccatagg atgcaaacgg tgtcgagcag aacactcaga acaaggactt caggatgagt
+     2761 caattcgtag acattgannn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn
+     2821 nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnatg
+     2881 ggctccgcta ggacaggttc atggccatca tgcaaggaca cccaacctag ccagaaggag
+     2941 acgaactcac catgccaaca tcagtcagat cacgaaactc atcaaggcat ccattcagca
+     3001 atggcccgcg atatccgcat gacgcaaaac cagaacagca cgttgaaaca gcaggcatcg
+     3061 aacatctcca ctgtcaagaa cctcgccacc aaaatgtgga agatcaggac gccctatgac
+     3121 ccatctggta ctacgcgctc gagaaccagg ccgccttgan nnnnnnnnnn nnnnnnnnnn
+     3181 nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn
+     3241 nnnnnnnnnn nnnnnnnnng tggtgtgcgg ctgccaggcc cgtcattccg gcaccgatga
+     3301 ctgccactgt tttgctcacc gtttgagggt acgcacgttc tggcaccaat cgaagtccgg
+     3361 ggtaggaacc aggaacaacc tacgcaacgg taacctcatc tttggtgtct ctttacggaa
+     3421 cggtaggttt cgcttggaaa cgggacttgt tggcgttcag aattgannnn nnnnnnnnnn
+     3481 nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn nnnnnnnnnn
+     3541 nnnnnnnnnn nnnnnnnnnn nnnnnn
+//

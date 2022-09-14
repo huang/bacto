@@ -1,0 +1,92 @@
+#GeneID in CP003084
+
+
+
+
+
+
+
+
+
+
+
+grep "AER05132.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER04784.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER05018.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER05147.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER05142.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER06656.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER05019.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER05023.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER05020.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+
+grep "AER05137.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER05135.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER05143.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER05144.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER05021.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER05134.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER05146.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER05133.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+
+
+
+grep "AER05060.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+
+
+
+grep "AER06099.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER06080.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER06092.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+
+
+grep "AER06079.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER06107.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+
+grep "AER06081.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER06086.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER05348.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER06170.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+
+grep "AER05185.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER04923.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER06458.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER05530.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER06658.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER06579.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER06638.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER04675.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER06550.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER05203.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER05119.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER04623.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER06171.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER05693.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER06219.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER06142.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER04724.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER05937.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER05395.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER06155.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER05529.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER06345.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER05864.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER06357.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER05055.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER05216.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER06553.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER06728.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+
+grep "AER05459.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER04683.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER04682.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER04621.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER05075.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER06154.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+
+grep "AER06611.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER05938.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+
+
+grep "AER04622.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids
+grep "AER05939.1" CP003084_gene.fasta >> CP003084_odds_greater_1.ids

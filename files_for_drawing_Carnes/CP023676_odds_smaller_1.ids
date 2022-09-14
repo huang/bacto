@@ -1,0 +1,14 @@
+samtools faidx CP023676_gene.fasta "lcl|CP023676.1_cds_AVT27697.1_2449" > CP023676_odds_smaller_1.fasta
+samtools faidx CP023676_gene.fasta "lcl|CP023676.1_cds_AVT25623.1_35" >> CP023676_odds_smaller_1.fasta
+samtools faidx CP023676_gene.fasta "lcl|CP023676.1_cds_AVT26516.1_1070" >> CP023676_odds_smaller_1.fasta
+samtools faidx CP023676_gene.fasta "lcl|CP023676.1_cds_AVT26810.1_1413" >> CP023676_odds_smaller_1.fasta
+samtools faidx CP023676_gene.fasta "lcl|CP023676.1_cds_AVT26487.1_1037" >> CP023676_odds_smaller_1.fasta
+samtools faidx CP023676_gene.fasta "lcl|CP023676.1_cds_AVT26782.1_1378" >> CP023676_odds_smaller_1.fasta
+samtools faidx CP023676_gene.fasta "lcl|CP023676.1_cds_AVT26811.1_1414" >> CP023676_odds_smaller_1.fasta
+samtools faidx CP023676_gene.fasta "lcl|CP023676.1_cds_AVT27455.1_2154" >> CP023676_odds_smaller_1.fasta
+
+
+#echo ">CP023676_odds_smaller_1_merged" > CP023676_odds_smaller_1_merged.fasta
+#merge_seq.py CP023676_odds_smaller_1.fasta >> CP023676_odds_smaller_1_merged.fasta
+#prokka CP023676_odds_smaller_1_merged.fasta --force
+#mv PROKKA_09132022/PROKKA_09132022.gbk files_for_drawing_Carnes/CP023676_odds_smaller_1.gbk

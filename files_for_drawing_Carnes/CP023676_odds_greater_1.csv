@@ -1,0 +1,92 @@
+#Gene ID in CP023676
+
+grep "AVT27124.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26375.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26373.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26381.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26378.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26380.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+
+grep "AVT26377.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26379.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27010.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27440.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27113.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27334.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27453.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27448.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+
+
+grep "AVT27338.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27335.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26251.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27444.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27442.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27449.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27450.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27336.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27908.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27452.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27441.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+
+grep "AVT27738.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26945.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+
+grep "AVT27463.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+
+grep "AVT26195.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26764.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26777.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26769.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+
+grep "AVT26753.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26778.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26755.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26754.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26776.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26772.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27627.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26695.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26025.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27487.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27241.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26433.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT25687.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26230.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26297.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26248.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27011.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26321.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27502.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27430.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26962.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27834.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT25837.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26652.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26720.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27056.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26065.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27669.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26707.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT25686.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26535.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT25992.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26525.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27368.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27517.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26318.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26172.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+
+
+
+grep "AVT27865.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26960.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27388.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26708.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26534.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26272.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT26066.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+
+
+grep "AVT26961.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids
+grep "AVT27761.1" CP023676_gene.fasta >> CP023676_odds_greater_1.ids

@@ -138,7 +138,17 @@ snpEff eff -nodownload -no-downstream -no-intergenic -ud 100 -v CP040849.1 noAB_
 (spandx) nextflow run spandx/main.nf --fastq "trimmed/*_P_{1,2}.fastq.gz" --ref PseudoContig_wildtype.fasta --annotation --database noAB_wildtype -resume
 (spandx) nextflow run spandx/main.nf --fastq "trimmed/*_P_{1,2}.fastq.gz" --ref wildtype_150.fasta --annotation --database wildtype_150 -resume
 
-#-4.4. post-processing --
+#-4.4. using snippy call variants --
+#in bacto-0.1.json
+##   "variants_calling": true,
+#    "genus": "Klebsiella",
+#    "kingdom": "Bacteria",
+#    "species": "pneumoniae",
+#    "reference": "PROKKA_09062022/PROKKA_09062022.gbk",
+snakemake --printshellcmds
+#-->extract common SNPs in Outputs/Phylogeny_and_annotation/All_SNPs_indels_annotated.txt, save as All_SNPs_annotated.xlsx
+
+#-4.5. post-processing --
 awk '{if($6!=$7) print}' < All_SNPs_indels_annotated.txt > All_SNPs_indels_annotated_.txt
 cut -d$'\t' -f1-7 All_SNPs_indels_annotated_.txt > f1_7
 grep -v "/" f1_7 > f1_7_

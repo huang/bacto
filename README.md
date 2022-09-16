@@ -4,7 +4,7 @@ A pipeline for clinical bacteria NGS data
 WARNING: used the absolute path '-hmm /media/jhuang/Titisee/GAMOLA2/TIGRfam_db/TIGRFAMs_15.0_HMM.LIB' in Snakefile
 
 ```sh
-#bioconda tutorial
+#bioconda tutorial; TODO: prepare damian package on bioconda
 https://bioconda.github.io/tutorials/gcb2020.html
 #extract features from genbank-file
 https://services.healthtech.dtu.dk/service.php?FeatureExtract-1.2

@@ -14,15 +14,15 @@
       "cpu": 6,
       "adapter_path": "db/adapters.fa",
       "seed_mismatch": 2,
-      "palindrome_threshold": 20,
+      "palindrome_threshold": 30,
       "clip_threshold": 10,
+      "min_adapter_length": 2,   
+      "keep_both_reads": True,
       "window_size": 4,
       "window_quality": 15,
-      "min_len": 50,
-      "leading": 25,
-      "trailing": 25,
-      "min_adapter_length": 1,
-      "keep_both_reads": true
+      "leading": 3,
+      "trailing": 3,
+      "min_len": 36
   },
 
   "kraken": {

@@ -64,6 +64,12 @@ conda activate bacto2
 (prokka) for the first 3 steps (f,f,t,t,t,f,f,f,f,f in bacto-0.1.json)
 (prokka) run prokka manually if needed: 
 for sample in 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87; do 
+    #TODO: update bakta to 1.5.1 and try it 
+    ##install bakta under the environment 'bincs' --> version 0.5
+    #conda install -c conda-forge -c bioconda bakta
+    #conda update -n base conda
+    #conda update bakta
+    #bakta --db ~/REFs/bakta/db E38448_contigs.fa
     prokka --force --outdir prokka/${sample} --cpus 2 --usegenus --genus Staphylococcus --kingdom Bacteria --species epidermidis --addgenes --addmrna --prefix ${sample} --locustag ${sample} shovill/${sample}/contigs.fa #-hmm /media/jhuang/Titisee/GAMOLA2/TIGRfam_db/TIGRFAMs_15.0_HMM.LIB
 done
 

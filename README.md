@@ -19,6 +19,8 @@ cd ..
 git clone https://github.com/huang/bacto
 mv bacto/* ./
 rm -rf bacto
+rm Comparative_Genomics_Tutorial_v2.pdf 
+rm dN_dS.pdf
 
 #-- we should create two environments: prokka and bacto2 --> SUCCESSFUL
 # ---------------------------------------------------------------

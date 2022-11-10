@@ -18,7 +18,7 @@ for file in *.fastq.gz; do mv $file $(echo $file | cut -d'_' -f1)_$(echo $file |
 cd ..
 git clone https://github.com/huang/bacto
 mv bacto/* ./
-rmdir bacto
+rm -rf bacto
 
 #-- we should create two environments: prokka and bacto2 --> SUCCESSFUL
 # ---------------------------------------------------------------

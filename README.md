@@ -19,8 +19,7 @@ cd ..
 git clone https://github.com/huang/bacto
 mv bacto/* ./
 rm -rf bacto
-rm Comparative_Genomics_Tutorial_v2.pdf 
-rm dN_dS.pdf
+rm Comparative_Genomics_Tutorial_v2.pdf dN_dS.pdf call_shell_from_Ruby.png install_linux-generic_LOG bacterial_genomics_desc.txt
 
 #-- we should create two environments: prokka and bacto2 --> SUCCESSFUL
 # ---------------------------------------------------------------

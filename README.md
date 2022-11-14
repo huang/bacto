@@ -109,6 +109,8 @@ Command: /home/jhuang/anaconda3/envs/bengal3_ac3/bin/scoary -g ../roary/gene_pre
 #or using 'java -jar r2cat.jar' or CAR: http://lu168.cs.nthu.edu.tw/CAR/index.php 
 merge_seq.py Excluded.fsa > ../Excluded_sequence.fasta
 #add Excluded_sequence.fasta to PseudoContig.fsa or only use PseudoContig.fsa
+cat PseudoContig.fsa Excluded_sequence.fasta > PseudoContig_wildtype_.fasta
+seqkit seq -w 80 PseudoContig_wildtype_.fasta > PseudoContig_wildtype.fasta
 
 #prokka PseudoContig_wildtype.fasta #result in PROKKA_01242022
 for sample in PseudoContig_wildtype; do

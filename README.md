@@ -65,7 +65,7 @@ conda activate bacto2
 (prokka) for the first 3 steps (f,f,t,t,t,f,f,f,f,f in bacto-0.1.json)
 (prokka) run prokka manually if needed: 
 for sample in 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87; do
-    bakta --db ~/REFs/bakta/db_1_1 --output bakta/${sample} --genus Pseudomonas --species aeruginosa --prefix ${sample} --locus-tag ${sample} shovill/${sample}/contigs.fa  #under the environment 'bincs'
+    #bakta --db ~/REFs/bakta/db_1_1 --output bakta/${sample} --genus Pseudomonas --species aeruginosa --prefix ${sample} --locus-tag ${sample} shovill/${sample}/contigs.fa  #under the environment 'bincs'
     prokka --force --outdir prokka/${sample} --cpus 2 --usegenus --genus Staphylococcus --kingdom Bacteria --species epidermidis --addgenes --addmrna --prefix ${sample} --locustag ${sample} shovill/${sample}/contigs.fa #-hmm /media/jhuang/Titisee/GAMOLA2/TIGRfam_db/TIGRFAMs_15.0_HMM.LIB
 done
 
@@ -110,7 +110,10 @@ Command: /home/jhuang/anaconda3/envs/bengal3_ac3/bin/scoary -g ../roary/gene_pre
 merge_seq.py Excluded.fsa > ../Excluded_sequence.fasta
 #add Excluded_sequence.fasta to PseudoContig.fsa or only use PseudoContig.fsa
 
-prokka PseudoContig_wildtype.fasta #result in PROKKA_01242022
+#prokka PseudoContig_wildtype.fasta #result in PROKKA_01242022
+for sample in PseudoContig_wildtype; do
+  bakta --db ~/REFs/bakta/db_1_1 --output ${sample} --genus Pseudomonas --species aeruginosa --prefix ${sample} --locus-tag ${sample} ${sample}.fasta
+done
 #../../vrap/external_tools/blast/makeblastdb -in nucleotide.fa -dbtype nucl -parse_seqids -out nucleotide.fasta
 python ~/Tools/VAPiD/vapid3.py --db ~/REFs/all_virus/all_virus.fasta contigs.fa ~/REFs/template_Fischer.sbt
 python ~/Tools/VAPiD/vapid3.py --db ~/REFs/all_virus/all_virus.fasta contigs.fa ~/REFs/template_Holger.sbt

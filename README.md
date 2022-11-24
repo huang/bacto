@@ -508,11 +508,42 @@ conda activate spandx
 nextflow run spandx/main.nf --fastq "raw_data/*_R{1,2}_001.fastq.gz" --ref NC_045512.fasta --annotation --database NC_045512 -resume
 ```
 
-## 6,
+## 6, PubMLST, ResFinder or RGI calling
 ```sh
 https://cge.cbs.dtu.dk/services/
 https://cge.cbs.dtu.dk/services/MLST/
 https://pubmlst.org/bigsdb?db=pubmlst_pacnes_seqdef&page=batchProfiles&scheme_id=3
+https://cge.food.dtu.dk/services/ResFinder/
+https://card.mcmaster.ca/home
+https://www.pseudomonas.com/
+https://www.pseudomonas.com/amr/list
+https://card.mcmaster.ca/analyze/rgi
+The antimicrobial resistance genes were predicted by the tool RGI 6.0.0  which utilizes the database CARD 3.2.5 (PMID: 31665441).
+!!!!#check the difference of SNPs in the two files, and then look for the SNPs in my tables comparing the two isolates!!!!
+
+cut -d$'\t' -f9-21 BK20399_contigs.fa.txt > f9_21
+cut -d$'\t' -f2-6 BK20399_contigs.fa.txt > f2_6
+#Best_Hit_ARO --> Antibiotic Resistance Ontology (ARO) Term
+paste f9_21 f2_6 > BK20399_.txt
+#grep "CARD_Protein_Sequence" BK20399_.txt > header
+grep -v "CARD_Protein_Sequence" BK20399_.txt > BK20399__.txt
+sort BK20399__.txt > BK20399_sorted.txt
+
+cut -d$'\t' -f9-21 GE3138_contigs.fa.txt > f9_21
+cut -d$'\t' -f2-6 GE3138_contigs.fa.txt > f2_6
+paste f9_21 f2_6 > GE3138_.txt
+grep -v "CARD_Protein_Sequence" GE3138_.txt > GE3138__.txt
+sort GE3138__.txt > GE3138_sorted.txt
+
+cut -d$'\t' -f1-6 BK20399_sorted.txt > BK20399_f1_6.txt  
+cut -d$'\t' -f1-6 GE3138_sorted.txt > GE3138_f1_6.txt
+diff BK20399_f1_6.txt GE3138_f1_6.txt
+#-->< APH(3'')-Ib	99.63	3002639	protein homolog model	n/a	n/a
+
+cat header BK20399_sorted.txt > BK20399.txt
+cat header GE3138_sorted.txt > GE3138.txt
+
+~/Tools/csv2xls-0.4/csv_to_xls.py BK20399.txt GE3138.txt -d$'\t' -o ARG_calling.xls
 ```
 
 ## 7, calculate mapping table between GWAS and reference Genbank

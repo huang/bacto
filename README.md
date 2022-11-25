@@ -128,14 +128,7 @@ cp PROKKA_01242022/PROKKA_01242022.gbk ~/anaconda3/envs/spandx/share/snpeff-4.3.
 vim ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/snpEff.config
 /home/jhuang/anaconda3/envs/spandx/bin/snpEff build -genbank noAB_wildtype      -d
 
-mkdir ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/data/AW27149
-#modify contig_1 to AW27149 in genbankfile
-cp AW27149.gbff ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/data/AW27149/genes.gbk
-vim ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/snpEff.config
-/home/jhuang/anaconda3/envs/spandx/bin/snpEff build  AW27149      -d
-#make sure the header in AW27149.fasta have the same as the ones in database
-
-#-4.2-2. generate genbank in snpEff under the example Holger_Kpneumoniae_SNP --
+#-4.2-2. generate genbank in snpEff under the example Holger_*_SNP --
 cat reordered.fasta unmatched.fasta > PseudoContig_wildtype.fasta
 echo ">wildtype_150" > wildtype_150.fasta;
 ~/Scripts/merge_seq.py PseudoContig_wildtype.fasta >> wildtype_150.fasta;
@@ -145,9 +138,17 @@ mkdir ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/data/wildtype_150
 cp PROKKA_09062022/PROKKA_09062022.gbk ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/data/wildtype_150/genes.gbk
 vim ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/snpEff.config
 /home/jhuang/anaconda3/envs/spandx/bin/snpEff build -genbank wildtype_150      -d
-gzip 148_trimmed_P_1.fastq 148_trimmed_P_2.fastq 149_trimmed_P_1.fastq 149_trimmed_P_2.fastq
+
+#from the annotated files from bakta
+mkdir ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/data/AW27149
+#modify contig_1 to AW27149 in genbankfile
+cp AW27149.gbff ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/data/AW27149/genes.gbk
+vim ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/snpEff.config
+/home/jhuang/anaconda3/envs/spandx/bin/snpEff build  AW27149      -d
+#make sure the header in AW27149.fasta have the same as the ones in database
 
 #-4.3. using spandx calling variants --
+gzip 148_trimmed_P_1.fastq 148_trimmed_P_2.fastq 149_trimmed_P_1.fastq 149_trimmed_P_2.fastq
 #ln -s /home/jhuang/Tools/spandx/ spandx
 #-t
 snpEff eff -nodownload -no-downstream -no-intergenic -ud 100 -v CP040849.1 noAB_wildtype_trimmed.PASS.snps.vcf > noAB_wildtype_trimmed.PASS.snps.annotated.vcf

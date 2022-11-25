@@ -166,7 +166,7 @@ snpEff eff -nodownload -no-downstream -no-intergenic -ud 100 -v CP040849.1 noAB_
 #    "reference": "PROKKA_09062022/PROKKA_09062022.gbk",
 snakemake --printshellcmds
 #-->extract common SNPs in Outputs/Phylogeny_and_annotation/All_SNPs_indels_annotated.txt, save as All_SNPs_annotated.xlsx
-#--> VERY IMPORTANT: fiter the SNPs occuring in both results and generate the final results!!!!
+#[[[VERY IMPORTANT]]]: fiter the SNPs occuring in both results and generate the final results!!!!
 
 #-4.5. post-processing --
 awk '{if($6!=$7) print}' < All_SNPs_indels_annotated.txt > All_SNPs_indels_annotated_.txt

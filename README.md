@@ -108,9 +108,9 @@ Command: /home/jhuang/anaconda3/envs/bengal3_ac3/bin/scoary -g ../roary/gene_pre
 ~/Tools/CONTIGuator_v2.7/CONTIGuator.py -r CP040849.fasta -a /home/jhuang/Tools/act.jar -c shovill/noAB_wildtype/contigs.fa 
 ~/Tools/CONTIGuator_v2.7/CONTIGuator.py -r CP059793.fasta -a /home/jhuang/Tools/act.jar -c shovill/noAB_wildtype/contigs.fa 
 #or using 'java -jar r2cat.jar' or CAR: http://lu168.cs.nthu.edu.tw/CAR/index.php 
-merge_seq.py Excluded.fsa > ../Excluded_sequence.fasta
+merge_seq.py Excluded.fsa > ../Excluded_Sequence.fasta
 #add Excluded_sequence.fasta to PseudoContig.fsa or only use PseudoContig.fsa
-cat PseudoContig.fsa Excluded_sequence.fasta > PseudoContig_Wildtype_.fasta
+cat PseudoContig.fsa Excluded_Sequence.fasta > PseudoContig_Wildtype_.fasta
 seqkit seq -w 80 PseudoContig_Wildtype_.fasta > PseudoContig_Wildtype.fasta
 
 #prokka PseudoContig_Wildtype.fasta #result in PROKKA_01242022

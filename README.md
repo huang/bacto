@@ -517,6 +517,47 @@ conda activate spandx
 nextflow run spandx/main.nf --fastq "raw_data/*_R{1,2}_001.fastq.gz" --ref NC_045512.fasta --annotation --database NC_045512 -resume
 ```
 
+## 6, + additional annotations, Sequences and Translations from Bakta results
+```sh
+#---- additional_annotations ----
+cut -d$'\t' -f14 All_SNPs_merged_annotated.csv > extract_annotations.sh
+\  ----> " bakta_AW27149_before/AW27149.gff3 >> position_strand_annotations.txt\ngrep "
+grep "" bakta_AW27149_before/AW27149.gff3 >> position_strand_annotations.txt ----> echo "" >> position_strand_annotations.txt
+cut -f9- position_strand_annotations.txt > additional_annotations.txt
+#delete the records not following the position-increase-rule. 
+cut -d';' -f1 additional_annotations.txt > f1
+cut -d';' -f2 additional_annotations.txt > f2
+cut -d';' -f3 additional_annotations.txt > f3
+cut -d';' -f4 additional_annotations.txt > f4
+cut -d';' -f5 additional_annotations.txt > f5
+cut -d'=' -f2 f1 > f1_
+cut -d'=' -f2 f2 > f2_
+cut -d'=' -f2 f3 > f3_
+cut -d'=' -f2 f4 > f4_
+cut -d'=' -f2 f5 > f5_
+
+#---- sequences ----
+cut -f4-7 position_strand_annotations.txt > extract_sequences.sh
+#the first four lines
+echo "" > sequences.txt
+samtools faidx bakta_AW27149_before/AW27149.fna AW27149:38823-39596 > temp.fasta; revseq temp.fasta -outseq 2.fasta; seqkit seq -w 1000000 2.fasta | grep -v ">" >> sequences.txt
+echo "" >> sequences.txt
+samtools faidx bakta_AW27149_before/AW27149.fna AW27149:315806-317257 > 4.fasta; seqkit seq -w 1000000 4.fasta | grep -v ">" >> sequences.txt
+... ...
+
+#---- proteins ----
+cut -d$'\t' -f14 All_SNPs_merged_annotated.csv > extract_proteins.sh
+#the first four lines
+echo "" > proteins.txt
+samtools faidx AW27149.faa AW27149_00170 > 2.fasta; seqkit seq -w 1000000 2.fasta | grep -v ">" >> proteins.txt
+echo "" >> proteins.txt
+samtools faidx AW27149.faa AW27149_01485 > 2.fasta; seqkit seq -w 1000000 2.fasta | grep -v ">" >> proteins.txt
+
+#---- altogether ----
+paste All_SNPs_annotated_checked.csv f2_ sequences.txt ./bakta_AW27149_before/proteins.txt > All_SNPs_annotated.csv
+# add Product Sequence Translation
+```
+
 ## 6, PubMLST, ResFinder or RGI calling
 ```sh
 https://cge.cbs.dtu.dk/services/

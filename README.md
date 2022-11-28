@@ -555,7 +555,7 @@ samtools faidx AW27149.faa AW27149_01485 > 2.fasta; seqkit seq -w 1000000 2.fast
 
 #---- altogether ----
 paste All_SNPs_annotated_checked.csv f2_ sequences.txt ./bakta_AW27149_before/proteins.txt > All_SNPs_annotated.csv
-# add Product Sequence Translation
+# add Product	Sequence	Translation
 ```
 
 ## 6, PubMLST, ResFinder or RGI calling

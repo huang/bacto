@@ -594,6 +594,38 @@ cat header BK20399_sorted.txt > BK20399.txt
 cat header GE3138_sorted.txt > GE3138.txt
 
 ~/Tools/csv2xls-0.4/csv_to_xls.py BK20399.txt GE3138.txt -d$'\t' -o ARG_calling.xls
+
+#------
+cut -d$'\t' -f9-21 AW27149_before.txt > f9_21
+cut -d$'\t' -f2-6 AW27149_before.txt > f2_6
+#Best_Hit_ARO --> Antibiotic Resistance Ontology (ARO) Term
+paste f9_21 f2_6 > AW27149_before_.txt
+grep "CARD_Protein_Sequence" AW27149_before_.txt > header
+grep -v "CARD_Protein_Sequence" AW27149_before_.txt > AW27149_before__.txt
+sort AW27149_before__.txt > AW27149_before_sorted.txt
+
+cut -d$'\t' -f9-21 AW48641_after.txt > f9_21
+cut -d$'\t' -f2-6 AW48641_after.txt > f2_6
+paste f9_21 f2_6 > AW48641_after_.txt
+grep -v "CARD_Protein_Sequence" AW48641_after_.txt > AW48641_after__.txt
+sort AW48641_after__.txt > AW48641_after_sorted.txt
+
+cut -d$'\t' -f1-6 AW27149_before_sorted.txt > AW27149_before_f1_6.txt  
+cut -d$'\t' -f1-6 AW48641_after_sorted.txt > AW48641_after_f1_6.txt
+diff AW27149_before_f1_6.txt AW48641_after_f1_6.txt
+#48c48
+#< Pseudomonas aeruginosa CpxR   100.0   3004054 protein homolog model   n/a     n/a
+#---
+#> Pseudomonas aeruginosa CpxR   99.56   3004054 protein homolog model   n/a     n/a
+
+cat header AW27149_before_sorted.txt > ../RGI_calling_AW27149_before.txt
+cat header AW48641_after_sorted.txt > ../RGI_calling_AW48641_after.txt
+
+#mlst add header "isolate	species	ST	acsA	aroE	guaA	mutL	nuoD	ppsA	trpE"
+mv 
+~/Tools/csv2xls-0.4/csv_to_xls.py All_SNPs_annotated.csv RGI_calling_AW27149_before.txt RGI_calling_AW48641_after.txt mlst.txt -d$'\t' -o SNP_ARG_calling.xls
+
+#Find the common SNP between SNP calling and RGI calling, since the SNP calling has bad annotation, marked yellow.
 ```
 
 ## 7, calculate mapping table between GWAS and reference Genbank

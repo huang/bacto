@@ -517,7 +517,7 @@ conda activate spandx
 nextflow run spandx/main.nf --fastq "raw_data/*_R{1,2}_001.fastq.gz" --ref NC_045512.fasta --annotation --database NC_045512 -resume
 ```
 
-## 6, + additional annotations, Sequences and Translations from Bakta results
+## 6, + additional Annotations, Sequences and Translations from Bakta results
 ```sh
 #---- additional_annotations ----
 cut -d$'\t' -f14 All_SNPs_merged_annotated.csv > extract_annotations.sh

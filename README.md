@@ -559,7 +559,7 @@ paste All_SNPs_annotated_checked.csv f2_ sequences.txt ./bakta_AW27149_before/pr
 
 #(Optional) Extract COG Category, COG, EC, RefSeq, GO, UniParc, UniRef100, UniRef50, UniRef90 from f5_ and add them into All_SNPs_annotated_checked.csv as the last columns
 #COG: Clusters of Orthologous Genes (https://www.ncbi.nlm.nih.gov/research/cog-project/)
-#EC=Enzyme Commission number
+#EC=Enzyme Commission number (https://en.wikipedia.org/wiki/Enzyme_Commission_number)
 #RefSeq: NCBI Reference Sequence Database (https://www.ncbi.nlm.nih.gov/refseq/)
 #GO: http://geneontology.org/
 #SO have been ignored, since they are all the same. SO SequenceOntology: The Sequence Ontology: A tool for the unification of genome annotations. Eilbeck K., Lewis S.E., Mungall C.J., Yandell M., Stein L., Durbin R., Ashburner M. Genome Biology (2005) 6:R44 http://www.sequenceontology.org/browser/current_svn/term/SO:0000690

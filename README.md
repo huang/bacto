@@ -556,6 +556,11 @@ samtools faidx AW27149.faa AW27149_01485 > 2.fasta; seqkit seq -w 1000000 2.fast
 #---- altogether ----
 paste All_SNPs_annotated_checked.csv f2_ sequences.txt ./bakta_AW27149_before/proteins.txt > All_SNPs_annotated.csv
 # add Product	Sequence	Translation
+
+#(Optional) Extract COG Category, COG, EC, RefSeq, GO, UniParc, UniRef100, UniRef50, UniRef90 from f5_ and add them into All_SNPs_annotated_checked.csv as the last columns 
+#EC=Enzyme Commission number
+#SO have been ignored number a, since they are all the same. SO SequenceOntology: The Sequence Ontology: A tool for the unification of genome annotations. Eilbeck K., Lewis S.E., Mungall C.J., Yandell M., Stein L., Durbin R., Ashburner M. Genome Biology (2005) 6:R44 http://www.sequenceontology.org/browser/current_svn/term/SO:0000690
+#UniParc, UniRef100, UniRef50, UniRef90: https://www.uniprot.org/help/about
 ```
 
 ## 6, PubMLST, ResFinder or RGI calling

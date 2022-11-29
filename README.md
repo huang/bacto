@@ -566,7 +566,7 @@ paste All_SNPs_annotated_checked.csv f2_ sequences.txt ./bakta_AW27149_before/pr
 #UniParc, UniRef100, UniRef50, UniRef90: https://www.uniprot.org/help/about
 ```
 
-## 6, PubMLST, ResFinder or RGI calling
+## 7, PubMLST, ResFinder or RGI calling
 ```sh
 https://cge.cbs.dtu.dk/services/
 https://cge.cbs.dtu.dk/services/MLST/
@@ -636,7 +636,7 @@ mv
 #Find the common SNP between SNP calling and RGI calling, since the SNP calling has bad annotation, marked yellow.
 ```
 
-## 7, calculate mapping table between GWAS and reference Genbank
+## 8, calculate mapping table between GWAS and reference Genbank
 ```sh
 echo "##FASTA" gene_presence_absence.csv >> CP023676.gff3
 cat CP023676.1.fasta gene_presence_absence.csv >> CP023676.gff3

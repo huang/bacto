@@ -517,7 +517,39 @@ conda activate spandx
 nextflow run spandx/main.nf --fastq "raw_data/*_R{1,2}_001.fastq.gz" --ref NC_045512.fasta --annotation --database NC_045512 -resume
 ```
 
-## 6, + additional Annotations, Sequences and Translations from Bakta results
+## 6, indel calling using freebayes from merged bam
+```sh
+./bams/148_trimmed.dedup.bam
+./bams/149_trimmed.dedup.bam
+mkdir freebayes
+cd freebayes
+#run picard unter java17
+picard-tools AddOrReplaceReadGroups I=../Outputs/bams/148_trimmed.dedup.bam O=148_readgroup-added.bam SORT_ORDER=coordinate CREATE_INDEX=true RGPL=illumina RGID=148 RGSM=148 RGLB=standard RGPU=148 VALIDATION_STRINGENCY=LENIENT
+picard-tools AddOrReplaceReadGroups I=../Outputs/bams/149_trimmed.dedup.bam O=149_readgroup-added.bam SORT_ORDER=coordinate CREATE_INDEX=true RGPL=illumina RGID=149 RGSM=149 RGLB=standard RGPU=149 VALIDATION_STRINGENCY=LENIENT
+
+picard-tools MergeSamFiles INPUT=148_readgroup-added.bam INPUT=149_readgroup-added.bam OUTPUT=merged_picard.bam
+
+picard-tools CreateSequenceDictionary R=wildtype_150.fasta O=wildtype_150.dict
+
+wildtype_150
+# Direkt SNP calling is not suggested. It is better if we take a realigning step before SNP and Indel-calling.
+#conda install -c bioconda gatk4
+conda install -c bioconda gatk
+#gatk-register /home/jhuang/Tools/GenomeAnalysisTK-3.8-1-0-gf15c1c3ef/GenomeAnalysisTK.jar
+#need wildtype_150.fasta.fai and wildtype_150.dict
+
+#under the bengal3_ac3 environment
+samtools index merged_picard.bam 
+gatk -T RealignerTargetCreator -I merged_picard.bam  -R /media/jhuang/Elements1/Data_Holger_Klebsiella_pneumoniae_SNP/wildtype_150.fasta -o realigned.merged.bam.list
+gatk -T IndelRealigner -I merged_picard.bam -R /media/jhuang/Elements1/Data_Holger_Klebsiella_pneumoniae_SNP/wildtype_150.fasta -targetIntervals realigned.merged.bam.list -o merged_realigned.bam
+
+
+# freebayes --fasta-reference /media/jhuang/Elements1/Data_Holger_Klebsiella_pneumoniae_SNP/wildtype_150.fasta -b merged_realigned.bam -p 1 -i -X -u | /home/jhuang/Tools/freebayes_git/freebayes/vcflib/bin/vcffilter -f 'QUAL > 30' > merged.realigned.snps_filtered_freebayes.vcf
+freebayes --fasta-reference /media/jhuang/Elements1/Data_Holger_Klebsiella_pneumoniae_SNP/wildtype_150.fasta -b merged_realigned.bam -p 1 -I -X -u | /home/jhuang/Tools/freebayes_git/freebayes/vcflib/bin/vcffilter -f 'QUAL > 30' > merged.realigned.indels_filtered_freebayes.vcf
+freebayes --fasta-reference /media/jhuang/Elements1/Data_Holger_Klebsiella_pneumoniae_SNP/wildtype_150.fasta -b merged_picard.bam   -p 1 -I -X -u | /home/jhuang/Tools/freebayes_git/freebayes/vcflib/bin/vcffilter -f 'QUAL > 30' > merged.indels_filtered_freebayes.vcf
+```
+
+## 7, + additional Annotations, Sequences and Translations from Bakta results
 ```sh
 #---- additional_annotations ----
 cut -d$'\t' -f14 All_SNPs_merged_annotated.csv > extract_annotations.sh
@@ -566,7 +598,7 @@ paste All_SNPs_annotated_checked.csv f2_ sequences.txt ./bakta_AW27149_before/pr
 #UniParc, UniRef100, UniRef50, UniRef90: https://www.uniprot.org/help/about
 ```
 
-## 7, PubMLST, ResFinder or RGI calling
+## 8, PubMLST, ResFinder or RGI calling
 ```sh
 https://cge.cbs.dtu.dk/services/
 https://cge.cbs.dtu.dk/services/MLST/
@@ -636,7 +668,7 @@ mv
 #Find the common SNP between SNP calling and RGI calling, since the SNP calling has bad annotation, marked yellow.
 ```
 
-## 8, calculate mapping table between GWAS and reference Genbank
+## 9, calculate mapping table between GWAS and reference Genbank
 ```sh
 echo "##FASTA" gene_presence_absence.csv >> CP023676.gff3
 cat CP023676.1.fasta gene_presence_absence.csv >> CP023676.gff3

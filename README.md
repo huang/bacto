@@ -635,7 +635,7 @@ cat header GE3138_sorted.txt > GE3138.txt
 
 ~/Tools/csv2xls-0.4/csv_to_xls.py BK20399.txt GE3138.txt -d$'\t' -o ARG_calling.xls
 
-#------
+#---- another example ----
 cut -d$'\t' -f9-21 AW27149_before.txt > f9_21
 cut -d$'\t' -f2-6 AW27149_before.txt > f2_6
 #Best_Hit_ARO --> Antibiotic Resistance Ontology (ARO) Term

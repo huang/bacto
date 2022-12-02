@@ -517,7 +517,34 @@ conda activate spandx
 nextflow run spandx/main.nf --fastq "raw_data/*_R{1,2}_001.fastq.gz" --ref NC_045512.fasta --annotation --database NC_045512 -resume
 ```
 
-## 6, indel calling using freebayes from merged bam
+## 6, filtering process of SPANDx results
+```sh
+#Input file is Outputs/Phylogeny_and_annotation/All_SNPs_indels_annotated.txt (61203)
+#- Step1: filtering $6!=$7 (3202)
+awk '{if($6!=$7) print}' < All_SNPs_indels_annotated.txt > All_SNPs_indels_annotated_.txt
+#- Step2: restricted the first 7 columns (3202)
+cut -d$'\t' -f1-7 All_SNPs_indels_annotated_.txt > f1_7
+#- Step3: filtering examples as "G/C" (1450)
+grep -v "/" f1_7 > f1_7_
+#- Step4: filtering examples as ".       A" (170)
+grep -v "\." f1_7_ > f1_7__
+#- Step5: filtering examples as "T       *" (162), since we want to have only SNPs differing between BK20399 and GE3138.
+grep -v "*" f1_7__ > f1_7___
+#- Step6: only SNPs (50).
+grep -v "INDEL" f1_7___ > f1_7____
+#- Step7: get the complete rows with the positions
+cut -d$'\t' -f2-2 f1_7____ > f2
+replace "\n" with " All_SNPs_indels_annotated_.txt >> All_SNPs_annotated.txt\ngrep "
+grep "CHROM" All_SNPs_indels_annotated_.txt > All_SNPs_annotated.txt
+grep "46882" All_SNPs_indels_annotated_.txt >> All_SNPs_annotated.txt
+grep "46892" All_SNPs_indels_annotated_.txt >> All_SNPs_annotated.txt
+grep "46936" All_SNPs_indels_annotated_.txt >> All_SNPs_annotated.txt
+....
+#- Step8: Missense mutations ()
+grep "missense_variant" All_SNPs_annotated.txt
+```
+
+## 7, indel calling using freebayes from merged bam
 ```sh
 ./bams/148_trimmed.dedup.bam
 ./bams/149_trimmed.dedup.bam
@@ -549,7 +576,7 @@ freebayes --fasta-reference /media/jhuang/Elements1/Data_Holger_Klebsiella_pneum
 freebayes --fasta-reference /media/jhuang/Elements1/Data_Holger_Klebsiella_pneumoniae_SNP/wildtype_150.fasta -b merged_picard.bam   -p 1 -I -X -u | /home/jhuang/Tools/freebayes_git/freebayes/vcflib/bin/vcffilter -f 'QUAL > 30' > merged.indels_filtered_freebayes.vcf
 ```
 
-## 7, + additional Annotations, Sequences and Translations from Bakta results
+## 8, + additional Annotations, Sequences and Translations from Bakta results
 ```sh
 #---- additional_annotations ----
 cut -d$'\t' -f14 All_SNPs_merged_annotated.csv > extract_annotations.sh
@@ -598,7 +625,7 @@ paste All_SNPs_annotated_checked.csv f2_ sequences.txt ./bakta_AW27149_before/pr
 #UniParc, UniRef100, UniRef50, UniRef90: https://www.uniprot.org/help/about
 ```
 
-## 8, PubMLST, ResFinder or RGI calling
+## 9, PubMLST, ResFinder or RGI calling
 ```sh
 https://cge.cbs.dtu.dk/services/
 https://cge.cbs.dtu.dk/services/MLST/
@@ -668,7 +695,7 @@ mv
 #Find the common SNP between SNP calling and RGI calling, since the SNP calling has bad annotation, marked yellow.
 ```
 
-## 9, calculate mapping table between GWAS and reference Genbank
+## 10, calculate mapping table between GWAS and reference Genbank
 ```sh
 echo "##FASTA" gene_presence_absence.csv >> CP023676.gff3
 cat CP023676.1.fasta gene_presence_absence.csv >> CP023676.gff3

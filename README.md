@@ -445,7 +445,7 @@ Expert: verbose output and increased output of candidate reference genomes using
 $ # referenceseeker --crg 500 --verbose --threads 8 <REFERENCE_SEEKER_DB> <GENOME>
 $ referenceseeker --crg 500 --verbose --threads 8 bacteria-refseq/ genome.fasta
 
-#TODO DEBUG: ERROR: failed to execute nucmer!
+#TODO DEBUG: ERROR: failed to execute nucmer! --> using https://bioinfo.ut.ee/strainseeker/ instead!
 (bengal3_ac3) jhuang@hamburg:~/Tools$ referenceseeker ~/REFs/bacteria_referenceseeker_db ~/Tools/referenceseeker/test/data/Salmonella_enterica_CFSAN000189.fasta
 ```
 - Reads2Type: a web application for rapid microbial taxonomy identification

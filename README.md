@@ -445,10 +445,7 @@ Expert: verbose output and increased output of candidate reference genomes using
 $ # referenceseeker --crg 500 --verbose --threads 8 <REFERENCE_SEEKER_DB> <GENOME>
 $ referenceseeker --crg 500 --verbose --threads 8 bacteria-refseq/ genome.fasta
 
-(bengal3_ac3) jhuang@hamburg:~/Tools$ referenceseeker ~/Tools/referenceseeker/test/db ~/Tools/referenceseeker/test/data/Salmonella_enterica_CFSAN000189.fasta
-ERROR: failed to execute nucmer!
-exit=1
-cmd=['nucmer', '--threads=1', '/home/jhuang/Tools/referenceseeker/test/db/GCF_000439415.1.fna', '/tmp/tmp0ljafd1l/dna-fragments.fasta']
+(bengal3_ac3) jhuang@hamburg:~/Tools$ referenceseeker ~/REFs/bacteria_referenceseeker_db ~/Tools/referenceseeker/test/data/Salmonella_enterica_CFSAN000189.fasta
 ```
 - Reads2Type: a web application for rapid microbial taxonomy identification
 - https://github.com/tseemann/sixess (sixess Hentschke_22927_R1.fastq.gz Hentschke_22927_R2.fastq.gz)
@@ -490,7 +487,7 @@ http://lu168.cs.nthu.edu.tw/CAR/index.php
 ~/Tools/CONTIGuator_v2.7/CONTIGuator.py -r CP040849.fasta -a /home/jhuang/Tools/act.jar -c shovill/noAB_wildtype/contigs.fa 
 ~/Tools/CONTIGuator_v2.7/CONTIGuator.py -r CP059793.fasta -a /home/jhuang/Tools/act.jar -c shovill/noAB_wildtype/contigs.fa 
 E50862
-(referenceseeker) ~/Tools/referenceseeker/bin/referenceseeker -v ~/REFs/bacteria-refseq/ shovill/E50862/contigs.fa
+(referenceseeker) ~/Tools/referenceseeker/bin/referenceseeker -v ~/REFs/bacteria_referenceseeker_db/ shovill/E50862/contigs.fa
 #ID     Mash Distance   ANI     Con. DNA        Taxonomy ID     Assembly Status Organism
 GCF_001281065.1 0.00712 98.70   91.86   1747    complete        Cutibacterium acnes KCOM 1861 (= ChDC B594)
 GCF_000231215.1 0.00710 98.51   91.85   1091045 complete        Cutibacterium acnes subsp. defendens ATCC 11828

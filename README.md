@@ -72,9 +72,11 @@ done
 
 #1. if the reference is given in bacto-0.1.json, automatically run all the remaining steps.
 (bacto2 on titisee) for the remaining steps (f,f,f,f,f,t,f,t,t,t in bacto-0.1.json)
+#(bacto2 on titisee) or generating roary (f,f,f,f,f,t,f,f,f,f in bacto-0.1.json)  
+#Note that gathering samples only from raw_data/*.fastq.gz, 
+#be careful need to delete all roary* directories before, otherwise it will occur errors during running!
 
 #2. if the reference is not given, manually run until raxml, then call plotTreeHeatmap and scoary
-(bacto2 on titisee) for the step roary (f,f,f,f,f,t,f,f,f,f in bacto-0.1.json) generating roary, gathering samples only from raw_data/*.fastq.gz, be careful need to delete all roary* directories before, otherwise it will occur errors during running!
 (bacto2 on titisee) export PERL5LIB=$CONDA_PREFIX/lib/perl5/site_perl/5.22.0/
 (bacto2 on titisee) roary -p 15 -f ./roary -i 95 -cd 99 -s -e -n -v  prokka/E47727/E47727.gff prokka/BK16922/BK16922.gff ...
 ./roary$ samtools faidx core_gene_alignment.aln

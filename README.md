@@ -151,7 +151,7 @@ vim ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/snpEff.config
 
 #-4.3. using spandx calling variants --
 #Note that we recall the wild type SNPs to its own assembly to increase the precision.
-gzip 148_trimmed_P_1.fastq 148_trimmed_P_2.fastq 149_trimmed_P_1.fastq 149_trimmed_P_2.fastq 150_trimmed_P_1.fastq 150_trimmed_P_2.fastq
+gzip 150_trimmed_P_1.fastq 150_trimmed_P_2.fastq 148_trimmed_P_1.fastq 148_trimmed_P_2.fastq 149_trimmed_P_1.fastq 149_trimmed_P_2.fastq
 #ln -s /home/jhuang/Tools/spandx/ spandx
 #-t
 snpEff eff -nodownload -no-downstream -no-intergenic -ud 100 -v CP040849.1 noAB_wildtype_trimmed.PASS.snps.vcf > noAB_wildtype_trimmed.PASS.snps.annotated.vcf

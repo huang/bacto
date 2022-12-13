@@ -568,9 +568,9 @@ cd freebayes
 (bengal3_ac3) gatk -T IndelRealigner -I merged_picard.bam -R /media/jhuang/Elements1/Data_Holger_Klebsiella_pneumoniae_SNP/wildtype_150.fasta -targetIntervals realigned.merged.bam.list -o merged_realigned.bam
 
 
-# freebayes --fasta-reference /media/jhuang/Elements1/Data_Holger_Klebsiella_pneumoniae_SNP/wildtype_150.fasta -b merged_realigned.bam -p 1 -i -X -u | /home/jhuang/Tools/freebayes_git/freebayes/vcflib/bin/vcffilter -f 'QUAL > 30' > merged.realigned.snps_filtered_freebayes.vcf
-freebayes --fasta-reference /media/jhuang/Elements1/Data_Holger_Klebsiella_pneumoniae_SNP/wildtype_150.fasta -b merged_realigned.bam -p 1 -I -X -u | /home/jhuang/Tools/freebayes_git/freebayes/vcflib/bin/vcffilter -f 'QUAL > 30' > merged.realigned.indels_filtered_freebayes.vcf
-freebayes --fasta-reference /media/jhuang/Elements1/Data_Holger_Klebsiella_pneumoniae_SNP/wildtype_150.fasta -b merged_picard.bam   -p 1 -I -X -u | /home/jhuang/Tools/freebayes_git/freebayes/vcflib/bin/vcffilter -f 'QUAL > 30' > merged.indels_filtered_freebayes.vcf
+freebayes --fasta-reference /media/jhuang/Elements1/Data_Holger_Klebsiella_pneumoniae_SNP_PUBLISHING/wildtype_150.fasta -b merged_realigned.bam -p 1 -i -X -u | /home/jhuang/Tools/freebayes_git/freebayes/vcflib/bin/vcffilter -f 'QUAL > 30' > merged.realigned.snps_filtered_freebayes.vcf
+freebayes --fasta-reference /media/jhuang/Elements1/Data_Holger_Klebsiella_pneumoniae_SNP_PUBLISHING/wildtype_150.fasta -b merged_realigned.bam -p 1 -I -X -u | /home/jhuang/Tools/freebayes_git/freebayes/vcflib/bin/vcffilter -f 'QUAL > 30' > merged.realigned.indels_filtered_freebayes.vcf
+#BETTER with realigned bam (see commands above): freebayes --fasta-reference /media/jhuang/Elements1/Data_Holger_Klebsiella_pneumoniae_SNP_PUBLISHING/wildtype_150.fasta -b merged_picard.bam   -p 1 -I -X -u | /home/jhuang/Tools/freebayes_git/freebayes/vcflib/bin/vcffilter -f 'QUAL > 30' > merged.indels_filtered_freebayes.vcf
 ```
 
 ## 8, + additional Annotations, Sequences and Translations from Bakta results

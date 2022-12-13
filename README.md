@@ -150,7 +150,7 @@ vim ~/anaconda3/envs/spandx/share/snpeff-4.3.1t-5/snpEff.config
 #make sure the header in AW27149.fasta have the same as the ones in database
 
 #-4.3. using spandx calling variants --
-#Note that we recall the wild type SNPs to its own assembly to increase the precision.
+#Note that we recall the wild type (isolate 150) SNPs to its own assembly to increase the precision.
 gzip 150_trimmed_P_1.fastq 150_trimmed_P_2.fastq 148_trimmed_P_1.fastq 148_trimmed_P_2.fastq 149_trimmed_P_1.fastq 149_trimmed_P_2.fastq
 #ln -s /home/jhuang/Tools/spandx/ spandx
 #-t

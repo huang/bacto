@@ -547,19 +547,18 @@ grep "missense_variant" All_SNPs_annotated.txt
 
 ## 7, indel calling using freebayes from merged bam
 ```sh
-./bams/148_trimmed.dedup.bam
-./bams/149_trimmed.dedup.bam
 mkdir freebayes
 cd freebayes
 #run picard unter java17
+picard-tools AddOrReplaceReadGroups I=../Outputs/bams/150_trimmed.dedup.bam O=150_readgroup-added.bam SORT_ORDER=coordinate CREATE_INDEX=true RGPL=illumina RGID=150 RGSM=150 RGLB=standard RGPU=150 VALIDATION_STRINGENCY=LENIENT
 picard-tools AddOrReplaceReadGroups I=../Outputs/bams/148_trimmed.dedup.bam O=148_readgroup-added.bam SORT_ORDER=coordinate CREATE_INDEX=true RGPL=illumina RGID=148 RGSM=148 RGLB=standard RGPU=148 VALIDATION_STRINGENCY=LENIENT
 picard-tools AddOrReplaceReadGroups I=../Outputs/bams/149_trimmed.dedup.bam O=149_readgroup-added.bam SORT_ORDER=coordinate CREATE_INDEX=true RGPL=illumina RGID=149 RGSM=149 RGLB=standard RGPU=149 VALIDATION_STRINGENCY=LENIENT
 
-picard-tools MergeSamFiles INPUT=148_readgroup-added.bam INPUT=149_readgroup-added.bam OUTPUT=merged_picard.bam
+picard-tools MergeSamFiles INPUT=150_readgroup-added.bam INPUT=148_readgroup-added.bam INPUT=149_readgroup-added.bam OUTPUT=merged_picard.bam
 
 picard-tools CreateSequenceDictionary R=wildtype_150.fasta O=wildtype_150.dict
 
-wildtype_150
+#Note that the reference is 'wildtype_150'.
 # Direkt SNP calling is not suggested. It is better if we take a realigning step before SNP and Indel-calling.
 #conda install -c bioconda gatk4
 conda install -c bioconda gatk

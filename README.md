@@ -550,25 +550,22 @@ grep "missense_variant" All_SNPs_annotated.txt
 mkdir freebayes
 cd freebayes
 #run picard unter java17
-picard-tools AddOrReplaceReadGroups I=../Outputs/bams/150_trimmed.dedup.bam O=150_readgroup-added.bam SORT_ORDER=coordinate CREATE_INDEX=true RGPL=illumina RGID=150 RGSM=150 RGLB=standard RGPU=150 VALIDATION_STRINGENCY=LENIENT
-picard-tools AddOrReplaceReadGroups I=../Outputs/bams/148_trimmed.dedup.bam O=148_readgroup-added.bam SORT_ORDER=coordinate CREATE_INDEX=true RGPL=illumina RGID=148 RGSM=148 RGLB=standard RGPU=148 VALIDATION_STRINGENCY=LENIENT
-picard-tools AddOrReplaceReadGroups I=../Outputs/bams/149_trimmed.dedup.bam O=149_readgroup-added.bam SORT_ORDER=coordinate CREATE_INDEX=true RGPL=illumina RGID=149 RGSM=149 RGLB=standard RGPU=149 VALIDATION_STRINGENCY=LENIENT
-
-picard-tools MergeSamFiles INPUT=150_readgroup-added.bam INPUT=148_readgroup-added.bam INPUT=149_readgroup-added.bam OUTPUT=merged_picard.bam
-
-picard-tools CreateSequenceDictionary R=wildtype_150.fasta O=wildtype_150.dict
+(java17) picard-tools AddOrReplaceReadGroups I=../Outputs/bams/150_trimmed.dedup.bam O=150_readgroup-added.bam SORT_ORDER=coordinate CREATE_INDEX=true RGPL=illumina RGID=150 RGSM=150 RGLB=standard RGPU=150 VALIDATION_STRINGENCY=LENIENT
+(java17) picard-tools AddOrReplaceReadGroups I=../Outputs/bams/148_trimmed.dedup.bam O=148_readgroup-added.bam SORT_ORDER=coordinate CREATE_INDEX=true RGPL=illumina RGID=148 RGSM=148 RGLB=standard RGPU=148 VALIDATION_STRINGENCY=LENIENT
+(java17) picard-tools AddOrReplaceReadGroups I=../Outputs/bams/149_trimmed.dedup.bam O=149_readgroup-added.bam SORT_ORDER=coordinate CREATE_INDEX=true RGPL=illumina RGID=149 RGSM=149 RGLB=standard RGPU=149 VALIDATION_STRINGENCY=LENIENT
+(java17) picard-tools MergeSamFiles INPUT=150_readgroup-added.bam INPUT=148_readgroup-added.bam INPUT=149_readgroup-added.bam OUTPUT=merged_picard.bam
+(java17) picard-tools CreateSequenceDictionary R=wildtype_150.fasta O=wildtype_150.dict
 
 #Note that the reference is 'wildtype_150'.
 # Direkt SNP calling is not suggested. It is better if we take a realigning step before SNP and Indel-calling.
-#conda install -c bioconda gatk4
-conda install -c bioconda gatk
+#conda install -c bioconda gatk4 gatk
 #gatk-register /home/jhuang/Tools/GenomeAnalysisTK-3.8-1-0-gf15c1c3ef/GenomeAnalysisTK.jar
 #need wildtype_150.fasta.fai and wildtype_150.dict
 
 #under the bengal3_ac3 environment
-samtools index merged_picard.bam 
-gatk -T RealignerTargetCreator -I merged_picard.bam  -R /media/jhuang/Elements1/Data_Holger_Klebsiella_pneumoniae_SNP/wildtype_150.fasta -o realigned.merged.bam.list
-gatk -T IndelRealigner -I merged_picard.bam -R /media/jhuang/Elements1/Data_Holger_Klebsiella_pneumoniae_SNP/wildtype_150.fasta -targetIntervals realigned.merged.bam.list -o merged_realigned.bam
+(bengal3_ac3) samtools index merged_picard.bam 
+(bengal3_ac3) gatk -T RealignerTargetCreator -I merged_picard.bam  -R /media/jhuang/Elements1/Data_Holger_Klebsiella_pneumoniae_SNP/wildtype_150.fasta -o realigned.merged.bam.list
+(bengal3_ac3) gatk -T IndelRealigner -I merged_picard.bam -R /media/jhuang/Elements1/Data_Holger_Klebsiella_pneumoniae_SNP/wildtype_150.fasta -targetIntervals realigned.merged.bam.list -o merged_realigned.bam
 
 
 # freebayes --fasta-reference /media/jhuang/Elements1/Data_Holger_Klebsiella_pneumoniae_SNP/wildtype_150.fasta -b merged_realigned.bam -p 1 -i -X -u | /home/jhuang/Tools/freebayes_git/freebayes/vcflib/bin/vcffilter -f 'QUAL > 30' > merged.realigned.snps_filtered_freebayes.vcf

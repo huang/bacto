@@ -76,7 +76,7 @@ done
 #(bacto2 on titisee) or generating roary (f,f,f,f,f,t(pangenome),f,f,f,f in bacto-0.1.json)  
 #Note that gathering samples only from raw_data/*.fastq.gz, 
 #be careful need to delete all roary* directories before, otherwise it will occur errors during running!
-(bacto2 on titisee) (f,f,f,f,f,f(pangenome),f(variant_calling),t,t(stread=1),t in bacto-0.1.json) 
+(bacto2 on titisee) (f,f,f,f,f,f(pangenome),f(variant_calling),t,t(set --threads 1 for raxml in Snakefile),t in bacto-0.1.json) 
 
 #2. if the reference is not given, manually run until raxml, then call plotTreeHeatmap and scoary
 (bacto2 on titisee) export PERL5LIB=$CONDA_PREFIX/lib/perl5/site_perl/5.22.0/

@@ -71,10 +71,12 @@ for sample in 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87; do
 done
 
 #1. if the reference is given in bacto-0.1.json, automatically run all the remaining steps.
-(bacto2 on titisee) for the remaining steps (f,f,f,f,f,t,f,t,t,t in bacto-0.1.json)
-#(bacto2 on titisee) or generating roary (f,f,f,f,f,t,f,f,f,f in bacto-0.1.json)  
+(prokka on titisee) for the remaining steps (f,f,f,f,f,t,f(variants_calling),t,t,t in bacto-0.1.json)
+#pangenome(roary) do not need reference, run it in point 2 
+#(bacto2 on titisee) or generating roary (f,f,f,f,f,t(pangenome),f,f,f,f in bacto-0.1.json)  
 #Note that gathering samples only from raw_data/*.fastq.gz, 
 #be careful need to delete all roary* directories before, otherwise it will occur errors during running!
+(bacto2 on titisee) (f,f,f,f,f,f(pangenome),f(variant_calling),t,t(stread=1),t in bacto-0.1.json) 
 
 #2. if the reference is not given, manually run until raxml, then call plotTreeHeatmap and scoary
 (bacto2 on titisee) export PERL5LIB=$CONDA_PREFIX/lib/perl5/site_perl/5.22.0/

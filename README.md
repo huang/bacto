@@ -425,6 +425,13 @@ mv bacto/* ./
 rm -rf bacto
 conda activate bengal3_ac3
 snakemake --printshellcmds
+#DEBUG: using the correct version of snakemake
+/usr/bin/snakemake -v    #CORRECT
+4.3.1
+snakemake -v             #CORRECT
+5.3.0
+/home/jhuang/anaconda3/bin/snakemake -v    #INCORRECT
+5.23.0
 #Note that we need delete/add files in fastq if we want to change the results in roary, variants, fasttree, raxml-ng, and gubbins.
 #https://comparative-genomics.readthedocs.io/en/latest/day2_afternoon.html
 ```
